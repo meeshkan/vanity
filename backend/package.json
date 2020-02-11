@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "xo"
+    "test": "xo",
+    "dev": "micro-dev server.js"
   },
   "xo": {
     "rules": {
@@ -31,6 +32,8 @@
   },
   "devDependencies": {
     "ava": "^3.3.0",
+    "micro": "^9.3.4",
+    "micro-dev": "^3.0.0",
     "xo": "^0.25.3"
   }
 }
