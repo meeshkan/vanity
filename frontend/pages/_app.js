@@ -1,3 +1,4 @@
+import React from 'react';
 import App from 'next/app';
 import { DefaultSeo as DefaultSEO } from 'next-seo';
 import SEO from '../next-seo.config';

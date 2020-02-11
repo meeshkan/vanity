@@ -5,7 +5,6 @@ import fetch from 'isomorphic-unfetch';
 import nextCookie from 'next-cookies';
 import Cookies from 'js-cookie';
 import moment from 'moment';
-
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import { withAuthSync } from '../utils/auth';
