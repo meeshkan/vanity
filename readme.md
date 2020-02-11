@@ -32,3 +32,4 @@
 - [ ] Configure CircleCI to run tests (including coverage).
 - [ ] Create and configure favicon.
 - [ ] Implement unsubscribe button.
+- [ ] Configure logger.
