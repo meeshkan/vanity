@@ -1,4 +1,4 @@
-# Vanity Frontend
+# vanity frontend
 
 - Frontend for the [Vanity](https://github.com/Meeshkan/vanity) project.
 
@@ -12,4 +12,4 @@ Start the frontend development server:
 ~/v/frontend ❯❯❯ npm run dev -p 3000
 ```
 
-Subsequently, you can access the frontend service by navigating to [localhost:3000](http://localhost:3000).
+You can then access the frontend service by navigating to [localhost:3000](http://localhost:3000).

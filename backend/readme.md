@@ -1,4 +1,4 @@
-# Vanity Backend
+# vanity backend
 
 - Backend for the [Vanity](https://github.com/Meeshkan/vanity) project.
 
@@ -12,4 +12,4 @@ Start the backend development server:
 ~/v/backend ❯❯❯ npm run dev -p 3000
 ```
 
-Subsequently, you can access the backend service by navigating to [localhost:3000](http://localhost:3000).
+You can then access the backend service by navigating to [localhost:3000](http://localhost:3000).
