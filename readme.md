@@ -1,6 +1,6 @@
 # vanity
 
-- Weekly metrics for your GitHub repos
+- Weekly metrics for your GitHub repos.
 
 ## Deploy
 
