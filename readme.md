@@ -26,10 +26,10 @@
 - [x] Setup [`NextSEO`](https://github.com/garmeeh/next-seo).
 - [ ] Break up `config.js` into separate files in `config/` directory.
 - [ ] Break commonly used React code into components (especially SVGs).
-- [ ] Create custom error pages (i.e., create `_error.js` file).
-- [ ] Host postgresql & redis DBs on heroku (and configure link).
+- [ ] Create custom error pages (i.e., create `pages/_error.js` file).
+- [ ] Host Postgres & Redis DBs on Heroku (and configure links).
 - [x] Use AVA linter.
-- [ ] Configure CircleCI to run tests (including coverage).
+- [ ] Configure CircleCI to run tests.
 - [ ] Create and configure favicon.
 - [ ] Implement unsubscribe button.
 - [ ] Configure logger.
