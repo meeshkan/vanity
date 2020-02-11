@@ -1,6 +1,6 @@
 const { join } = require('path');
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
 const {
 	GITHUB_CLIENT_ID,
