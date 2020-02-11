@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "xo",
-    "dev": "micro-dev server.js"
+    "dev": "micro-dev server.js -p $PORT"
   },
   "xo": {
     "rules": {
