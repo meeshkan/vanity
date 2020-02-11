@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/server.js", 
+      "use": "@now/node@canary",
+      "config": {
+        "bundle": false
+      }
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@now/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(api|auth|admin)/(.*)",
+      "dest": "backend/server.js"
+    },
+    {
+      "src": "/_next/static/(?:[^/]+/pages|chunks|runtime)/.+",
+      "continue": true,
+      "headers": {
+        "cache-control": "immutable,max-age=31536000"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1",
+      "headers": {
+        "cache-control": "s-maxage=31536000, maxage=0, stale-while-revalidate"
+      }
+    }
+  ],
+  "env": {
+    "GITHUB_CLIENT_ID": "@vanity-github-client-id",
+    "GITHUB_CLIENT_SECRET": "@vanity-github-client-secret",
+    "GITHUB_REDIRECT_URI": "@vanity-github-redirect-uri",
+    "JWT_SECRET": "@vanity-jwt-secret",
+    "VANITY_METRICS_URI": "@vanity-metrics-uri",
+    "REDIS_URL": "@vanity-redis-url",
+    "SENDGRID_API_KEY": "@vanity-sendgrid-api-key",
+    "NODE_ENV": "@vanity-node-env"
+  }
+}
