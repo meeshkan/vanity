@@ -16,6 +16,7 @@
 
 ## TODO:
 
+- [ ] Migrate to TypeScript.
 - [x] Fix weekly `sendEmail` job.
 - [ ] Re-design email template (using [pug](https://github.com/pugjs/pug) & [email-templates](https://github.com/forwardemail/email-templates)).
 - [ ] Create README documentation.
