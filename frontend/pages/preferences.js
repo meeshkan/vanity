@@ -8,7 +8,7 @@ import moment from 'moment';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import { withAuthSync } from '../utils/auth';
-import { VANITY_METRICS_URI } from '../config';
+import { VANITY_URI } from '../config';
 
 const cookies = ['github-user', 'jwt'];
 
@@ -111,7 +111,7 @@ Preferences.propTypes = {
 
 Preferences.getInitialProps = async ctx => {
 	const { jwt: token } = nextCookie(ctx);
-	const apiURL = `${VANITY_METRICS_URI || ''}/api/preferences`;
+	const apiURL = `${VANITY_URI || ''}/api/preferences`;
 
 	const redirectOnError = () => {
 		cookies.forEach(cookie => Cookies.remove(cookie));

@@ -1,7 +1,7 @@
 const {
-	VANITY_METRICS_URI,
+	VANITY_URI,
 } = process.env;
 
 module.exports = {
-	VANITY_METRICS_URI,
+	VANITY_URI,
 };
