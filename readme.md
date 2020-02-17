@@ -24,7 +24,6 @@
 - [ ] Create integration tests (using `cypress`).
 - [ ] Configure `Sentry`.
 - [x] Setup [`NextSEO`](https://github.com/garmeeh/next-seo).
-- [ ] Break up `config.js` into separate files in `config/` directory.
 - [ ] Break commonly used React code into components (especially SVGs).
 - [ ] Create custom error pages (i.e., create `pages/_error.js` file).
 - [ ] Host Postgres & Redis DBs on Heroku (and configure links).
