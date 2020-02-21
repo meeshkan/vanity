@@ -33,7 +33,7 @@ const PASSPORT_OPTIONS = {
 };
 
 const SENTRY_CONFIG = {
-	dsn: SENTRY_CONFIG,
+	dsn: SENTRY_DSN,
 	environment: NODE_ENV,
 }
 
