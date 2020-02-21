@@ -45,7 +45,8 @@ passport.use(
 					user = user.get({ plain: true });
 
 					// TODO: move this to a function & re-call it with a `sync` button in /preferences
-					if (!(user.repos && containSameElements(latestRepos, user.repos.map(repo => repo.name)))) {
+					const latestReposNames = latestRepos.map(repo => repo.name);
+					if (!(user.repos && containSameElements(latestReposNames, user.repos.map(repo => repo.name)))) {
 						latestRepos = latestRepos.map(repo => {
 							repo.selected = !repo.fork;
 							return repo;
@@ -55,7 +56,7 @@ passport.use(
 							user.repos = latestRepos;
 						} else {
 							latestRepos.forEach(repo => {
-								if (!(repo.name in user.repos.map(repo => repo.name))) {
+								if (!(repo.name in existingReposNames)) {
 									user.repos.push(repo);
 								}
 							});
