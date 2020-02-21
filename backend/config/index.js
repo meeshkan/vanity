@@ -85,8 +85,8 @@ const EMAIL_CONFIG = {
 	sampleSubject: 'Welcome to Vanity Metrics',
 	mailgen: {
 		theme: {
-			path: join(__dirname, 'workers/themes/salted/index.html'),
-			plaintextPath: join(__dirname, 'workers/themes/salted/index.txt'),
+			path: join(__dirname, '../workers/themes/salted/index.html'),
+			plaintextPath: join(__dirname, '../workers/themes/salted/index.txt'),
 		},
 		product: {
 			name: 'Vanity Metrics',
