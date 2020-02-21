@@ -17,6 +17,7 @@ const {
 	DB_DATABASE,
 	DB_HOST,
 	DB_PORT,
+	SENTRY_DSN,
 } = process.env;
 
 const GITHUB_SCOPE = [
@@ -30,6 +31,11 @@ const PASSPORT_OPTIONS = {
 	callbackURL: GITHUB_REDIRECT_URI,
 	scope: GITHUB_SCOPE,
 };
+
+const SENTRY_CONFIG = {
+	dsn: SENTRY_CONFIG,
+	environment: NODE_ENV,
+}
 
 const CORS_OPTIONS = {
 	origin: (origin, callback) => callback(null, true),
@@ -115,4 +121,5 @@ module.exports = {
 	DEV_DB,
 	PROD_DB,
 	EMAIL_CONFIG,
+	SENTRY_CONFIG,
 };
