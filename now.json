@@ -38,9 +38,10 @@
     "GITHUB_CLIENT_SECRET": "@vanity-github-client-secret",
     "GITHUB_REDIRECT_URI": "@vanity-github-redirect-uri",
     "JWT_SECRET": "@vanity-jwt-secret",
-    "VANITY_METRICS_URI": "@vanity-metrics-uri",
+    "VANITY_URI": "@vanity-uri",
     "REDIS_URL": "@vanity-redis-url",
     "SENDGRID_API_KEY": "@vanity-sendgrid-api-key",
+    "SENTRY_DSN": "@vanity-sentry-dsn",
     "NODE_ENV": "@vanity-node-env"
   }
 }
