@@ -28,7 +28,6 @@ passport.use(
 			const { username, emails, photos } = profile;
 			const email = getPrimaryEmail(emails);
 			let latestRepos = await fetchUserRepos(username, accessToken);
-			// TODO: fix - currently crashes when table "Users" does not exist
 
 			User.upsert(
 				{
