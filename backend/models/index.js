@@ -1,9 +1,10 @@
 const { join } = require('path');
 const Sequelize = require('sequelize');
+const { SEQUELIZE_CONFIG, NODE_ENV } = require('../config');
 
 const db = {};
-const env = process.env.NODE_ENV || 'development';
-const config = require(`${__dirname}/../config/sequelize.js`)[env];
+const env = NODE_ENV || 'development';
+const config = SEQUELIZE_CONFIG[env];
 
 const ORM = new Sequelize(
 	config.database,

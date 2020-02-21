@@ -106,6 +106,13 @@ const EMAIL_CONFIG = {
 	},
 };
 
+const SEQUELIZE_CONFIG = {
+	development: DEV_DB,
+	production: PROD_DB,
+	dialect: 'pg',
+	dialectModule: require('pg'),
+};
+
 module.exports = {
 	PASSPORT_OPTIONS,
 	JWT_SECRET,
@@ -118,8 +125,7 @@ module.exports = {
 	QUEUE_CRON,
 	QUEUE_ATTEMPTS,
 	SENDGRID_API_KEY,
-	DEV_DB,
-	PROD_DB,
 	EMAIL_CONFIG,
 	SENTRY_CONFIG,
+    SEQUELIZE_CONFIG,
 };
