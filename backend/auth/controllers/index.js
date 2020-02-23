@@ -1,9 +1,5 @@
-const jwt = require('jsonwebtoken');
+const { generateToken, verifyToken } = require('../../utils/token');
 const passport = require('../passport');
-const { JWT_SECRET } = require('../../config');
-
-const generateToken = data => jwt.sign(data, JWT_SECRET, { expiresIn: '7d' });
-const verifyToken = token => jwt.verify(token, JWT_SECRET);
 
 const login = (req, res, next) => {
 	passport.authenticate('github', {

@@ -1,12 +1,11 @@
-const jwt = require('jsonwebtoken');
+const { verifyToken } = require('../../utils/token');
 const { User } = require('../../models');
-const { JWT_SECRET } = require('../../config');
 
 const preferences = async (req, res) => {
 	try {
 		const auth = req.headers.authorization;
 		const { token } = JSON.parse(auth);
-		const user = await jwt.verify(token, JWT_SECRET);
+		const user = await verifyToken(token);
 		const userByID = await User.findByPk(user.id);
 		const { repos } = userByID.get({ plain: true });
 		user.repos = repos;
@@ -25,7 +24,7 @@ const updateRepos = async (req, res) => {
 		const { repos } = req.body;
 		const auth = req.headers.authorization;
 		const { token } = JSON.parse(auth);
-		const user = await jwt.verify(token, JWT_SECRET);
+		const user = await verifyToken(token);
 		User.update(
 			{ repos },
 			{
