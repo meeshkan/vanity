@@ -35,7 +35,7 @@ const PASSPORT_OPTIONS = {
 const SENTRY_CONFIG = {
 	dsn: SENTRY_DSN,
 	environment: NODE_ENV,
-}
+};
 
 const CORS_OPTIONS = {
 	origin: (origin, callback) => callback(null, true),
@@ -127,5 +127,5 @@ module.exports = {
 	SENDGRID_API_KEY,
 	EMAIL_CONFIG,
 	SENTRY_CONFIG,
-    SEQUELIZE_CONFIG,
+	SEQUELIZE_CONFIG,
 };
