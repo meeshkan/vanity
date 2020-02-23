@@ -56,7 +56,7 @@ passport.use(
 							user.repos = latestRepos;
 						} else {
 							latestRepos.forEach(repo => {
-								if (!(repo.name in existingReposNames)) {
+								if (!(repo.name in user.repos.map(repo => repo.name))) {
 									user.repos.push(repo);
 								}
 							});
