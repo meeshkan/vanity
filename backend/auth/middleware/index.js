@@ -11,10 +11,9 @@ const isAdmin = async (req, res, next) => {
 			return next();
 		}
 
-		res.status(401).json();
+		res.status(401).json({ error: 'Invalid authentication credentials.' });
 	} catch (error) {
-		console.error(error); // TODO: handle error
-		res.status(401).json();
+		res.status(401).json(error);
 	}
 };
 

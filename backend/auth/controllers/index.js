@@ -23,8 +23,7 @@ const sendUserData = async (req, res) => {
 		const user = await verifyToken(token);
 		res.status(200).send(user);
 	} catch (error) {
-		console.error(error); // TODO: handle error
-		res.status(401).send();
+		res.status(401).send(error);
 	}
 };
 

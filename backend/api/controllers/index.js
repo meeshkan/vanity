@@ -11,11 +11,10 @@ const preferences = async (req, res) => {
 		user.repos = repos;
 		res.status(200).send(user);
 	} catch (error) {
-		console.error(error); // TODO: handle error
 		res
 			.clearCookie('github-user')
 			.clearCookie('jwt')
-			.status(401).json();
+			.status(401).json(error);
 	}
 };
 
@@ -34,10 +33,9 @@ const updateRepos = async (req, res) => {
 			}
 		)
 			.then(returned => res.status(200).json({ res: returned }))
-			.catch(error => res.status(500).json({ error: error.message }));
+			.catch(error => res.status(500).json(error));
 	} catch (error) {
-		// TODO: handle success & error responses
-		res.status(500).json({ error: error.message });
+		res.status(500).json(error);
 	}
 };
 
