@@ -1,3 +1,5 @@
+const { OK, UNAUTHORIZED } = require('http-status');
+const { UnauthorizedError } = require('../../utils/errors');
 const { generateToken, verifyToken } = require('../../utils/token');
 const passport = require('../passport');
 
@@ -21,9 +23,9 @@ const sendUserData = async (req, res) => {
 	try {
 		const token = req.cookies.jwt;
 		const user = await verifyToken(token);
-		res.status(200).send(user);
+		res.status(OK).send(user);
 	} catch (error) {
-		res.status(401).send(error);
+		res.status(UNAUTHORIZED).send(UnauthorizedError);
 	}
 };
 

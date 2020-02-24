@@ -1,3 +1,5 @@
+const { OK, UNAUTHORIZED } = require('http-status');
+const { UnauthorizedError } = require('../../utils/errors');
 const { verifyToken } = require('../../utils/token');
 const { User } = require('../../models');
 
@@ -11,9 +13,9 @@ const isAdmin = async (req, res, next) => {
 			return next();
 		}
 
-		res.status(401).json({ error: 'Invalid authentication credentials.' });
+		res.status(UNAUTHORIZED).json(UnauthorizedError);
 	} catch (error) {
-		res.status(401).json(error);
+		res.status(UNAUTHORIZED).json(UnauthorizedError);
 	}
 };
 

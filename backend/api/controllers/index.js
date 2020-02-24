@@ -1,3 +1,5 @@
+const { OK, UNAUTHORIZED, INTERNAL_SERVER_ERROR } = require('http-status');
+const { UnauthorizedError } = require('../../utils/errors');
 const { verifyToken } = require('../../utils/token');
 const { User } = require('../../models');
 
@@ -9,12 +11,12 @@ const preferences = async (req, res) => {
 		const userByID = await User.findByPk(user.id);
 		const { repos } = userByID.get({ plain: true });
 		user.repos = repos;
-		res.status(200).send(user);
+		res.status(OK).send(user);
 	} catch (error) {
 		res
 			.clearCookie('github-user')
 			.clearCookie('jwt')
-			.status(401).json(error);
+			.status(UNAUTHORIZED).json(UnauthorizedError);
 	}
 };
 
@@ -32,10 +34,10 @@ const updateRepos = async (req, res) => {
 				},
 			}
 		)
-			.then(returned => res.status(200).json({ res: returned }))
-			.catch(error => res.status(500).json(error));
+			.then(returned => res.status(OK).json({ res: returned }))
+			.catch(error => res.status(INTERNAL_SERVER_ERROR).json(error));
 	} catch (error) {
-		res.status(500).json(error);
+		res.status(INTERNAL_SERVER_ERROR).json(error);
 	}
 };
 
