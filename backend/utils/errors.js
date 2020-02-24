@@ -1,6 +1,6 @@
-import { NOT_FOUND, INTERNAL_SERVER_ERROR, UNAUTHORIZED } from 'http-status';
+const { NOT_FOUND, INTERNAL_SERVER_ERROR, UNAUTHORIZED } = require('http-status');
 
-export class HTTPError extends Error {
+class HTTPError extends Error {
 	constructor(status = INTERNAL_SERVER_ERROR, message = 'Internal server error') {
 		super(message);
 		this.status = status;
@@ -16,9 +16,16 @@ export class HTTPError extends Error {
 	}
 }
 
-export const InternalServerError = new HTTPError();
-export const NotFoundError = new HTTPError(NOT_FOUND, 'Not found');
-export const UnauthorizedError = new HTTPError(
+const InternalServerError = new HTTPError();
+const NotFoundError = new HTTPError(NOT_FOUND, 'Not found');
+const UnauthorizedError = new HTTPError(
 	UNAUTHORIZED,
 	'Invalid authentication credentials',
 );
+
+module.exports = {
+	HTTPError,
+	InternalServerError,
+	NotFoundError,
+	UnauthorizedError,
+};
