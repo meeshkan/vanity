@@ -14,5 +14,5 @@ test.afterEach.cb(t => {
 
 test('calls github', async t => {
     const response = await request(app).get('/auth/github');
-    t.is(response.body, 500);
+    t.is(response.status, 500);
 });
