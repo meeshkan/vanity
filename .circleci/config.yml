@@ -10,8 +10,7 @@ jobs:
       - node/with-cache:
           steps:
             - run: cd backend
-            - run: docker start
-            - run: docker run -d -p 6379:6379 --name redis1 redis
+            - run: docker start -d -p 6379:6379 --name redis1 redis
             - run: npm install
             - run: npm test
             - run: docker stop redis1
