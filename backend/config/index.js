@@ -107,6 +107,7 @@ const EMAIL_CONFIG = {
 };
 
 const SEQUELIZE_CONFIG = {
+	test: DEV_DB,
 	development: DEV_DB,
 	production: PROD_DB,
 	dialect: 'pg',

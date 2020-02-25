@@ -22,7 +22,7 @@ const filterUser = user => {
 const containSameElements = (x, y) => _.isEqual(_.sortBy(x), _.sortBy(y));
 
 passport.use(
-	new Strategy(
+	new (process.env.NODE_ENV == 'test' ? require('passport-mocked').Strategy : Strategy)(
 		PASSPORT_OPTIONS,
 		async (accessToken, refreshToken, profile, done) => {
 			const { username, emails, photos } = profile;
