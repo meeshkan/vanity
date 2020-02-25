@@ -16,6 +16,7 @@ test.afterEach.cb(t => {
 
 
 test('calls github', async t => {
+    t.timeout(1000 * 10); // cuz sometimes the ci environment is super sluggish with redis
     const response = await request(app).get('/auth/github');
     t.is(response.status, 500);
 });
