@@ -86,7 +86,7 @@ const strategyCallback = async (accessToken, refreshToken, profile, done) => {
 }
 
 passport.use(
-	process.env.NODE_ENV == 'test' ? new MockStrategy('github', strategyCallback) : new GithubStrategy(
+	config.NODE_ENV == 'test' ? new MockStrategy('github', strategyCallback) : new GithubStrategy(
 		PASSPORT_OPTIONS,
 		strategyCallback)
 );

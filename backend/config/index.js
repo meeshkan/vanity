@@ -18,6 +18,7 @@ const {
 	DB_HOST,
 	DB_PORT,
 	SENTRY_DSN,
+	NODE_ENV
 } = process.env;
 
 const GITHUB_SCOPE = [
@@ -115,6 +116,7 @@ const SEQUELIZE_CONFIG = {
 };
 
 module.exports = {
+	NODE_ENV,
 	PASSPORT_OPTIONS,
 	JWT_SECRET,
 	CORS_OPTIONS,
