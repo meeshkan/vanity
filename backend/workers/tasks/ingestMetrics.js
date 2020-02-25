@@ -1,5 +1,5 @@
 const metrics = require('../metrics');
 
-module.exports.handle = async function({ user }) {
+module.exports.handle = function({ user }) {
 	metrics.ingest(user.id);
 };
