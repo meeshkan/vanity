@@ -34,10 +34,12 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@unmock/githubv3": "^1.0.0",
     "ava": "^3.3.0",
     "micro": "^9.3.4",
     "micro-dev": "^3.0.0",
     "supertest": "^4.0.2",
+    "unmock": "^0.3.14",
     "xo": "^0.25.3"
   }
 }

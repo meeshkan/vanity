@@ -3,7 +3,7 @@ module.exports = {
     displayName: 'Jason Boxman',
     username: 'jboxman',
     profileUrl: 'https://github.com/jboxman',
-    emails: [ { value: 'jasonb@edseek.com' } ],
+    emails: [ { value: 'jasonb@edseek.com', primary: true } ],
     provider: 'github',
     _json: {
       login: 'jboxman',
