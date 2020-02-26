@@ -13,11 +13,7 @@ const ORM = new Sequelize(
 	config
 );
 
-/* TODO: remove
-if (env === 'development') {
-    ORM.sync({ force: true });
-}
-*/
+ORM.sync();
 
 db.User = ORM.import(join(__dirname, 'user.js'));
 db.Snapshot = ORM.import(join(__dirname, 'snapshot.js'));
