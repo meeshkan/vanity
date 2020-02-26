@@ -13,7 +13,7 @@ First, [download `now`](https://zeit.co/download):
 ~ ❯❯❯ npm install -g now
 ```
 
-Use the [`now secrets`](https://zeit.co/docs/v2/build-step#adding-secrets) command to create a 'secret' for each of the environment variables, in the format specified in `now.json`. For example, to create a secret for the `GITHUB_CLIENT_ID` variable, use the following command: `now secret @vanity-github-client-id <GITHUB_CLIENT_ID>`.
+Use the [`now secrets`](https://zeit.co/docs/v2/build-step#adding-secrets) command to create a 'secret' for each of the environment variables, in the format specified in `now.json`. For example, to create a secret for the `GITHUB_CLIENT_ID` variable, use the following command: `now secret add @vanity-github-client-id <GITHUB_CLIENT_ID>`.
 
 Then, run `now` from *within* the `vanity` directory:
 ```
