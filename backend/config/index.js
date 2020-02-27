@@ -9,7 +9,6 @@ const {
 	REDIS_URL,
 	LOG_LEVEL,
 	LOG_FILE,
-	NODE_ENV,
 	SENDGRID_API_KEY,
 	DB_USERNAME,
 	DB_PASSWORD,
@@ -17,6 +16,7 @@ const {
 	DB_HOST,
 	DB_PORT,
 	SENTRY_DSN,
+	NODE_ENV
 } = process.env;
 
 const GITHUB_SCOPE = [
@@ -88,6 +88,7 @@ const EMAIL_CONFIG = {
 };
 
 const SEQUELIZE_CONFIG = {
+	test: DEV_DB,
 	development: DEV_DB,
 	production: PROD_DB,
 	dialect: 'pg',
@@ -95,6 +96,7 @@ const SEQUELIZE_CONFIG = {
 };
 
 module.exports = {
+	NODE_ENV,
 	PASSPORT_OPTIONS,
 	JWT_SECRET,
 	CORS_OPTIONS,
@@ -102,7 +104,6 @@ module.exports = {
 	GITHUB_SCOPE,
 	LOG_LEVEL,
 	LOG_FILE,
-	NODE_ENV,
 	QUEUE_CRON,
 	QUEUE_ATTEMPTS,
 	SENDGRID_API_KEY,
