@@ -2,17 +2,43 @@
 
 - Weekly metrics for your GitHub repos.
 
-## Deploy
+## Deployment
+
+[![Deploy to now](https://deploy.now.sh/static/button.svg)](https://deploy.now.sh/?repo=https://github.com/Meeshkan/vanity)
+
+Alternatively, to deploy `vanity` manually:
+
+First, [download `now`](https://zeit.co/download):
+```
+~ ❯❯❯ npm install -g now
+```
+
+Use the [`now secrets`](https://zeit.co/docs/v2/build-step#adding-secrets) command to create a 'secret' for each of the environment variables, in the format specified in `now.json`. For example, to create a secret for the `GITHUB_CLIENT_ID` variable, use the following command:
+```
+~ ❯❯❯ now secret add @vanity-github-client-id <GITHUB_CLIENT_ID>
+```
+
+Finally, run `now` from *within* the `vanity` directory:
+```
+~/vanity ❯❯❯ now
+```
 
 ## Development
 
-### Prerequisites
-### Setup Postgres
-### Setup Redis
+Firstly, start your own `Redis` and `PostgreSQL` instances.
+
+Subsequently, create a `.env` file and populate it with the environment variables specified in the `.env.example` file.
+
+Finally, you can run a local deployment of `vanity` by executing the following:
+```
+~/vanity ❯❯❯ now dev
+```
 
 ## Credits
 
 ## License
+
+MIT © [Meeshkan](http://meeshkan.com/)
 
 ## TODO:
 

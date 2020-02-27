@@ -1,6 +1,6 @@
 const moment = require('moment');
 const { Snapshot } = require('../models');
-const { fetchUserRepoStats } = require('../utils/github');
+const { fetchUserRepoStats } = require('./github');
 
 const WEEK_IN_DAYS = 7;
 const ZERO = 0;

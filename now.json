@@ -42,6 +42,11 @@
     "REDIS_URL": "@vanity-redis-url",
     "SENDGRID_API_KEY": "@vanity-sendgrid-api-key",
     "SENTRY_DSN": "@vanity-sentry-dsn",
-    "NODE_ENV": "@vanity-node-env"
+    "NODE_ENV": "@vanity-node-env",
+    "DB_USERNAME": "@vanity-db-username",
+    "DB_PASSWORD": "@vanity-db-password",
+    "DB_DATABASE": "@vanity-db-database",
+    "DB_HOST": "@vanity-db-host",
+    "DB_PORT": "@vanity-db-port"
   }
 }
