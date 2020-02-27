@@ -1,11 +1,12 @@
 const fs = require('fs');
+const { join } = require('path');
 const ejs = require('ejs');
 const SGMail = require('@sendgrid/mail');
 const { SENDGRID_API_KEY, EMAIL_CONFIG } = require('../../config');
 
 const createWeeklyEmail = data => {
-    const message = ejs.render(
-		fs.readFileSync(__dirname + '/templates/weekly.ejs', 'utf8'),
+	const message = ejs.render(
+		fs.readFileSync(join(__dirname, '/templates/weekly.ejs'), 'utf8'),
 		data,
 	);
 
@@ -20,8 +21,8 @@ const createWeeklyEmail = data => {
 };
 
 const createSampleEmail = data => {
-    const message = ejs.render(
-		fs.readFileSync(__dirname + '/templates/sample.ejs', 'utf8'),
+	const message = ejs.render(
+		fs.readFileSync(join(__dirname, '/templates/sample.ejs'), 'utf8'),
 		data,
 	);
 
