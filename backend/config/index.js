@@ -83,27 +83,6 @@ const EMAIL_CONFIG = {
 	sampleIntro: 'This is what your metrics newsletters will look like, minus the weekly comparison.',
 	subject: 'Your Vanity metrics for this week',
 	sampleSubject: 'Welcome to Vanity Metrics',
-	mailgen: {
-		theme: {
-			path: join(__dirname, '../workers/themes/salted/index.html'),
-			plaintextPath: join(__dirname, '../workers/themes/salted/index.txt'),
-		},
-		product: {
-			name: 'Vanity Metrics',
-			link: 'https://vanity-metrics.io',
-			logo: 'https://www.unmock.io/img/logo.png',
-		},
-	},
-	columnStyle: {
-		customWidth: {
-			statistic: '50%',
-			value: '50%',
-		},
-		customAlignment: {
-			statistic: 'left',
-			value: 'right',
-		},
-	},
 };
 
 const SEQUELIZE_CONFIG = {
