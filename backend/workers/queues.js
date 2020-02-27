@@ -1,5 +1,5 @@
 const { setQueues } = require('bull-board');
-const metrics = require('./metrics');
+const metrics = require('../utils/metrics');
 const email = require('../utils/email');
 const { createQueue } = require('./queue');
 
