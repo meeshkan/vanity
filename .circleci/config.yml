@@ -9,6 +9,7 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:12.4.0
       - image: circleci/redis
+      - image: circleci/postgres
 
     working_directory: ~/repo
 
