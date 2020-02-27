@@ -10,6 +10,10 @@ jobs:
       - image: circleci/node:12.4.0
       - image: circleci/redis
       - image: circleci/postgres
+        environment:
+          POSTGRES_USER: handler
+          POSTGRES_DB: sampledb
+          POSTGRES_PASSWORD: password
 
     working_directory: ~/repo
 
