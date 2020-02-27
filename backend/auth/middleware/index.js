@@ -1,4 +1,4 @@
-const { OK, UNAUTHORIZED } = require('http-status');
+const { UNAUTHORIZED } = require('http-status');
 const { UnauthorizedError } = require('../../utils/errors');
 const { verifyToken } = require('../../utils/token');
 const { User } = require('../../models');
