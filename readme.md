@@ -44,7 +44,7 @@ MIT © [Meeshkan](http://meeshkan.com/)
 
 - [ ] Migrate to TypeScript.
 - [x] Fix weekly `sendEmail` job.
-- [ ] Re-design email template (using [pug](https://github.com/pugjs/pug) & [email-templates](https://github.com/forwardemail/email-templates)).
+- [x] Re-design email template (using [EJS](https://github.com/mde/ejs)).
 - [x] Create README documentation.
 - [ ] Create backend unit tests (using `supertest`).
 - [ ] Create integration tests (using `cypress`).
