@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "xo",
+    "lint": "xo",
+    "test": "ava",
     "dev": "micro-dev server.js -p $PORT"
   },
   "xo": {
@@ -19,6 +20,7 @@
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
     "express": "^4.17.1",
     "got": "^10.2.1",
     "http-status": "^1.4.2",
