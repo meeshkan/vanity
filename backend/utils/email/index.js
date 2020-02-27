@@ -58,6 +58,6 @@ const send = async data => {
 };
 
 module.exports = {
-    sendSample,
-    send,
+	sendSample,
+	send,
 };

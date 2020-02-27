@@ -8,7 +8,15 @@
     "rules": {
       "object-curly-spacing": 0,
       "comma-dangle": 0
-    }
+    },
+    "overrides": [
+      {
+        "files": "auth/mock-gh-profile.js",
+        "rules": {
+          "camelcase": "off"
+        }
+      }
+    ]
   },
   "dependencies": {
     "@sendgrid/mail": "^6.5.1",
@@ -30,6 +38,7 @@
     "moment": "^2.24.0",
     "passport": "^0.4.1",
     "passport-github": "^1.1.0",
+    "passport-strategy": "^1.0.0",
     "pg": "^7.17.0",
     "sequelize": "^5.21.3",
     "winston": "^3.2.1"
