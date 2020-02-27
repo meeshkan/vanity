@@ -73,8 +73,11 @@ const PROD_DB = {
 	port: DB_PORT,
 	dialect: 'postgres',
 	dialectOptions: {
-		ssl: true
-	}
+		ssl: {
+			require: true,
+			rejectUnauthorized: false,
+		},
+	},
 };
 
 const EMAIL_CONFIG = {
