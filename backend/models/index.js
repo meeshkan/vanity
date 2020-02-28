@@ -13,7 +13,9 @@ const ORM = new Sequelize(
 	config
 );
 
-ORM.sync();
+ORM.sync({
+	force: NODE_ENV === 'test',
+});
 
 db.User = ORM.import(join(__dirname, 'user.js'));
 db.Snapshot = ORM.import(join(__dirname, 'snapshot.js'));
