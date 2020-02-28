@@ -24,11 +24,22 @@ const GITHUB_SCOPE = [
 	'repo',
 ];
 
-const PASSPORT_OPTIONS = {
+const PASSPORT_DEFAULT_OPTIONS = {
 	clientID: GITHUB_CLIENT_ID,
 	clientSecret: GITHUB_CLIENT_SECRET,
 	callbackURL: GITHUB_REDIRECT_URI,
 	scope: GITHUB_SCOPE,
+};
+
+const PASSPORT_OPTIONS = {
+	production: PASSPORT_DEFAULT_OPTIONS,
+	development: PASSPORT_DEFAULT_OPTIONS,
+	test: {
+		clientID: 'GITHUB_CLIENT_ID',
+		clientSecret: 'GITHUB_CLIENT_SECRET',
+		callbackURL: 'GITHUB_REDIRECT_URI',
+		scope: 'GITHUB_SCOPE',
+	},
 };
 
 const SENTRY_CONFIG = {
@@ -64,6 +75,10 @@ const DEV_DB = {
 	dialect: 'postgres'
 };
 
+const TEST_DB = Object.assign(DEV_DB, {
+	logging: false,
+});
+
 const PROD_DB = {
 	username: DB_USERNAME,
 	password: DB_PASSWORD,
@@ -88,7 +103,7 @@ const EMAIL_CONFIG = {
 };
 
 const SEQUELIZE_CONFIG = {
-	test: DEV_DB,
+	test: TEST_DB,
 	development: DEV_DB,
 	production: PROD_DB,
 	dialect: 'pg',

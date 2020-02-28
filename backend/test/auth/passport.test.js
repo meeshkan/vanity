@@ -1,21 +1,11 @@
 const test = require('ava');
-const request = require('supertest');
-const app = require('../../server');
-const unmock = require('unmock').default;
+const { strategyCallback } = require('../../auth/passport');
+const { GH_PROFILE } = require('../../auth/__fixtures__');
 
-test.beforeEach.cb(t => {
-    unmock.on();
-    setTimeout(t.end);
-});
-
-test.afterEach.cb(t => {
-    unmock.off();
-    setTimeout(t.end);
-});
-
-
-test('calls github', async t => {
-    t.timeout(1000 * 10); // cuz sometimes the ci environment is super sluggish with redis
-    const response = await request(app).get('/auth/github');
-    t.is(response.status, 500);
+test.cb('passport strategy callback', t => {
+	strategyCallback(undefined, undefined, GH_PROFILE, (_, user) => {
+		t.is(user.username, GH_PROFILE.username);
+		t.is(user.avatar, GH_PROFILE.photos[0].value);
+		t.end();
+	});
 });

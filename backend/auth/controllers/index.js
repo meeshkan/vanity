@@ -1,7 +1,7 @@
 const { OK, UNAUTHORIZED } = require('http-status');
 const { UnauthorizedError } = require('../../utils/errors');
 const { generateToken, verifyToken } = require('../../utils/token');
-const passport = require('../passport');
+const { passport } = require('../passport');
 
 const login = (req, res, next) => {
 	passport.authenticate('github', {

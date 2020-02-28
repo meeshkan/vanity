@@ -4,13 +4,17 @@ const { User } = require('../models');
 
 let gitGot;
 
-const extendGot = token => got.extend({
-	prefixUrl: 'https://api.github.com/',
-	headers: {
-		authorization: `token ${token}`,
-	},
-	responseType: 'json',
-});
+const extendGot = token => token ?
+	got.extend({
+		prefixUrl: 'https://api.github.com/',
+		headers: {
+			authorization: `token ${token}`,
+		},
+		responseType: 'json',
+	}) : got.extend({
+		prefixUrl: 'https://api.github.com/',
+		responseType: 'json',
+	});
 
 const restGithub = path => gitGot.get(path);
 

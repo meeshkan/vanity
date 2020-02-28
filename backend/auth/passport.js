@@ -9,7 +9,6 @@ const {
 	sendSampleEmailJob
 } = require('../workers/jobs');
 const { PASSPORT_OPTIONS, NODE_ENV } = require('../config');
-const MockStrategy = require('./mock-strategy').Strategy;
 
 const getPrimaryEmail = emails => emails.filter(email => email.primary)[0].value; // TODO: ask user which email he/she prefers to use
 
@@ -86,12 +85,16 @@ const strategyCallback = async (accessToken, refreshToken, profile, done) => {
 };
 
 passport.use(
-	NODE_ENV === 'test' ? new MockStrategy('github', strategyCallback) : new GithubStrategy(
-		PASSPORT_OPTIONS,
-		strategyCallback)
+	new GithubStrategy(
+		PASSPORT_OPTIONS[NODE_ENV],
+		strategyCallback
+	),
 );
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
-module.exports = passport;
+module.exports = {
+	passport,
+	strategyCallback,
+};

@@ -11,7 +11,7 @@
     },
     "overrides": [
       {
-        "files": "auth/mock-gh-profile.js",
+        "files": "auth/__fixtures__/*",
         "rules": {
           "camelcase": "off"
         }

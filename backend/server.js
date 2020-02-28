@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const Sentry = require('@sentry/node');
 
-const passport = require('./auth/passport');
+const { passport } = require('./auth/passport');
 const middleware = require('./auth/middleware');
 const apiRouter = require('./api/routes');
 const authRouter = require('./auth/routes');
