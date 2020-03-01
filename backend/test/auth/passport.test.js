@@ -11,14 +11,15 @@ test.serial.cb('passport callback creates user', t => {
         t.is(error, null);
 		t.not(user, null);
 		t.is(user.avatar, GH_PROFILE.photos[0].value);
-		t.is(user.id, 1);
+		t.regex(String(user.id), /[0-9]+/);
 		t.is(user.username, GH_PROFILE.username);
 		t.end();
 	});
 });
 
 test.serial('user was stored in DB', async t => {
-	const userByID = await User.findByPk(1);
+	const id = await User.max('id');
+	const userByID = await User.findByPk(id);
 	t.not(userByID, null);
 	const user = userByID.get({ plain: true });
 	t.not(user, null);
@@ -26,7 +27,7 @@ test.serial('user was stored in DB', async t => {
 	t.is(user.avatar, GH_PROFILE.photos[0].value);
 	t.true(user.createdAt instanceof Date);
 	t.is(user.email, GH_PROFILE.emails[0].value);
-	t.is(user.id, 1);
+	t.is(user.id, id);
 	t.true(Array.isArray(user.repos));
 	t.true(user.repos.length > 0);
 	t.true(user.repos.every(containsUserRepoKeys));
