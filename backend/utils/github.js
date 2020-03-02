@@ -39,7 +39,6 @@ const extractRepoStats = repos => repos.map(repo => {
 		name: repo.name,
 		stars: repo.stargazers_count,
 		forks: repo.forks_count,
-		watchers: repo.watchers_count,
 	};
 });
 
