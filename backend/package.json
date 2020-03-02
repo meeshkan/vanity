@@ -1,7 +1,7 @@
 {
   "scripts": {
     "lint": "xo",
-    "test": "ava",
+    "test": "ava --serial",
     "dev": "micro-dev server.js -p $PORT"
   },
   "xo": {
