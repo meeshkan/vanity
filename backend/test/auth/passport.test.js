@@ -1,4 +1,4 @@
-const test = require('ava');
+const { serial: test } = require('ava');
 const { strategyCallback } = require('../../auth/passport');
 const { GH_PROFILE } = require('../../auth/__fixtures__');
 const { User } = require('../../models');
@@ -6,7 +6,7 @@ const { User } = require('../../models');
 const userRepoKeys = ['name', 'fork', 'selected'];
 const containsUserRepoKeys = repo => userRepoKeys.every(key => key in repo);
 
-test.serial.cb('passport callback creates user', t => {
+test.cb('passport callback creates user', t => {
 	strategyCallback(undefined, undefined, GH_PROFILE, (error, user) => {
 		t.is(error, null);
 		t.not(user, null);
@@ -17,7 +17,7 @@ test.serial.cb('passport callback creates user', t => {
 	});
 });
 
-test.serial('user was stored in DB', async t => {
+test('user was stored in DB', async t => {
 	const id = await User.max('id');
 	const userByID = await User.findByPk(id);
 	t.not(userByID, null);
