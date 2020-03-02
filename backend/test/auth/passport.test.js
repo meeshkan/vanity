@@ -8,6 +8,7 @@ const containsUserRepoKeys = repo => userRepoKeys.every(key => key in repo);
 
 test.before(async t => {
 	await User.sync();
+	t.pass();
 });
 
 test.cb('passport callback creates user', t => {

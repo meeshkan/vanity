@@ -25,6 +25,16 @@ test.before(async t => {
 	t.context.user = user.get({ plain: true });
 });
 
+test.after.always('cleanup', async t => {
+	if (t.context.user.id) {
+		await User.destroy({
+			where: {
+				id: t.context.user.id,
+			},
+		});
+	}
+});
+
 test('GET /admin returns 401 - unauthenticated', async t => {
 	const response = await request(app).get('/admin');
 	t.is(response.status, UNAUTHORIZED);
@@ -61,12 +71,4 @@ test('GET /admin/queues returns admin dashboard - authenticated', async t => {
 	t.is(response.status, OK);
 	t.is(response.type, 'text/html');
 	t.regex(response.text, HTML_REGEX);
-});
-
-test.after.always('cleanup', async t => {
-	t.context.user.id && await User.destroy({
-		where: {
-			id: t.context.user.id,
-		},
-	});
 });

@@ -28,6 +28,16 @@ test.before(async t => {
 	t.context.user = user.get({ plain: true });
 });
 
+test.after.always('cleanup', async t => {
+	if (t.context.user.id) {
+		await User.destroy({
+			where: {
+				id: t.context.user.id,
+			},
+		});
+	}
+});
+
 test('GET /api returns 404', async t => {
 	const response = await request(app).get('/api');
 	t.is(response.status, NOT_FOUND);
@@ -82,12 +92,4 @@ test('POST /api/preferences updates repos - authenticated', async t => {
 
 	const userByID = await User.findByPk(id);
 	t.deepEqual(userByID.get({ plain: true }).repos, ALTERED_REPOS);
-});
-
-test.after.always('cleanup', async t => {
-	t.context.user.id && await User.destroy({
-		where: {
-			id: t.context.user.id,
-		},
-	});
 });
