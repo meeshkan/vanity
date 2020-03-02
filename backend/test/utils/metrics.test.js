@@ -29,6 +29,8 @@ const containsComparisonKeys = repo => repoKeys.every(key => {
 const dateIsNDaysAgo = (date, days) => moment(date).add(days, 'days').isSame(moment(), 'day');
 
 test.before(async t => {
+    await User.sync();
+    await Snapshot.sync();
 	const [user] = await User.upsert(
 		{
 			username: GH_PROFILE.username,
