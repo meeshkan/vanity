@@ -32,4 +32,10 @@ test('user was stored in DB', async t => {
 	t.true(user.repos.length > 0);
 	t.true(user.repos.every(containsUserRepoKeys));
 	t.is(user.username, GH_PROFILE.username);
+
+	await User.destroy({
+		where: {
+			id,
+		},
+	});
 });
