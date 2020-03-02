@@ -25,7 +25,12 @@ Finally, run `now` from *within* the `vanity` directory:
 
 ## Development
 
-Firstly, start your own `Redis` and `PostgreSQL` instances.
+Firstly, start your own `Redis` and `PostgreSQL` instances. If you're using Docker, run
+
+```bash
+docker-compose up -d
+# docker-compose down  # Teardown when done
+```
 
 Subsequently, create a `.env` file and populate it with the environment variables specified in the `.env.example` file.
 

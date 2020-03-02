@@ -6,7 +6,7 @@ const createQueue = name => {
 	const log = logger.child({ module: `queue:${name}` });
 	const queue = new Queue(name, REDIS_URL)
 		.on('error', error => {
-			log.error({ error }, `Queue ${name} error.`);
+			log.error({ message: `Queue ${name} error`, error: error.message, stack: error.message });
 		})
 		.on('waiting', jobID => {
 			log.debug(`Job ${jobID} is waiting.`);
@@ -24,7 +24,7 @@ const createQueue = name => {
 			log.debug(`Job ${job.id} completed.`);
 		})
 		.on('failed', (job, error) => {
-			log.error({ error }, `Job ${job.id} failed.`);
+			log.error({ message: `Job ${job.id} failed.`, error: error.message, stack: error.message });
 		})
 		.on('paused', job => {
 			log.debug(`Queue ${name} resumed. ID: ${job.id}`);

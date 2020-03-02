@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  redis:
+    container_name: redis
+    image: circleci/redis
+    ports:
+      - 6379:6379
+  postgres:
+    container_name: postgres
+    image: circleci/postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: handler
+      POSTGRES_DB: sampledb
+      POSTGRES_PASSWORD: password
