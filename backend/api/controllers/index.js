@@ -37,7 +37,7 @@ const updateRepos = async (req, res) => {
 			.then(returned => res.status(OK).json({ res: returned }))
 			.catch(error => res.status(INTERNAL_SERVER_ERROR).json(error));
 	} catch (error) {
-		res.status(INTERNAL_SERVER_ERROR).json(error);
+		res.status(UNAUTHORIZED).json(UnauthorizedError);
 	}
 };
 
