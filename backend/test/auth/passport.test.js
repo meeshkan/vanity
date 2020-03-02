@@ -6,6 +6,10 @@ const { User } = require('../../models');
 const userRepoKeys = ['name', 'fork', 'selected'];
 const containsUserRepoKeys = repo => userRepoKeys.every(key => key in repo);
 
+test.before(async t => {
+	await User.sync();
+});
+
 test.cb('passport callback creates user', t => {
 	strategyCallback(undefined, undefined, GH_PROFILE, (error, user) => {
 		t.is(error, null);
