@@ -29,8 +29,8 @@ const containsComparisonKeys = repo => repoKeys.every(key => {
 const dateIsNDaysAgo = (date, days) => moment(date).add(days, 'days').isSame(moment(), 'day');
 
 test.before(async t => {
-    await User.sync();
-    await Snapshot.sync();
+	await User.sync();
+	await Snapshot.sync();
 	const [user] = await User.upsert(
 		{
 			username: GH_PROFILE.username,
@@ -68,7 +68,7 @@ test('ingest() ingests metrics', async t => {
 	t.is(snapshot.userId, t.context.userId);
 	t.true(snapshot.metrics.length > 0);
 	t.true(snapshot.id > t.context.snapshotId);
-    
+
 	await Snapshot.destroy({
 		where: {
 			id: snapshot.id,
@@ -91,8 +91,8 @@ test('compareSnapshots() compares snapshots', async t => {
 
 	const alteredSnapshot = _.cloneDeep(snapshot);
 	alteredSnapshot.metrics.map(repo => {
-		repo['stars'] += STAR_DIFFERENCE;
-		repo['forks'] += FORK_DIFFERENCE;
+		repo.stars += STAR_DIFFERENCE;
+		repo.forks += FORK_DIFFERENCE;
 		return repo;
 	});
 
@@ -172,8 +172,8 @@ test('fetchComparison() returns comparison of week apart snapshots', async t => 
 
 	const alteredSnapshot = _.cloneDeep(snapshot);
 	alteredSnapshot.metrics.map(repo => {
-		repo['stars'] -= STAR_DIFFERENCE;
-		repo['forks'] -= FORK_DIFFERENCE;
+		repo.stars -= STAR_DIFFERENCE;
+		repo.forks -= FORK_DIFFERENCE;
 		return repo;
 	});
 

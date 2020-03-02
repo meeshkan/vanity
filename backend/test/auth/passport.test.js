@@ -8,10 +8,10 @@ const containsUserRepoKeys = repo => userRepoKeys.every(key => key in repo);
 
 test.serial.cb('passport callback creates user', t => {
 	strategyCallback(undefined, undefined, GH_PROFILE, (error, user) => {
-        t.is(error, null);
+		t.is(error, null);
 		t.not(user, null);
 		t.is(user.avatar, GH_PROFILE.photos[0].value);
-		t.regex(String(user.id), /[0-9]+/);
+		t.regex(String(user.id), /\d+/);
 		t.is(user.username, GH_PROFILE.username);
 		t.end();
 	});
