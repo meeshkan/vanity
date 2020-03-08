@@ -1,7 +1,7 @@
 const express = require('express');
 const auth = require('../controllers');
 
-const router = new express.Router();
+const router = express.Router();
 
 router.get('/', auth.sendUserData);
 router.get('/github', auth.login);
