@@ -35,14 +35,17 @@ const subjectedSnapshot = snapshots => daysSinceSnapshot(WEEK_IN_DAYS, snapshots
 
 const compareSnapshots = ({ latest, previous }) => {
 	return (latest.metrics).map((_, index) => {
-		return Object.keys(latest.metrics[index])
-			.map(key => {
-				latest.metrics[index][key] = {
-					latest: latest.metrics[index][key],
-					difference: latest.metrics[index][key] - previous.metrics[index][key],
-				};
-				return latest.metrics;
+		Object.keys(latest.metrics[index])
+			.forEach(key => {
+				if (key !== 'name') {
+					latest.metrics[index][key] = {
+						latest: latest.metrics[index][key],
+						difference: latest.metrics[index][key] - previous.metrics[index][key],
+					};
+				}
 			});
+
+		return latest.metrics[index];
 	});
 };
 
@@ -68,7 +71,11 @@ const fetchComparison = async id => {
 };
 
 module.exports = {
+	userSnapshots,
 	ingest,
 	fetchCurrent,
+	compareSnapshots,
+	daysSinceSnapshot,
+	subjectedSnapshot,
 	fetchComparison,
 };

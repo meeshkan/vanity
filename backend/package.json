@@ -1,17 +1,18 @@
 {
   "scripts": {
     "lint": "xo",
-    "test": "ava",
+    "test": "ava --serial",
     "dev": "micro-dev server.js -p $PORT"
   },
   "xo": {
     "rules": {
       "object-curly-spacing": 0,
-      "comma-dangle": 0
+      "comma-dangle": 0,
+      "ava/use-test": 0
     },
     "overrides": [
       {
-        "files": "auth/mock-gh-profile.js",
+        "files": "auth/__fixtures__/*",
         "rules": {
           "camelcase": "off"
         }
@@ -38,18 +39,15 @@
     "moment": "^2.24.0",
     "passport": "^0.4.1",
     "passport-github": "^1.1.0",
-    "passport-strategy": "^1.0.0",
     "pg": "^7.17.0",
     "sequelize": "^5.21.3",
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@unmock/githubv3": "^1.0.0",
     "ava": "^3.3.0",
     "micro": "^9.3.4",
     "micro-dev": "^3.0.0",
     "supertest": "^4.0.2",
-    "unmock": "^0.3.14",
     "xo": "^0.25.3"
   }
 }

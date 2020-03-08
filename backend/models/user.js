@@ -1,3 +1,5 @@
+const { NODE_ENV } = require('../config');
+
 module.exports = (Sequelize, DataTypes) => {
 	const User = Sequelize.define('User', {
 		username: {
@@ -17,7 +19,7 @@ module.exports = (Sequelize, DataTypes) => {
 		},
 		token: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: NODE_ENV === 'test',
 			unique: true,
 			validate: {
 				is: /^[a-z0-9]+$/i,

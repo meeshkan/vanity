@@ -4,13 +4,17 @@ const { User } = require('../models');
 
 let gitGot;
 
-const extendGot = token => got.extend({
-	prefixUrl: 'https://api.github.com/',
-	headers: {
-		authorization: `token ${token}`,
-	},
-	responseType: 'json',
-});
+const extendGot = token => token ?
+	got.extend({
+		prefixUrl: 'https://api.github.com/',
+		headers: {
+			authorization: `token ${token}`,
+		},
+		responseType: 'json',
+	}) : got.extend({
+		prefixUrl: 'https://api.github.com/',
+		responseType: 'json',
+	});
 
 const restGithub = path => gitGot.get(path);
 
@@ -35,7 +39,6 @@ const extractRepoStats = repos => repos.map(repo => {
 		name: repo.name,
 		stars: repo.stargazers_count,
 		forks: repo.forks_count,
-		watchers: repo.watchers_count,
 	};
 });
 
