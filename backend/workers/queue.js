@@ -1,10 +1,25 @@
+const Redis = require('ioredis');
 const Queue = require('bull');
 const { REDIS_URL } = require('../config');
 const logger = require('../utils/logger');
 
+const client = new Redis(REDIS_URL);
+const subscriber = new Redis(REDIS_URL);
+
 const createQueue = name => {
 	const log = logger.child({ module: `queue:${name}` });
-	const queue = new Queue(name, REDIS_URL)
+	const queue = new Queue(name, {
+		createClient: type => {
+			switch (type) {
+				case 'client':
+					return client;
+				case 'subscriber':
+					return subscriber;
+				default:
+					return new Redis(REDIS_URL);
+			}
+		}
+	})
 		.on('error', error => {
 			log.error({ message: `Queue ${name} error`, error: error.message, stack: error.message });
 		})
