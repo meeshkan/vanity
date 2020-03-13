@@ -3,8 +3,10 @@ const Queue = require('bull');
 const { REDIS_URL } = require('../config');
 const logger = require('../utils/logger');
 
-const client = new Redis(REDIS_URL);
-const subscriber = new Redis(REDIS_URL);
+const REDIS_OPTIONS = { connectTimeout: 10000 };
+
+const client = new Redis(REDIS_URL, REDIS_OPTIONS);
+const subscriber = new Redis(REDIS_URL, REDIS_OPTIONS);
 
 const createQueue = name => {
 	const log = logger.child({ module: `queue:${name}` });
@@ -16,7 +18,7 @@ const createQueue = name => {
 				case 'subscriber':
 					return subscriber;
 				default:
-					return new Redis(REDIS_URL);
+					return new Redis(REDIS_URL, REDIS_OPTIONS);
 			}
 		}
 	})
