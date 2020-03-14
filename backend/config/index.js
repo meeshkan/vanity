@@ -96,11 +96,11 @@ const PROD_DB = {
 };
 
 const EMAIL_CONFIG = {
-	vanityAddress: 'vanity@metrics.com',
-	intro: 'Here are your GitHub Vanity Metrics for this week.',
+	vanityAddress: 'metrics@vanity.dev',
+	intro: 'Here are your GitHub VANITY Metrics for this week.',
 	sampleIntro: 'This is what your metrics newsletters will look like, minus the weekly comparison.',
-	subject: 'Your Vanity metrics for this week',
-	sampleSubject: 'Welcome to Vanity Metrics',
+	subject: 'Your VANITY metrics for this week',
+	sampleSubject: 'Welcome to VANITY',
 };
 
 const SEQUELIZE_CONFIG = {
