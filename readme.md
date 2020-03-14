@@ -1,6 +1,6 @@
 # vanity
 
-- Weekly metrics for your GitHub repos.
+> Weekly metrics for your GitHub repos.
 
 ## Deployment
 
@@ -20,6 +20,7 @@ Alternatively, to deploy `vanity` manually:
 ```
 5. Deploy to `now`:
 ```
+~ ❯❯❯ cd vanity/
 ~/vanity ❯❯❯ now
 ```
 6. Use the `now alias` command to create your alias.
@@ -27,9 +28,9 @@ Alternatively, to deploy `vanity` manually:
 ## Development
 
 1. Start your own `Redis` and `PostgreSQL` instances. If you're using Docker, run
-```bash
-docker-compose up -d
-# docker-compose down  # Teardown when done
+```
+~/vanity ❯❯❯ docker-compose up -d
+~/vanity ❯❯❯ # docker-compose down  # Teardown when done
 ```
 2. Create a GitHub OAuth application [by following these steps](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). Make sure the callback URL is `http://localhost:3000/auth/github/callback`.
 3. Create a `.env` file and populate it with the environment variables specified in the `.env.example` file.
