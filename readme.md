@@ -8,33 +8,32 @@
 
 Alternatively, to deploy `vanity` manually:
 
-First, [download `now`](https://zeit.co/download):
+1. [Download `now`](https://zeit.co/download):
 ```
 ~ ❯❯❯ npm install -g now
 ```
-
-Use the [`now secrets`](https://zeit.co/docs/v2/build-step#adding-secrets) command to create a 'secret' for each of the environment variables, in the format specified in `now.json`. For example, to create a secret for the `GITHUB_CLIENT_ID` variable, use the following command:
+2. Create a GitHub OAuth application [by following these steps](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). Make sure the callback URL is the [now alias](https://zeit.co/docs/configuration#project/alias) (or custom domain) that you are going to be using, plus the endpoint `/auth/github/callback` (i.e., `{DOMAIN}.now.sh/auth/github/callback`, such as `vanity.meeshkan.now.sh/auth/github/callback`).
+3. Start your own `Redis` and `PostgreSQL` database instances, using Heroku (i.e., [Heroku Postgres](https://www.heroku.com/postgres) and [Heroku Redis](https://www.heroku.com/redis)) or any other service of your choice.
+4. Use the [`now secrets`](https://zeit.co/docs/v2/build-step#adding-secrets) command to create a 'secret' for each of the environment variables found in `.env.example`, in the format specified in the `now.json` file. For example, to create a secret for the `GITHUB_CLIENT_ID` variable, use the following command:
 ```
 ~ ❯❯❯ now secret add @vanity-github-client-id <GITHUB_CLIENT_ID>
 ```
-
-Finally, run `now` from *within* the `vanity` directory:
+5. Deploy to `now`:
 ```
 ~/vanity ❯❯❯ now
 ```
+6. Use the `now alias` command to create your alias.
 
 ## Development
 
-Firstly, start your own `Redis` and `PostgreSQL` instances. If you're using Docker, run
-
+1. Start your own `Redis` and `PostgreSQL` instances. If you're using Docker, run
 ```bash
 docker-compose up -d
 # docker-compose down  # Teardown when done
 ```
-
-Subsequently, create a `.env` file and populate it with the environment variables specified in the `.env.example` file.
-
-Finally, you can run a local deployment of `vanity` by executing the following:
+2. Create a GitHub OAuth application [by following these steps](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). Make sure the callback URL is `http://localhost:3000/auth/github/callback`.
+3. Create a `.env` file and populate it with the environment variables specified in the `.env.example` file.
+4. Finally, execute:
 ```
 ~/vanity ❯❯❯ now dev
 ```
@@ -51,7 +50,7 @@ MIT © [Meeshkan](http://meeshkan.com/)
 - [x] Fix weekly `sendEmail` job.
 - [x] Re-design email template (using [EJS](https://github.com/mde/ejs)).
 - [x] Create README documentation.
-- [ ] Create backend unit tests (using `supertest`).
+- [x] Create backend unit tests (using `supertest`).
 - [ ] Create integration tests (using `cypress`).
 - [x] Configure `Sentry`.
 - [x] Setup [`NextSEO`](https://github.com/garmeeh/next-seo).
