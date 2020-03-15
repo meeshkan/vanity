@@ -35,7 +35,7 @@ test('fetchUserRepos() fetches user repos', async t => {
 });
 
 test('fetchUserRepoStats() fetches user repo stats', async t => {
-    const repos = await fetchUserRepoStats(t.context.user.id);
-    t.true(repos.length > 0);
-    t.true(repos.every(containsRepoStatKeys));
+	const repos = await fetchUserRepoStats(t.context.user.id);
+	t.true(repos.length > 0);
+	t.true(repos.every(containsRepoStatKeys));
 });
