@@ -137,7 +137,7 @@
                                         <% if (repo.stars.difference > 0) { %>
                                             <span class="increase">(+<%= repo.stars.difference %>)</span>
                                         <% } else if (repo.stars.difference < 0) { %>
-                                            <span class="decrease">(-<%= repo.stars.difference %>)</span>
+                                            <span class="decrease">(<%= repo.stars.difference %>)</span>
                                         <% } else { %>
                                             <span class="same">(+<%= repo.stars.difference %>)</span>
                                         <% } %>

@@ -1,12 +1,12 @@
 module.exports = [
 	{
 		name: 'active-onions',
-		stars: { latest: 3, difference: 0 },
+		stars: { latest: 3, difference: 1 },
 		forks: { latest: 1, difference: 0 }
 	},
 	{
 		name: 'binary-cli',
-		stars: { latest: 4, difference: 0 },
+		stars: { latest: 4, difference: 1 },
 		forks: { latest: 3, difference: 0 }
 	},
 	{
@@ -16,7 +16,7 @@ module.exports = [
 	},
 	{
 		name: 'btc-balance.now',
-		stars: { latest: 2, difference: 0 },
+		stars: { latest: 2, difference: -1 },
 		forks: { latest: 2, difference: 0 }
 	},
 	{
@@ -31,13 +31,13 @@ module.exports = [
 	},
 	{
 		name: 'cloudflare-detect',
-		stars: { latest: 11, difference: 0 },
+		stars: { latest: 11, difference: 1 },
 		forks: { latest: 3, difference: 0 }
 	},
 	{
 		name: 'cryptaddress-validator',
 		stars: { latest: 71, difference: 0 },
-		forks: { latest: 6, difference: 0 }
+		forks: { latest: 6, difference: 1 }
 	},
 	{
 		name: 'cryptaddress.now',
@@ -61,7 +61,7 @@ module.exports = [
 	},
 	{
 		name: 'dcipher-cli',
-		stars: { latest: 164, difference: 0 },
+		stars: { latest: 164, difference: 4 },
 		forks: { latest: 21, difference: 0 }
 	},
 	{
