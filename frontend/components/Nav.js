@@ -41,7 +41,7 @@ export default function Nav() {
 					<div className='w-100 w-90-l dtc-l tc tr-l v-mid'>
 						<a
 							className='link dim white dib mr3 v-mid'
-							href='https://github.com/meeshkan/vanity-metrics'
+							href='https://github.com/meeshkan/vanity'
 							target='_blank'
 							rel='noopener noreferrer'
 							title='GitHub'
