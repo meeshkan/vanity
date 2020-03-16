@@ -96,7 +96,7 @@ const PROD_DB = {
 };
 
 const EMAIL_CONFIG = {
-	vanityAddress: 'metrics@vanity.dev',
+	vanityAddress: 'vanity@meeshkan.com',
 	intro: 'Here are your GitHub VANITY Metrics for this week.',
 	sampleIntro: 'This is what your metrics newsletters will look like, minus the weekly comparison.',
 	subject: 'Your VANITY metrics for this week',
