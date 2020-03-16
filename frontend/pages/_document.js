@@ -1,5 +1,6 @@
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { GA_TRACKING_ID } from '../utils/gtag'
 
 class VanityDoc extends Document {
 	static async getInitialProps(ctx) {
@@ -42,6 +43,20 @@ class VanityDoc extends Document {
 						content='/static/images/favicon/ms-icon-144x144.png'
 					/>
 					<meta name='theme-color' content='#ffffff' />
+					<script
+						async
+						src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+					/>
+					<script
+						dangerouslySetInnerHTML={{
+							__html: `
+								window.dataLayer = window.dataLayer || [];
+								function gtag(){dataLayer.push(arguments);}
+								gtag('js', new Date());
+								gtag('config', '${GA_TRACKING_ID}');
+							`
+						}}
+					/>
 				</Head>
 				<body>
 					<Main />
