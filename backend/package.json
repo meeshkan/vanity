@@ -2,7 +2,10 @@
   "scripts": {
     "lint": "xo",
     "test": "ava --serial",
-    "dev": "micro-dev server.js -p $PORT"
+    "dev": "micro-dev server.js -p $PORT",
+    "coverage": "nyc npm test",
+    "coverage:upload": "nyc report --reporter=lcov && codecov",
+    "coverage:check": "nyc report && nyc check-coverage --lines 90 --functions 70 --branches 60"
   },
   "xo": {
     "rules": {
@@ -39,6 +42,7 @@
     "lodash": "^4.17.15",
     "mailgen": "^2.0.10",
     "moment": "^2.24.0",
+    "nyc": "^15.0.0",
     "passport": "^0.4.1",
     "passport-github": "^1.1.0",
     "pg": "^7.17.0",
@@ -47,6 +51,7 @@
   },
   "devDependencies": {
     "ava": "^3.3.0",
+    "codecov": "^3.6.5",
     "micro": "^9.3.4",
     "micro-dev": "^3.0.0",
     "supertest": "^4.0.2",

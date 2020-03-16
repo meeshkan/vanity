@@ -3,6 +3,10 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2.1
+
+orbs:
+  codecov: codecov/codecov@1.0.2
+
 jobs:
   build:
     docker:
@@ -15,10 +19,11 @@ jobs:
           POSTGRES_DB: sampledb
           POSTGRES_PASSWORD: password
 
-    working_directory: ~/repo
+    working_directory: ~/repo/backend
 
     steps:
-      - checkout
+      - checkout:
+          path: ~/repo
       - run:
           name: install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -30,5 +35,18 @@ jobs:
       - run:
           name: Wait for Redis DB
           command: dockerize -wait tcp://localhost:6379 -timeout 1m
-      - run: cd backend && npm install
-      - run: cd backend && npm test -- --verbose
+      - run:
+          name: Install dependencies with clean slate
+          command: npm ci
+      - run:
+          name: Run tests
+          command: npm test
+      - run:
+          name: Run tests with coverage
+          command: npm run coverage
+      - run:
+          name: Upload coverage results
+          command: npm run coverage:upload
+      - run:
+          name: Assert that coverage results meet thresholds
+          command: npm run coverage:check
