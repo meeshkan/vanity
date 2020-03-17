@@ -59,34 +59,41 @@ const Preferences = props => {
 							{moment().startOf('day').add(9, 'hours').day(8).toString()}
 						</div>
 					</p>
-					<p>choose the repos you want to receive metrics for:</p>
-					<div className='overflow-auto'>
-						<table className='f5 center' cellSpacing='0'>
-							<tbody className='lh-copy'>
-								{/* TODO: Fix occasional "TypeError: Cannot read property 'map' of null" error */ }
-								{/* TODO: Show small message when hovering over fork symbol */}
-								{repos.map((repo, index) => (
-									<tr key={repo.name}>
-										<th className='fw3 bb b--white-20 tl pb3 pr6 pv3'>
-											{repo.name}{repo.fork &&
-												<i className='material-icons md-18 light-blue'>
-													call_split
-												</i>}
-										</th>
-										<th className='bb b--white-20 tr pb3 pv3'>
-											<input
-												type='checkbox'
-												name={index}
-												checked={repo.selected}
-												className='checkbox'
-												onChange={event => handleToggle(event, repo.name, index)}
-											/>
-										</th>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
+					{(repos && repos.length > 0) ?
+						<>
+							<p>choose the repos you want to receive metrics for:</p>
+							<div className='overflow-auto'>
+								<table className='f5 center' cellSpacing='0'>
+									<tbody className='lh-copy'>
+										{/* TODO: Fix occasional "TypeError: Cannot read property 'map' of null" error */ }
+										{/* TODO: Show small message when hovering over fork symbol */}
+										{repos.map((repo, index) => (
+											<tr key={repo.name}>
+												<th className='fw3 bb b--white-20 tl pb3 pr6 pv3'>
+													{repo.name}{repo.fork &&
+														<i className='material-icons md-18 light-blue'>
+															call_split
+														</i>}
+												</th>
+												<th className='bb b--white-20 tr pb3 pv3'>
+													<input
+														type='checkbox'
+														name={index}
+														checked={repo.selected}
+														className='checkbox'
+														onChange={event => handleToggle(event, repo.name, index)}
+													/>
+												</th>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						</> : <>
+							<p>It seems like you don't have any repos.</p>
+							<p>Come back once you've made some.</p>
+						</>
+					}
 					<br />
 					<div className='pv4'>
 						<a
