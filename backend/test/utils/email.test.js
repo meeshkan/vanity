@@ -1,12 +1,15 @@
 const test = require('ava');
-const { send, sendSample } = require('../../utils/email');
+const {
+	createWeeklyEmail,
+	createSampleEmail,
+} = require('../../utils/email');
 const { USER, WEEKLY_METRICS, SAMPLE_METRICS } = require('../../utils/__fixtures__');
 const { EMAIL_CONFIG } = require('../../config');
 
 const HTML_REGEX = /\s?<!doctype html>|(<html\b[^>]*>|<body\b[^>]*>|<x-[^>]+>)+/i;
 
 test('generates weekly email', async t => {
-	const email = await send({
+	const email = await createWeeklyEmail({
 		user: USER,
 		metrics: WEEKLY_METRICS,
 	});
@@ -18,7 +21,7 @@ test('generates weekly email', async t => {
 });
 
 test('generates sample email', async t => {
-	const email = await sendSample({
+	const email = await createSampleEmail({
 		user: USER,
 		metrics: SAMPLE_METRICS,
 	});

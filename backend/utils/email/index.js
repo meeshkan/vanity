@@ -37,10 +37,6 @@ const createSampleEmail = data => {
 };
 
 const sendEmail = async email => {
-	if (NODE_ENV === 'test') {
-		return email;
-	}
-
 	try {
 		SGMail.setApiKey(SENDGRID_API_KEY);
 		return await SGMail.send(email);
@@ -62,6 +58,8 @@ const send = async data => {
 };
 
 module.exports = {
+	createWeeklyEmail,
+	createSampleEmail,
 	sendSample,
 	send,
 };
