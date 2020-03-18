@@ -3,5 +3,5 @@
 node_modules
 .DS_Store
 .now
-logs
+*.log
 .nyc_output
