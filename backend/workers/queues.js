@@ -7,28 +7,32 @@ const ingestMetrics = createQueue('ingestMetrics');
 const sendEmail = createQueue('sendEmail');
 const sendSampleEmail = createQueue('sendSampleEmail');
 
-ingestMetrics.process(job => {
+const ingestMetricsWorker = job => {
 	const { userID } = job.data;
-	metrics.ingest(userID);
-});
+	return metrics.ingest(userID);
+};
 
-sendEmail.process(async job => {
+const sendEmailWorker = async job => {
 	const { user } = job.data;
 	const weekMetrics = await metrics.fetchComparison(user.id);
-	email.send({
+	return email.send({
 		user,
 		metrics: weekMetrics
 	});
-});
+};
 
-sendSampleEmail.process(async job => {
+const sendSampleEmailWorker = async job => {
 	const { user } = job.data;
 	const currentMetrics = await metrics.fetchCurrent(user.id, user.selectedRepos);
-	email.sendSample({
+	return email.sendSample({
 		user,
 		metrics: currentMetrics
 	});
-});
+};
+
+ingestMetrics.process(ingestMetricsWorker);
+sendEmail.process(sendEmailWorker);
+sendSampleEmail.process(sendSampleEmailWorker);
 
 setQueues([
 	ingestMetrics,
@@ -40,4 +44,7 @@ module.exports = {
 	ingestMetrics,
 	sendEmail,
 	sendSampleEmail,
+	ingestMetricsWorker,
+	sendEmailWorker,
+	sendSampleEmailWorker,
 };
