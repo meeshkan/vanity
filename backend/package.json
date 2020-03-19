@@ -20,6 +20,17 @@
         "rules": {
           "camelcase": "off"
         }
+      },
+      {
+        "files": "test/**/*",
+        "rules": {
+          "no-unused-vars": [
+            "error",
+            {
+              "argsIgnorePattern": "t"
+            }
+          ]
+        }
       }
     ]
   },
@@ -40,7 +51,6 @@
     "ioredis": "^4.16.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
-    "mailgen": "^2.0.10",
     "moment": "^2.24.0",
     "nyc": "^15.0.0",
     "passport": "^0.4.1",
@@ -54,6 +64,7 @@
     "codecov": "^3.6.5",
     "micro": "^9.3.4",
     "micro-dev": "^3.0.0",
+    "sinon": "^9.0.1",
     "supertest": "^4.0.2",
     "xo": "^0.25.3"
   }
