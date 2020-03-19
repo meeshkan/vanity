@@ -25,7 +25,8 @@
         "files": "test/**/*",
         "rules": {
           "no-unused-vars": [
-            "error", {
+            "error",
+            {
               "argsIgnorePattern": "t"
             }
           ]
@@ -50,7 +51,6 @@
     "ioredis": "^4.16.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
-    "mailgen": "^2.0.10",
     "moment": "^2.24.0",
     "nyc": "^15.0.0",
     "passport": "^0.4.1",
