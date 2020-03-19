@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
-import Fade from 'react-reveal/Fade';
 import Nav from './Nav';
 import 'tachyons/css/tachyons.min.css';
 import '../styles/layout.css';
@@ -28,9 +27,7 @@ export default class Layout extends Component {
 				</Head>
 				<Nav/>
 				<div key='container' data-scrollbar className='container'>
-					<Fade>
-						{children}
-					</Fade>
+					{children}
 				</div>
 			</div>
 		);
