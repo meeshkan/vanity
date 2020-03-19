@@ -217,7 +217,7 @@ module.exports = [
 	{
 		name: 'nephthys',
 		fork: false,
-		selected: true
+		selected: false
 	},
 	{
 		name: 'now-name',
@@ -242,12 +242,12 @@ module.exports = [
 	{
 		name: 'open-anyway',
 		fork: false,
-		selected: true
+		selected: false
 	},
 	{
 		name: 'open-anyway-cli',
 		fork: false,
-		selected: true
+		selected: false
 	},
 	{
 		name: 'public-apis',

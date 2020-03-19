@@ -2,7 +2,7 @@ const { QUEUE_CRON, QUEUE_ATTEMPTS } = require('../config');
 const { ingestMetrics, sendEmail, sendSampleEmail } = require('./queues');
 
 const ingestMetricsJob = user => {
-	ingestMetrics.add(
+	return ingestMetrics.add(
 		{
 			userID: user.id,
 		},
@@ -16,7 +16,7 @@ const ingestMetricsJob = user => {
 };
 
 const sendEmailJob = user => {
-	sendEmail.add(
+	return sendEmail.add(
 		{
 			user: {
 				id: user.id,
@@ -37,7 +37,8 @@ const sendSampleEmailJob = user => {
 	const selectedRepos = user.repos
 		.filter(repo => repo.selected)
 		.map(repo => repo.name);
-	sendSampleEmail.add(
+
+	return sendSampleEmail.add(
 		{
 			user: {
 				id: user.id,
