@@ -40,8 +40,8 @@ const Preferences = props => {
 		}
 	}
 
-	function handleToggle(event, repoName, index) {
-		repos[index].selected = event.target.checked;
+	function handleToggle(event, newSelected, index) {
+		repos[index].selected = newSelected;
 		updateRepos();
 	}
 
@@ -81,7 +81,7 @@ const Preferences = props => {
 														name={index}
 														checked={repo.selected}
 														className='checkbox'
-														onChange={event => handleToggle(event, repo.name, index)}
+														onChange={event => handleToggle(event, !repo.selected, index)}
 													/>
 												</th>
 											</tr>
