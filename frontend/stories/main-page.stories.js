@@ -1,5 +1,5 @@
 import React from 'react';
-import MainPage from '../pages/index';
+import MainPage from '../pages';
 
 export default { title: 'Main page' };
 
