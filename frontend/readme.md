@@ -13,3 +13,11 @@ Start the frontend development server:
 ```
 
 You can then access the frontend service by navigating to [localhost:3000](http://localhost:3000).
+
+## Component development
+
+We use [storybook](https://storybook.js.org) for component development.  To get started, run:
+
+```
+npm run storybook
+```
