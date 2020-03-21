@@ -9,36 +9,10 @@ import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import { withAuthSync } from '../utils/auth';
 import getHost from '../utils/get-host';
+import { cookies, logout, updateRepos } from '../logic/preferences';
 
-const cookies = ['github-user', 'jwt'];
-
-const Preferences = props => {
-	const { username, repos, token } = props;
-
-	function logout() {
-		cookies.forEach(cookie => Cookies.remove(cookie));
-		Router.push('/auth/logout');
-	}
-
-	async function updateRepos() {
-		try {
-			const response = await fetch('/api/preferences', {
-				method: 'POST',
-				credentials: 'include',
-				headers: {
-					authorization: JSON.stringify({ token }),
-					'content-type': 'application/json',
-				},
-				body: JSON.stringify({ repos }),
-			});
-
-			if (response.ok) {
-				Router.push('/preferences');
-			}
-		} catch (error) {
-			console.log(error); // TODO: handle error
-		}
-	}
+export const Preferences = props => {
+	const { username, repos, token, logout, updateRepos } = props;
 
 	function handleToggle(event, newSelected, index) {
 		repos[index].selected = newSelected;
@@ -114,6 +88,8 @@ Preferences.propTypes = {
 	username: PropTypes.string.isRequired,
 	repos: PropTypes.array.isRequired,
 	token: PropTypes.string.isRequired,
+	logout: PropTypes.func.isRequired,
+	updateRepos: PropTypes.func.isRequired
 };
 
 Preferences.getInitialProps = async ctx => {
@@ -140,7 +116,7 @@ Preferences.getInitialProps = async ctx => {
 		if (response.ok) {
 			const user = await response.json();
 			user.token = token;
-			return user;
+			return { ...user, logout, updateRepos };
 		}
 
 		return await redirectOnError();
