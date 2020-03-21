@@ -5,6 +5,7 @@ import fetch from 'isomorphic-unfetch';
 import nextCookie from 'next-cookies';
 import Cookies from 'js-cookie';
 import moment from 'moment';
+import Toggle from 'react-toggle';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import { withAuthSync } from '../utils/auth';
@@ -50,13 +51,10 @@ export const Preferences = props => {
 														</i>}
 												</th>
 												<th className='bb b--white-20 tr pb3 pv3'>
-													<input
-														type='checkbox'
-														name={index}
-														checked={repo.selected}
-														className='checkbox'
-														onChange={event => handleToggle(event, repo.name, index)}
-													/>
+													<Toggle
+														defaultChecked={repo.selected}
+														icons={false}
+														onChange={event => handleToggle(event, repo.name, index)} />
 												</th>
 											</tr>
 										))}
