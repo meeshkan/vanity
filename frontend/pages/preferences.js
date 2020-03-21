@@ -16,7 +16,7 @@ export const Preferences = props => {
 
 	function handleToggle(event, newSelected, index) {
 		repos[index].selected = newSelected;
-		updateRepos();
+		updateRepos(token, repos);
 	}
 
 	return (
