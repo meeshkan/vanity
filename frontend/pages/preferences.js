@@ -5,20 +5,15 @@ import fetch from 'isomorphic-unfetch';
 import nextCookie from 'next-cookies';
 import Cookies from 'js-cookie';
 import moment from 'moment';
-import Toggle from 'react-toggle';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
+import Repos from '../components/Repos';
 import { withAuthSync } from '../utils/auth';
 import getHost from '../utils/get-host';
-import { cookies, logout, updateRepos } from '../logic/preferences';
+import { cookies, logout } from '../logic/preferences';
 
 export const Preferences = props => {
-	const { username, repos, token, logout, updateRepos } = props;
-
-	function handleToggle(event, repoName, index) {
-		repos[index].selected = event.target.checked;
-		updateRepos(token, repos);
-	}
+	const { username, repos, token } = props;
 
 	return (
 		<Layout>
@@ -35,35 +30,12 @@ export const Preferences = props => {
 						</div>
 					</p>
 					{(repos && repos.length > 0) ?
-						<>
-							<p>choose the repos you want to receive metrics for:</p>
-							<div className='overflow-auto'>
-								<table className='f5 center' cellSpacing='0'>
-									<tbody className='lh-copy'>
-										{repos.map((repo, index) => (
-											<tr key={repo.name}>
-												<th className='fw3 bb b--white-20 tl pb3 pr6 pv3'>
-													{repo.name}{repo.fork &&
-														<i className='material-icons md-18 light-blue'>
-															call_split
-														</i>}
-												</th>
-												<th className='bb b--white-20 tr pb3 pv3'>
-													<Toggle
-														defaultChecked={repo.selected}
-														icons={false}
-														onChange={event => handleToggle(event, repo.name, index)} />
-												</th>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						</> : <>
-							<p>It seems like you don't have any repos.</p>
-							<p>Come back once you've made some.</p>
-						</>
-					}
+						<Repos repos={repos} token={token} /> : (
+							<>
+								<p>It seems like you don&apos;t have any repos.</p>
+								<p>Come back once you&apos;ve made some.</p>
+							</>
+						)}
 					<br />
 					<div className='pv4'>
 						<a
@@ -84,8 +56,6 @@ Preferences.propTypes = {
 	username: PropTypes.string.isRequired,
 	repos: PropTypes.array.isRequired,
 	token: PropTypes.string.isRequired,
-	logout: PropTypes.func.isRequired,
-	updateRepos: PropTypes.func.isRequired
 };
 
 Preferences.getInitialProps = async ctx => {
@@ -112,7 +82,7 @@ Preferences.getInitialProps = async ctx => {
 		if (response.ok) {
 			const user = await response.json();
 			user.token = token;
-			return { ...user, logout, updateRepos };
+			return user;
 		}
 
 		return await redirectOnError();
