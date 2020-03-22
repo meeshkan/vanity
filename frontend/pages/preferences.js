@@ -40,8 +40,6 @@ export const Preferences = props => {
 							<div className='overflow-auto'>
 								<table className='f5 center' cellSpacing='0'>
 									<tbody className='lh-copy'>
-										{/* TODO: Fix occasional "TypeError: Cannot read property 'map' of null" error */ }
-										{/* TODO: Show small message when hovering over fork symbol */}
 										{repos.map((repo, index) => (
 											<tr key={repo.name}>
 												<th className='fw3 bb b--white-20 tl pb3 pr6 pv3'>
