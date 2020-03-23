@@ -10,6 +10,7 @@ import Footer from '../components/Footer';
 import { withAuthSync } from '../utils/auth';
 import getHost from '../utils/get-host';
 import { cookies, logout, updateRepos } from '../logic/preferences';
+import "react-toggle/style.css";
 
 export const Preferences = props => {
 	const { username, repos, token, logout, updateRepos } = props;
