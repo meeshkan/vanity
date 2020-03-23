@@ -11,6 +11,7 @@ import Repos from '../components/Repos';
 import { withAuthSync } from '../utils/auth';
 import getHost from '../utils/get-host';
 import { cookies, logout } from '../logic/preferences';
+import "react-toggle/style.css";
 
 export const Preferences = props => {
 	const { username, repos, token } = props;
