@@ -20,6 +20,19 @@ test('generates weekly email', async t => {
 	t.regex(email.html, HTML_REGEX);
 });
 
+test('generates weekly email for empty metrics', async t => {
+	const email = await createWeeklyEmail({
+		user: USER,
+		metrics: [],
+	});
+
+	t.is(email.to, USER.email);
+	t.is(email.from, EMAIL_CONFIG.vanityAddress);
+	t.is(email.subject, EMAIL_CONFIG.subject);
+	t.regex(email.html, HTML_REGEX);
+	t.regex(email.html, /It seems like you don&apos;t have any repos yet/);
+})
+
 test('generates sample email', async t => {
 	const email = await createSampleEmail({
 		user: USER,
@@ -31,3 +44,16 @@ test('generates sample email', async t => {
 	t.is(email.subject, EMAIL_CONFIG.sampleSubject);
 	t.regex(email.html, HTML_REGEX);
 });
+
+test('generates sample email for empty metrics', async t => {
+	const email = await createSampleEmail({
+		user: USER,
+		metrics: [],
+	});
+
+	t.is(email.to, USER.email);
+	t.is(email.from, EMAIL_CONFIG.vanityAddress);
+	t.is(email.subject, EMAIL_CONFIG.sampleSubject);
+	t.regex(email.html, HTML_REGEX);
+	t.regex(email.html, /It seems like you don&apos;t have any repos yet/);
+})

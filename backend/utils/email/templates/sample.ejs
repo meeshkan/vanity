@@ -97,29 +97,36 @@
             </div>
 
             <div class="metrics">
-                <ol>
-                <% for (const repo of metrics) { %>
-                    <div class="repo">
-                        <div class="content">
-                            <div class="name">
-                                <li>
-                                    <%= repo.name %>
-                                </li>
-                            </div>
-                            <div class="stats">
-                                <ol>
-                                    <li class="stars">
-                                        <%= repo.stars %> stars
+                <% if (metrics.length > 0) { %>
+                    <ol>
+                    <% for (const repo of metrics) { %>
+                        <div class="repo">
+                            <div class="content">
+                                <div class="name">
+                                    <li>
+                                        <%= repo.name %>
                                     </li>
-                                    <li class="forks">
-                                        <%= repo.forks %> forks
-                                    </li>
-                                </ol>
+                                </div>
+                                <div class="stats">
+                                    <ol>
+                                        <li class="stars">
+                                            <%= repo.stars %> stars
+                                        </li>
+                                        <li class="forks">
+                                            <%= repo.forks %> forks
+                                        </li>
+                                    </ol>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <% } %>
+                    </ol>
+                <% } else { %>
+                    <p>
+                        It seems like you don&apos;t have any repos yet.<br/>
+                        Come back once you&apos;ve made a few.
+                    </p>
                 <% } %>
-                </ol>
             </div>
 
             <div class="footer">

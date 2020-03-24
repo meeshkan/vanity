@@ -106,45 +106,52 @@
             </div>
 
             <div class="metrics">
-                <ol>
-                <% for (const repo of metrics) { %>
-                    <div class="repo">
-                        <div class="content">
-                            <div class="name">
-                                <li>
-                                    <%= repo.name %>
-                                </li>
-                            </div>
-                            <div class="stats">
-                                <ol>
-                                    <li class="stars">
-                                        <span class="latest"><%= repo.stars.latest %></span>
-                                        <% if (repo.stars.difference > 0) { %>
-                                            <span class="increase">(+<%= repo.stars.difference %>)</span>
-                                        <% } else if (repo.stars.difference < 0) { %>
-                                            <span class="decrease">(<%= repo.stars.difference %>)</span>
-                                        <% } else { %>
-                                            <span class="same">(+<%= repo.stars.difference %>)</span>
-                                        <% } %>
-                                        stars
+                <% if (metrics.length > 0) { %>
+                    <ol>
+                    <% for (const repo of metrics) { %>
+                        <div class="repo">
+                            <div class="content">
+                                <div class="name">
+                                    <li>
+                                        <%= repo.name %>
                                     </li>
-                                    <li class="forks">
-                                        <span class="latest"><%= repo.forks.latest %></span>
-                                        <% if (repo.forks.difference > 0) { %>
-                                            <span class="increase">(+<%= repo.forks.difference %>)</span>
-                                        <% } else if (repo.forks.difference < 0) { %>
-                                            <span class="decrease">(<%= repo.forks.difference %>)</span>
-                                        <% } else { %>
-                                            <span class="same">(+<%= repo.forks.difference %>)</span>
-                                        <% } %>
-                                        forks
-                                    </li>
-                                </ol>
+                                </div>
+                                <div class="stats">
+                                    <ol>
+                                        <li class="stars">
+                                            <span class="latest"><%= repo.stars.latest %></span>
+                                            <% if (repo.stars.difference > 0) { %>
+                                                <span class="increase">(+<%= repo.stars.difference %>)</span>
+                                            <% } else if (repo.stars.difference < 0) { %>
+                                                <span class="decrease">(<%= repo.stars.difference %>)</span>
+                                            <% } else { %>
+                                                <span class="same">(+<%= repo.stars.difference %>)</span>
+                                            <% } %>
+                                            stars
+                                        </li>
+                                        <li class="forks">
+                                            <span class="latest"><%= repo.forks.latest %></span>
+                                            <% if (repo.forks.difference > 0) { %>
+                                                <span class="increase">(+<%= repo.forks.difference %>)</span>
+                                            <% } else if (repo.forks.difference < 0) { %>
+                                                <span class="decrease">(<%= repo.forks.difference %>)</span>
+                                            <% } else { %>
+                                                <span class="same">(+<%= repo.forks.difference %>)</span>
+                                            <% } %>
+                                            forks
+                                        </li>
+                                    </ol>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <% } %>
+                    </ol>
+                <% } else { %>
+                    <p>
+                        It seems like you don&apos;t have any repos yet.<br/>
+                        Come back once you&apos;ve made a few.
+                    </p>
                 <% } %>
-                </ol>
             </div>
 
             <div class="footer">
