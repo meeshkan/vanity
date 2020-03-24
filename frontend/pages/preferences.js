@@ -25,10 +25,10 @@ export const Preferences = props => {
 						welcome, {username}
 					</p>
 					<p>
-						upcoming metrics email:
-						<div className='avenir pa3'>
+						upcoming metrics email:<br/>
+						<span className='avenir pv3 dib'>
 							{moment().startOf('day').add(9, 'hours').day(8).toString()}
-						</div>
+						</span>
 					</p>
 					{(repos && repos.length > 0) ?
 						<Repos repos={repos} token={token} /> : (
@@ -60,6 +60,7 @@ Preferences.propTypes = {
 };
 
 Preferences.getInitialProps = async ctx => {
+	console.log('getInitialProps fired')
 	const { jwt: token } = nextCookie(ctx);
 	const apiURL = `${getHost(ctx.req) || ''}/api/preferences`;
 
