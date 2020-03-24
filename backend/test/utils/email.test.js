@@ -3,7 +3,7 @@ const {
 	createWeeklyEmail,
 	createSampleEmail,
 } = require('../../utils/email');
-const { USER, WEEKLY_METRICS, SAMPLE_METRICS } = require('../../utils/__fixtures__');
+const { USER, WEEKLY_METRICS, SAMPLE_METRICS } = require('../__fixtures__');
 const { EMAIL_CONFIG } = require('../../config');
 
 const HTML_REGEX = /\s?<!doctype html>|(<html\b[^>]*>|<body\b[^>]*>|<x-[^>]+>)+/i;

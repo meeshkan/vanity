@@ -1,6 +1,6 @@
 const test = require('ava');
 const { User } = require('../../models');
-const { GH_PROFILE } = require('../../auth/__fixtures__');
+const { GH_PROFILE } = require('../__fixtures__');
 const {
 	fetchUserRepos,
 	fetchUserRepoStats,

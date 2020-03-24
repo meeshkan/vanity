@@ -1,7 +1,7 @@
 const { serial: test } = require('ava');
 const request = require('supertest');
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
-const { GH_PROFILE } = require('../../auth/__fixtures__');
+const { GH_PROFILE } = require('../__fixtures__');
 const { generateToken } = require('../../utils/token');
 const { User } = require('../../models');
 const app = require('../../server');

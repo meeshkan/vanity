@@ -8,7 +8,7 @@ const {
 	WEEKLY_METRICS,
 	SAMPLE_METRICS,
 	SENDGRID_SUCCESS,
-} = require('../../utils/__fixtures__');
+} = require('../__fixtures__');
 const {
 	ingestMetricsWorker,
 	sendEmailWorker,

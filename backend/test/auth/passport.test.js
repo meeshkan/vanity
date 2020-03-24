@@ -1,6 +1,6 @@
 const { serial: test } = require('ava');
 const { strategyCallback } = require('../../auth/passport');
-const { GH_PROFILE } = require('../../auth/__fixtures__');
+const { GH_PROFILE } = require('../__fixtures__');
 const { User } = require('../../models');
 
 const userRepoKeys = ['name', 'fork', 'selected'];

@@ -1,7 +1,6 @@
 const test = require('ava');
 const { QUEUE_CRON, QUEUE_ATTEMPTS } = require('../../config');
-const { USER } = require('../../utils/__fixtures__');
-const { REPOS } = require('../../api/__fixtures__');
+const { USER, REPOS } = require('../__fixtures__');
 const {
 	ingestMetrics,
 	sendEmail,

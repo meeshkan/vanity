@@ -7,6 +7,11 @@
     "coverage:upload": "nyc report --reporter=lcov && codecov",
     "coverage:check": "nyc report && nyc check-coverage --lines 90 --functions 70 --branches 60"
   },
+  "ava": {
+    "files": [
+      "!test/__fixtures__/*"
+    ]
+  },
   "xo": {
     "rules": {
       "object-curly-spacing": 0,
@@ -16,7 +21,7 @@
     },
     "overrides": [
       {
-        "files": "auth/__fixtures__/*",
+        "files": "test/__fixtures__/*",
         "rules": {
           "camelcase": "off"
         }

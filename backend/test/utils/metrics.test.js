@@ -1,8 +1,7 @@
 const { serial: test } = require('ava');
 const moment = require('moment');
 const _ = require('lodash');
-const { USER, SAMPLE_METRICS } = require('../../utils/__fixtures__');
-const { GH_PROFILE } = require('../../auth/__fixtures__');
+const { USER, SAMPLE_METRICS, GH_PROFILE } = require('../__fixtures__');
 const { User, Snapshot } = require('../../models');
 const {
 	userSnapshots,
