@@ -60,9 +60,8 @@ Preferences.propTypes = {
 };
 
 Preferences.getInitialProps = async ctx => {
-	console.log('getInitialProps fired')
 	const { jwt: token } = nextCookie(ctx);
-	const apiURL = `${getHost(ctx.req) || ''}/api/preferences`;
+	const url = `${getHost(ctx.req) || ''}/api/preferences`;
 
 	const redirectOnError = () => {
 		cookies.forEach(cookie => Cookies.remove(cookie));
@@ -74,7 +73,7 @@ Preferences.getInitialProps = async ctx => {
 	};
 
 	try {
-		const response = await fetch(apiURL, {
+		const response = await fetch(url, {
 			credentials: 'include',
 			headers: {
 				authorization: JSON.stringify({ token }),
