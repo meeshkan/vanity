@@ -31,7 +31,7 @@ export default function Nav() {
 		}
 
 		const handleScroll = () => {
-			const show = window.scrollY > 50;
+			const show = window.scrollY > 25;
 			if (navRef.current !== show) {
 				setNavBackground(show);
 			}
@@ -47,7 +47,7 @@ export default function Nav() {
 	return (
 		<div
 			className='fixed w-100 ph3 pv3 pv3-ns ph3-m ph4-l fixed z-9999'
-			style={{ backgroundColor, color, transition: '1s ease' }}
+			style={{ backgroundColor, transition: '1s ease' }}
 		>
 			<header>
 				<nav className='f6 fw6 ttu tracked dt-l w-100 mw8 center'>
