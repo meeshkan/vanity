@@ -26,13 +26,11 @@ export default class Slider extends Component {
 						<div className='absolute w-100 vh-100'>
 							<article className='vh-100 dt w-100'>
 								<div className='dtc v-mid tc white ph3 ph4-l'>
-									<h2
-										className='f1 fw6 tc ttu f-subheadline-l mt0 mb3'
-									>
+									<h2 className='f2 f1-ns fw6 tc ttu f-subheadline-l mt0 mb3'>
 										V A N I T Y
 									</h2>
 									<p className='i f5 tracked-mega-l'>weekly metrics for your GitHub repos</p>
-									<div className='f5 pv4 v-mid'>
+									<div className='f6 f5-l pv3 v-mid'>
 										<h3>start receiving your metrics</h3>
 										<p>
 											<Link href='/auth/github'>
