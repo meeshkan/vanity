@@ -44,7 +44,7 @@ export default function Nav() {
 							href='https://github.com/meeshkan/vanity'
 							target='_blank'
 							rel='noopener noreferrer'
-							title='GitHub'
+							title='source'
 						>
 							GitHub
 						</a>
