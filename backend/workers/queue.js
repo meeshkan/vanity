@@ -20,6 +20,11 @@ const createQueue = name => {
 				default:
 					return new Redis(REDIS_URL, REDIS_OPTIONS);
 			}
+		},
+		settings: {
+			lockDuration: 90000,
+			stalledInterval: 75000,
+			maxStalledCount: 2,
 		}
 	})
 		.on('error', error => {
