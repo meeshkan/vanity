@@ -1,21 +1,27 @@
 
 const { join } = require('path');
-const winston = require('winston');
+const { createLogger, format, transports } = require('winston');
+const { combine, json, timestamp, simple } = format;
 const { NODE_ENV } = require('../config');
 
-const logger = winston.createLogger({
+const logger = createLogger({
 	level: 'info',
-	format: winston.format.json(),
+	format: json(),
 	transports: [
-		new winston.transports.File({ filename: join(__dirname, '../logs/error.log'), level: 'error' }),
-		new winston.transports.File({ filename: join(__dirname, '../logs/combined.log') }),
+		new transports.File({ filename: join(__dirname, '../logs/error.log'), level: 'error' }),
+		new transports.File({ filename: join(__dirname, '../logs/combined.log') }),
 	],
 	exitOnError: false,
 });
 
 if (NODE_ENV !== 'production') {
-	logger.add(new winston.transports.Console({
-		format: winston.format.simple(),
+	logger.add(new transports.Console({
+		format: combine(
+			timestamp({
+				format: 'YYYY-MM-DD HH:mm:ss'
+			}),
+			simple()
+		),
 	}));
 }
 
