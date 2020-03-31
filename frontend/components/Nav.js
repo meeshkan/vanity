@@ -66,7 +66,7 @@ export default function Nav() {
 							rel='noopener noreferrer'
 							title='source'
 						>
-							GitHub
+							Source
 						</a>
 						{avatarURL ? (
 							<Link href='/preferences'>
