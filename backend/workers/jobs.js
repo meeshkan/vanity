@@ -7,6 +7,7 @@ const ingestMetricsJob = user => {
 			userID: user.id,
 		},
 		{
+			jobId: user.id,
 			repeat: {
 				cron: QUEUE_CRON.METRICS,
 			},
@@ -25,6 +26,7 @@ const sendEmailJob = user => {
 			},
 		},
 		{
+			jobId: user.id,
 			repeat: {
 				cron: QUEUE_CRON.EMAIL,
 			},
@@ -48,6 +50,7 @@ const sendSampleEmailJob = user => {
 			},
 		},
 		{
+			jobId: user.id,
 			attempts: QUEUE_ATTEMPTS.SAMPLE,
 		},
 	);
