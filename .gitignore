@@ -5,3 +5,4 @@ node_modules
 .now
 *.log
 .nyc_output
+*/cypress/videos
