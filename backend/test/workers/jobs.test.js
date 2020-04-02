@@ -49,8 +49,8 @@ test('ingestMetricsJob creates job', async t => {
 	t.is(taskedJob.cron, QUEUE_CRON.METRICS);
 	t.is(taskedJob.endDate, null);
 	t.is(taskedJob.every, null);
-	t.is(taskedJob.id, null);
-	t.is(taskedJob.key, `__default__::::${QUEUE_CRON.METRICS}`);
+	t.regex(taskedJob.id, /\d+/);
+	t.is(taskedJob.key, `__default__:${taskedJob.id}:::${QUEUE_CRON.METRICS}`);
 	t.is(taskedJob.name, '__default__');
 	t.true(taskedJob.next > 0);
 	t.is(taskedJob.tz, null);
@@ -69,8 +69,8 @@ test('sendEmailJob creates job', async t => {
 	t.is(taskedJob.cron, QUEUE_CRON.EMAIL);
 	t.is(taskedJob.endDate, null);
 	t.is(taskedJob.every, null);
-	t.is(taskedJob.id, null);
-	t.is(taskedJob.key, `__default__::::${QUEUE_CRON.EMAIL}`);
+	t.regex(taskedJob.id, /\d+/);
+	t.is(taskedJob.key, `__default__:${taskedJob.id}:::${QUEUE_CRON.EMAIL}`);
 	t.is(taskedJob.name, '__default__');
 	t.true(taskedJob.next > 0);
 	t.is(taskedJob.tz, null);
