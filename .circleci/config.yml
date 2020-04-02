@@ -8,7 +8,7 @@ orbs:
   codecov: codecov/codecov@1.0.2
 
 jobs:
-  build:
+  backend-tests:
     docker:
       # specify the version you desire here
       - image: circleci/node:12.4.0
@@ -50,3 +50,27 @@ jobs:
       - run:
           name: Assert that coverage results meet thresholds
           command: npm run coverage:check
+  
+  frontend-tests:
+    docker:
+      - image: cypress/base:8
+
+    working_directory: ~/repo/frontend
+
+    steps:
+      - checkout:
+          path: ~/repo
+      - run:
+          name: Install dependencies with clean slate
+          command: npm ci
+      - run:
+          name: Run tests
+          command: npm test
+
+workflows:
+  backend-build:
+    jobs:
+      - backend-tests
+  frontend-build:
+    jobs:
+      - frontend-tests
