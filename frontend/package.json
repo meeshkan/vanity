@@ -1,11 +1,14 @@
 {
   "scripts": {
-    "test": "xo",
-    "dev": "next -p $PORT",
+    "test": "start-test dev 3000 cypress:run",
+    "lint": "xo",
+    "dev": "next",
     "now-dev": "npm run dev",
     "build": "next build",
     "now-build": "npm run build",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "xo": {
     "extends": "xo-react",
@@ -80,12 +83,14 @@
     "@zeit/next-css": "^1.0.1",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
+    "cypress": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-config-xo": "^0.27.2",
     "eslint-config-xo-react": "^0.22.0",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^2.3.0",
     "less": "^3.9.0",
+    "start-server-and-test": "^1.10.11",
     "xo": "^0.25.3"
   }
 }
