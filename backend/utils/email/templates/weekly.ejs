@@ -118,28 +118,19 @@
                                 </div>
                                 <div class="stats">
                                     <ol>
-                                        <li class="stars">
-                                            <span class="latest"><%= repo.stars.latest %></span>
-                                            <% if (repo.stars.difference > 0) { %>
-                                                <span class="increase">(+<%= repo.stars.difference %>)</span>
-                                            <% } else if (repo.stars.difference < 0) { %>
-                                                <span class="decrease">(<%= repo.stars.difference %>)</span>
-                                            <% } else { %>
-                                                <span class="same">(+<%= repo.stars.difference %>)</span>
-                                            <% } %>
-                                            stars
-                                        </li>
-                                        <li class="forks">
-                                            <span class="latest"><%= repo.forks.latest %></span>
-                                            <% if (repo.forks.difference > 0) { %>
-                                                <span class="increase">(+<%= repo.forks.difference %>)</span>
-                                            <% } else if (repo.forks.difference < 0) { %>
-                                                <span class="decrease">(<%= repo.forks.difference %>)</span>
-                                            <% } else { %>
-                                                <span class="same">(+<%= repo.forks.difference %>)</span>
-                                            <% } %>
-                                            forks
-                                        </li>
+                                        <% for (const metric of Object.keys(repo).filter(key => key !== 'name')) { %>
+                                            <li class="<%= metric %>">
+                                                <span class="latest"><%= repo[metric].latest %></span>
+                                                <% if (repo[metric].difference > 0) { %>
+                                                    <span class="increase">(+<%= repo[metric].difference %>)</span>
+                                                <% } else if (repo[metric].difference < 0) { %>
+                                                    <span class="decrease">(<%= repo[metric].difference %>)</span>
+                                                <% } else { %>
+                                                    <span class="same">(+<%= repo[metric].difference %>)</span>
+                                                <% } %>
+                                                <%= repo[metric].latest === 1 ? metric.slice(0,-1) : metric %>
+                                            </li>
+                                        <% } %>
                                     </ol>
                                 </div>
                             </div>

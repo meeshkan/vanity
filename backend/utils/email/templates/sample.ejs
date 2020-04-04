@@ -109,12 +109,11 @@
                                 </div>
                                 <div class="stats">
                                     <ol>
-                                        <li class="stars">
-                                            <%= repo.stars %> stars
-                                        </li>
-                                        <li class="forks">
-                                            <%= repo.forks %> forks
-                                        </li>
+                                        <% for (const metric of Object.keys(repo).filter(key => key !== 'name')) { %>
+                                            <li class="<%= metric %>">
+                                                <%= repo[metric] %> <%= repo[metric] === 1 ? metric.slice(0,-1) : metric %>
+                                            </li>
+                                        <% } %>
                                     </ol>
                                 </div>
                             </div>
