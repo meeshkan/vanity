@@ -2,6 +2,7 @@ const { serial: test } = require('ava');
 const moment = require('moment');
 const _ = require('lodash');
 const { USER, SAMPLE_METRICS, GH_PROFILE } = require('../__fixtures__');
+const { GITHUB_USER_TOKEN } = require('../../config');
 const { User, Snapshot } = require('../../models');
 const {
 	userSnapshots,
@@ -13,7 +14,7 @@ const {
 	fetchComparison,
 } = require('../../utils/metrics');
 
-const repoKeys = ['name', 'stars', 'forks'];
+const repoKeys = ['name', 'stars', 'forks', 'views', 'clones'];
 const containsRepoKeys = repo => repoKeys.every(key => key in repo);
 
 const comparsionKeys = ['latest', 'difference'];
@@ -34,7 +35,7 @@ test.before(async t => {
 		{
 			username: GH_PROFILE.username,
 			email: GH_PROFILE.email,
-			token: undefined,
+			token: GITHUB_USER_TOKEN,
 			avatar: GH_PROFILE.photos[0].value,
 		},
 		{
@@ -85,6 +86,8 @@ test('fetchCurrent() fetches current metrics', async t => {
 test('compareSnapshots() compares snapshots', async t => {
 	const STAR_DIFFERENCE = 2;
 	const FORK_DIFFERENCE = 1;
+	const VIEW_DIFFERENCE = 3;
+	const CLONE_DIFFERENCE = 1;
 
 	const [snapshot] = await userSnapshots(t.context.userId);
 
@@ -92,6 +95,8 @@ test('compareSnapshots() compares snapshots', async t => {
 	alteredSnapshot.metrics.map(repo => {
 		repo.stars += STAR_DIFFERENCE;
 		repo.forks += FORK_DIFFERENCE;
+		repo.views += VIEW_DIFFERENCE;
+		repo.clones += CLONE_DIFFERENCE;
 		return repo;
 	});
 
@@ -112,6 +117,8 @@ test('compareSnapshots() compares snapshots', async t => {
 	t.true(alteredComparison.every(containsComparisonKeys));
 	t.true(alteredComparison.every(repo => repo.stars.difference === STAR_DIFFERENCE));
 	t.true(alteredComparison.every(repo => repo.forks.difference === FORK_DIFFERENCE));
+	t.true(alteredComparison.every(repo => repo.views.difference === VIEW_DIFFERENCE));
+	t.true(alteredComparison.every(repo => repo.clones.difference === CLONE_DIFFERENCE));
 });
 
 test('daysSinceSnapshot() fetches snapshots N days apart', async t => {
@@ -166,6 +173,8 @@ test('fetchComparison() returns comparison of week apart snapshots', async t => 
 	const WEEK_IN_DAYS = 7;
 	const STAR_DIFFERENCE = 3;
 	const FORK_DIFFERENCE = 10;
+	const VIEW_DIFFERENCE = 6;
+	const CLONE_DIFFERENCE = 2;
 
 	const [snapshot] = await userSnapshots(t.context.userId);
 
@@ -173,6 +182,8 @@ test('fetchComparison() returns comparison of week apart snapshots', async t => 
 	alteredSnapshot.metrics.map(repo => {
 		repo.stars -= STAR_DIFFERENCE;
 		repo.forks -= FORK_DIFFERENCE;
+		repo.views -= VIEW_DIFFERENCE;
+		repo.clones -= CLONE_DIFFERENCE;
 		return repo;
 	});
 
@@ -193,6 +204,8 @@ test('fetchComparison() returns comparison of week apart snapshots', async t => 
 	t.true(comparison.every(containsComparisonKeys));
 	t.true(comparison.every(repo => repo.stars.difference === STAR_DIFFERENCE));
 	t.true(comparison.every(repo => repo.forks.difference === FORK_DIFFERENCE));
+	t.true(comparison.every(repo => repo.views.difference === VIEW_DIFFERENCE));
+	t.true(comparison.every(repo => repo.clones.difference === CLONE_DIFFERENCE));
 
 	await previousSnapshot.destroy();
 });

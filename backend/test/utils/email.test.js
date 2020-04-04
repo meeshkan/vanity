@@ -2,6 +2,8 @@ const test = require('ava');
 const {
 	createWeeklyEmail,
 	createSampleEmail,
+	sendSample,
+	send,
 } = require('../../utils/email');
 const { USER, WEEKLY_METRICS, SAMPLE_METRICS } = require('../__fixtures__');
 const { EMAIL_CONFIG } = require('../../config');
@@ -31,7 +33,7 @@ test('generates weekly email for empty metrics', async t => {
 	t.is(email.subject, EMAIL_CONFIG.subject);
 	t.regex(email.html, HTML_REGEX);
 	t.regex(email.html, /It seems like you don&apos;t have any repos yet/);
-})
+});
 
 test('generates sample email', async t => {
 	const email = await createSampleEmail({
@@ -56,4 +58,4 @@ test('generates sample email for empty metrics', async t => {
 	t.is(email.subject, EMAIL_CONFIG.sampleSubject);
 	t.regex(email.html, HTML_REGEX);
 	t.regex(email.html, /It seems like you don&apos;t have any repos yet/);
-})
+});

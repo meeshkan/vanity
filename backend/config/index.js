@@ -17,12 +17,13 @@ const {
 	DB_HOST,
 	DB_PORT,
 	SENTRY_DSN,
-	NODE_ENV
+	NODE_ENV,
+	GITHUB_USER_TOKEN,
 } = process.env;
 
 const GITHUB_SCOPE = [
 	'user:email',
-	'repo',
+	'public_repo',
 ];
 
 const PASSPORT_DEFAULT_OPTIONS = {
@@ -126,4 +127,5 @@ module.exports = {
 	EMAIL_CONFIG,
 	SENTRY_CONFIG,
 	SEQUELIZE_CONFIG,
+	GITHUB_USER_TOKEN,
 };
