@@ -1,6 +1,7 @@
 const { setQueues } = require('bull-board');
 const metrics = require('../utils/metrics');
 const email = require('../utils/email');
+const { generateToken } = require('../utils/token');
 const { createQueue } = require('./queue');
 
 const ingestMetrics = createQueue('ingestMetrics');
@@ -14,6 +15,7 @@ const ingestMetricsWorker = job => {
 
 const sendEmailWorker = async job => {
 	const { user } = job.data;
+	user.unsubscriptionToken = await generateToken({ email: user.email, id: user.id });
 	const weekMetrics = await metrics.fetchComparison(user.id);
 	return email.send({
 		user,
@@ -23,6 +25,7 @@ const sendEmailWorker = async job => {
 
 const sendSampleEmailWorker = async job => {
 	const { user } = job.data;
+	user.unsubscriptionToken = await generateToken({ email: user.email, id: user.id });
 	const currentMetrics = await metrics.fetchCurrent(user.id, user.selectedRepos);
 	return email.sendSample({
 		user,
