@@ -1,8 +1,10 @@
 import React from 'react';
+import Router from 'next/router';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
+import nextCookie from 'next-cookies';
 
-export default function Login() {
+export const Login = () => {
 	return (
 		<Layout>
 			<main className='pa3 pa5-ns vh-100 w-100 white dt tc'>
@@ -30,3 +32,17 @@ export default function Login() {
 		</Layout>
 	);
 }
+
+Login.getInitialProps = async ctx => {
+	const { jwt: token } = nextCookie(ctx);
+
+	if (token) {
+		if (typeof window === 'undefined') {
+			ctx.res.writeHead(302, { Location: '/preferences' }).end();
+		} else {
+			Router.push('/preferences');
+		}
+	}
+};
+
+export default Login;
