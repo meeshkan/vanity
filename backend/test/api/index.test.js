@@ -148,7 +148,7 @@ test('POST /api/unsubscribe removes repeatable jobs - with appropriate body', as
 });
 
 test('POST /api/unsubscribe rejects tampered email', async t => {
-		const { id, email, username } = t.context.user;
+	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
 
