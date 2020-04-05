@@ -2,7 +2,6 @@ const { OK, UNAUTHORIZED, INTERNAL_SERVER_ERROR } = require('http-status');
 const { UnauthorizedError, UnsubscriptionError } = require('../../utils/errors');
 const { verifyToken } = require('../../utils/token');
 const {	ingestMetrics, sendEmail } = require('../../workers/queues');
-const { QUEUE_CRON } = require('../../config');
 const { User } = require('../../models');
 
 const preferences = async (req, res) => {
