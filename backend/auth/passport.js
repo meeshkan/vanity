@@ -37,7 +37,7 @@ const strategyCallback = async (accessToken, refreshToken, profile, done) => {
 			fields: ['username', 'email', 'token', 'avatar'],
 		}
 	)
-		.then(([user, created]) => {
+		.then(async ([user, created]) => {
 			user = user.get({ plain: true });
 
 			// TODO: move this to a function & re-call it with a `sync` button in /preferences
@@ -58,7 +58,7 @@ const strategyCallback = async (accessToken, refreshToken, profile, done) => {
 					});
 				}
 
-				User.update(
+				await User.update(
 					{
 						repos: user.repos,
 					},

@@ -24,7 +24,7 @@ test('GET /auth returns user data - authenticated', async t => {
 
 	t.is(response.status, OK);
 	t.is(response.body.avatar, avatar);
-	t.true(response.body.exp > 0);
+	t.false(response.body.exp > 0);
 	t.true(response.body.iat > 0);
 	t.is(response.body.id, id);
 	t.is(response.body.username, username);
