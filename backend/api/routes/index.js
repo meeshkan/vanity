@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.get('/preferences', api.preferences);
 router.post('/preferences', api.updateRepos);
+router.post('/unsubscribe', api.unsubscribe);
 
 module.exports = router;
