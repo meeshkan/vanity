@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
@@ -41,9 +42,17 @@ export const Unsubscribe = props => {
 	);
 }
 
-Unsubscribe.getInitialProps = async ({ req, query }) => {
+Unsubscribe.getInitialProps = async ({ req, res, query }) => {
 	const url = `${getHost(req) || ''}/api/unsubscribe`;
     const { token, email } = query;
+
+    if (!token && !email) {
+        if (typeof window === 'undefined') {
+			return res.writeHead(302, { Location: '/' }).end();
+		} else {
+			return Router.push('/');
+		}
+    }
 
 	try {
 		const response = await fetch(url, {
