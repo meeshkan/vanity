@@ -1,6 +1,8 @@
 const { OK, UNAUTHORIZED, INTERNAL_SERVER_ERROR } = require('http-status');
-const { UnauthorizedError } = require('../../utils/errors');
+const { UnauthorizedError, UnsubscriptionError } = require('../../utils/errors');
 const { verifyToken } = require('../../utils/token');
+const {	ingestMetrics, sendEmail } = require('../../workers/queues');
+const { QUEUE_CRON } = require('../../config');
 const { User } = require('../../models');
 
 const preferences = async (req, res) => {
@@ -41,7 +43,59 @@ const updateRepos = async (req, res) => {
 	}
 };
 
+const getUserIdFromEmail = async email => {
+	const userByEmail = await User.findOne({
+		where: { email }
+	});
+	const { id } = userByEmail.get({ plain: true });
+	return id;
+};
+
+const getJobKeysByID = async id => {
+	return {
+		ingestMetrics: `__default__:${id}:::${QUEUE_CRON.METRICS}`,
+		sendEmail: `__default__:${id}:::${QUEUE_CRON.EMAIL}`
+	}
+};
+
+const UnsubscriptionErrors = {
+	MISMATCH: UnsubscriptionError('Email did not match token'),
+	INVALID_TOKEN: UnsubscriptionError('Unsubscription token is invalid'),
+	ALREADY_UNSUBSCRIBED: UnsubscriptionError('Email has already been unsubscribed')
+};
+
+const unsubscribe = async (req, res) => {
+	try {
+		const { token, email } = req.body;
+		const { email: emailByToken, id } = await verifyToken(token);
+		const jobKeys = await getJobKeysByID(id);
+
+		if (emailByToken !== email) {
+			return res.status(UNAUTHORIZED).json(UnsubscriptionErrors.MISMATCH);
+		}
+
+		const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+		const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+		const jobsToDelete = [
+			ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+			sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id)
+		];
+
+		if (jobsToDelete.every(job => !job)) {
+			return res.status(UNAUTHORIZED).json(UnsubscriptionErrors.ALREADY_UNSUBSCRIBED);
+		}
+
+		jobsToDelete.forEach(async job => await job.remove());
+
+		res.status(OK).json({ user: { email, id } });
+	} catch (error) {
+		res.status(UNAUTHORIZED).json(UnsubscriptionErrors.INVALID_TOKEN);
+	}
+};
+
 module.exports = {
 	preferences,
 	updateRepos,
+	unsubscribe,
 };
