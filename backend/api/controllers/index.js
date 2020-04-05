@@ -43,21 +43,6 @@ const updateRepos = async (req, res) => {
 	}
 };
 
-const getUserIdFromEmail = async email => {
-	const userByEmail = await User.findOne({
-		where: { email }
-	});
-	const { id } = userByEmail.get({ plain: true });
-	return id;
-};
-
-const getJobKeysByID = async id => {
-	return {
-		ingestMetrics: `__default__:${id}:::${QUEUE_CRON.METRICS}`,
-		sendEmail: `__default__:${id}:::${QUEUE_CRON.EMAIL}`
-	}
-};
-
 const UnsubscriptionErrors = {
 	MISMATCH: UnsubscriptionError('Email did not match token'),
 	INVALID_TOKEN: UnsubscriptionError('Unsubscription token is invalid'),
@@ -68,7 +53,6 @@ const unsubscribe = async (req, res) => {
 	try {
 		const { token, email } = req.body;
 		const { email: emailByToken, id } = await verifyToken(token);
-		const jobKeys = await getJobKeysByID(id);
 
 		if (emailByToken !== email) {
 			return res.status(UNAUTHORIZED).json(UnsubscriptionErrors.MISMATCH);
