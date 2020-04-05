@@ -74,3 +74,10 @@ describe('Preferences page', () => {
         cy.url().should('match', /login/);
     });
 });
+
+describe('Unsubscribe page', () => {
+	it('redirects empty queries to /', () => {
+        cy.visit('/unsubscribe');
+        cy.url().should('match', /\//);
+    });
+});
