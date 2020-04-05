@@ -42,23 +42,17 @@ const extractRepoStats = repos => repos.map(repo => {
 	};
 });
 
+const viewCount = async (user, repo) => {
+	const { body: views } = await restGithub(`repos/${user}/${repo}/traffic/views`);
+	return views.count;
+};
+
+const cloneCount = async (user, repo) => {
+	const { body: clones } = await restGithub(`repos/${user}/${repo}/traffic/clones`);
+	return clones.count;
+};
+
 /* TODO: collect further metrics
-const viewCount = async (user, repo, period = 'day') => {
-	const views = await restGithub(`repos/${user}/${repo}/traffic/views?per_page=100&per=${period}`)
-	return {
-		count: views.count,
-		uniques: views.uniques
-	}
-}
-
-const cloneCount = async (user, repo, period = 'day') => {
-	const clones = await restGithub(`repos/${user}/${repo}/traffic/clones?per_page=100&per=${period}`)
-	return {
-		count: clones.count,
-		uniques: clones.uniques
-	}
-}
-
 const issueCount = async (user, repo) => {
 	const issues = await restGithub(`repos/${user}/${repo}/issues?per_page=100&state=all`)
 	const total_issues = issues.length
@@ -108,7 +102,12 @@ const fetchUserRepoStats = async id => {
 	const user = userByID.get({ plain: true });
 	gitGot = extendGot(user.token);
 	const userRepos = await fetchRepos(user.username);
-	return extractRepoStats(userRepos);
+	const stats = await extractRepoStats(userRepos);
+	return Promise.all(stats.map(async repo => {
+		repo.views = await viewCount(user.username, repo.name);
+		repo.clones = await cloneCount(user.username, repo.name);
+		return repo;
+	}));
 };
 
 module.exports = {

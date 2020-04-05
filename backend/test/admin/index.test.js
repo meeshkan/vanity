@@ -2,6 +2,7 @@ const { serial: test } = require('ava');
 const request = require('supertest');
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const { GH_PROFILE } = require('../__fixtures__');
+const { GITHUB_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
 const { User } = require('../../models');
 const app = require('../../server');
@@ -14,7 +15,7 @@ test.before(async t => {
 		{
 			username: GH_PROFILE.username,
 			email: GH_PROFILE.email,
-			token: undefined,
+			token: GITHUB_USER_TOKEN,
 			avatar: GH_PROFILE.photos[0].value,
 			admin: true,
 		},
