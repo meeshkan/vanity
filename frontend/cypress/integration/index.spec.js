@@ -70,14 +70,14 @@ describe('Login page', () => {
 
 describe('Preferences page', () => {
 	it('redirects unauthenticated users to login', () => {
-        cy.visit('/preferences');
-        cy.url().should('match', /login/);
-    });
+		cy.visit('/preferences');
+		cy.url().should('match', /login/);
+	});
 });
 
 describe('Unsubscribe page', () => {
 	it('redirects empty queries to /', () => {
-        cy.visit('/unsubscribe');
-        cy.url().should('match', /\//);
-    });
+		cy.visit('/unsubscribe');
+		cy.url().should('match', /\//);
+	});
 });
