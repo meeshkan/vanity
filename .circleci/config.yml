@@ -54,6 +54,8 @@ jobs:
   frontend-tests:
     docker:
       - image: cypress/base:12.6.0
+        environment:
+          VANITY_URI: http://localhost:3000
 
     working_directory: ~/repo/frontend
 
