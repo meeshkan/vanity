@@ -1,8 +1,8 @@
 import React from 'react';
 import Router from 'next/router';
+import nextCookie from 'next-cookies';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
-import nextCookie from 'next-cookies';
 
 export const Login = () => {
 	return (
@@ -31,7 +31,7 @@ export const Login = () => {
 			<Footer />
 		</Layout>
 	);
-}
+};
 
 Login.getInitialProps = async ctx => {
 	const { jwt: token } = nextCookie(ctx);
