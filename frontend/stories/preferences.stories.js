@@ -44,8 +44,6 @@ export const manyRepos = () => (
 			{ name: 'please-end', fork: false, selected: false },
 			{ name: 'seriously', fork: false, selected: false },
 			{ name: 'enough', fork: false, selected: false },
-			{ name: 'is', fork: true, selected: false },
-			{ name: 'enough', fork: false, selected: true },
 			{ name: 'a-few-more-to-go', fork: false, selected: false },
 			{ name: 'foo', fork: false, selected: false },
 			{ name: 'bar', fork: false, selected: false },
