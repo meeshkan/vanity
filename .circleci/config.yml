@@ -53,7 +53,7 @@ jobs:
   
   frontend-tests:
     docker:
-      - image: cypress/base:8
+      - image: cypress/base:12.6.0
 
     working_directory: ~/repo/frontend
 
