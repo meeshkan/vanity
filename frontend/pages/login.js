@@ -38,10 +38,10 @@ Login.getInitialProps = async ctx => {
 
 	if (token) {
 		if (typeof window === 'undefined') {
-			ctx.res.writeHead(302, { Location: '/preferences' }).end();
-		} else {
-			Router.push('/preferences');
+			return ctx.res.writeHead(302, { Location: '/preferences' }).end();
 		}
+
+		Router.push('/preferences');
 	}
 };
 

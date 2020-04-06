@@ -66,10 +66,10 @@ Preferences.getInitialProps = async ctx => {
 	const redirectOnError = () => {
 		cookies.forEach(cookie => Cookies.remove(cookie));
 		if (typeof window === 'undefined') {
-			ctx.res.writeHead(302, { Location: '/login' }).end();
-		} else {
-			Router.push('/login');
+			return ctx.res.writeHead(302, { Location: '/login' }).end();
 		}
+
+		Router.push('/login');
 	};
 
 	try {
