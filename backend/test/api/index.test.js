@@ -5,6 +5,8 @@ const _ = require('lodash');
 const { GH_PROFILE, REPOS } = require('../__fixtures__');
 const { GITHUB_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
+const { ingestMetrics, sendEmail } = require('../../workers/queues');
+const { ingestMetricsJob, sendEmailJob } = require('../../workers/jobs');
 const { User } = require('../../models');
 const app = require('../../server');
 
@@ -26,6 +28,24 @@ test.before(async t => {
 		}
 	);
 	t.context.user = user.get({ plain: true });
+});
+
+test.before('pre-test cleanup', t => {
+	const queues = [ingestMetrics, sendEmail];
+	const states = ['delayed', 'wait', 'active', 'completed', 'failed'];
+	queues.forEach(queue => {
+		states.forEach(state => queue.clean(0, state));
+	});
+});
+
+test.after('post-test cleanup', async t => {
+	const repeatableQueues = [ingestMetrics, sendEmail];
+	repeatableQueues.forEach(async queue => {
+		const jobs = await queue.getRepeatableJobs();
+		jobs.forEach(job => {
+			queue.removeRepeatableByKey(job.key);
+		});
+	});
 });
 
 test.after.always('cleanup', async t => {
@@ -92,4 +112,93 @@ test('POST /api/preferences updates repos - authenticated', async t => {
 
 	const userByID = await User.findByPk(id);
 	t.deepEqual(userByID.get({ plain: true }).repos, ALTERED_REPOS);
+});
+
+test('POST /api/unsubscribe returns 401 - without body', async t => {
+	const response = await request(app).post('/api/unsubscribe');
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'Unsubscription token is invalid');
+});
+
+test('POST /api/unsubscribe removes repeatable jobs - with appropriate body', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	await ingestMetricsJob({ ...user, username });
+	await sendEmailJob({ ...user, username });
+
+	const response = await request(app)
+		.post('/api/unsubscribe')
+		.send({ token, email });
+
+	t.is(response.status, OK);
+	t.is(response.body.user.email, email);
+	t.is(response.body.user.id, id);
+
+	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+	const jobs = [
+		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id)
+	];
+
+	t.true(jobs.every(job => !job));
+});
+
+test('POST /api/unsubscribe rejects tampered email', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	await ingestMetricsJob({ ...user, username });
+	await sendEmailJob({ ...user, username });
+
+	const response = await request(app)
+		.post('/api/unsubscribe')
+		.send({ token, email: 'foo@bar.com' });
+
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'Email did not match token');
+
+	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+	const jobs = [
+		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id)
+	];
+
+	t.false(jobs.every(job => !job));
+});
+
+test('POST /api/unsubscribe returns error when email has already been unsubscribed', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	await ingestMetricsJob({ ...user, username });
+	await sendEmailJob({ ...user, username });
+
+	await request(app)
+		.post('/api/unsubscribe')
+		.send({ token, email });
+
+	const response = await request(app)
+		.post('/api/unsubscribe')
+		.send({ token, email });
+
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'Email has already been unsubscribed');
+
+	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+	const jobs = [
+		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id)
+	];
+
+	t.true(jobs.every(job => !job));
 });

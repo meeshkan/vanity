@@ -22,10 +22,15 @@ const UnauthorizedError = new HTTPError(
 	UNAUTHORIZED,
 	'Invalid authentication credentials',
 );
+const UnsubscriptionError = message => new HTTPError(
+	UNAUTHORIZED,
+	message,
+);
 
 module.exports = {
 	HTTPError,
 	InternalServerError,
 	NotFoundError,
 	UnauthorizedError,
+	UnsubscriptionError,
 };
