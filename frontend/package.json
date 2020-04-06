@@ -23,6 +23,12 @@
         "rules": {
           "camelcase": "off"
         }
+      },
+      {
+        "files": "cypress/integration/*",
+        "rules": {
+          "no-undef": "off"
+        }
       }
     ],
     "rules": {
