@@ -74,22 +74,3 @@ Finally, execute:
 ## License
 
 MIT © [Meeshkan](http://meeshkan.com/)
-
-## TODO:
-
-- [ ] Migrate to TypeScript.
-- [x] Fix weekly `sendEmail` job.
-- [x] Re-design email template (using [EJS](https://github.com/mde/ejs)).
-- [x] Create README documentation.
-- [x] Create backend unit tests (using `supertest`).
-- [ ] Create integration tests (using `cypress`).
-- [x] Configure `Sentry`.
-- [x] Setup [`NextSEO`](https://github.com/garmeeh/next-seo).
-- [ ] Break commonly used React code into components (especially SVGs).
-- [ ] Create custom error pages (i.e., create `pages/_error.js` file).
-- [x] Host Postgres & Redis DBs on Heroku (and configure links).
-- [x] Use AVA linter.
-- [x] Configure CircleCI to run tests.
-- [ ] Create and configure favicon.
-- [ ] Implement unsubscribe button.
-- [ ] Configure logger.
