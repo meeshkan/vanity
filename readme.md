@@ -1,6 +1,16 @@
-# vanity
-
-> Weekly metrics for your GitHub repos.
+<div align="center">
+	<a href="https://vanity.dev">
+		<img src="https://nikolaskama.me/content/images/2020/04/vanity_logo.png">
+	</a>
+	<br>
+	<a href="https://circleci.com/gh/meeshkan/vanity" style="display: inline-block;">
+		<img src="https://img.shields.io/circleci/build/github/meeshkan/vanity?style=for-the-badge">
+	</a>
+	<a href="https://codecov.io/gh/meeshkan/vanity" style="display: inline-block;">
+		<img src="https://img.shields.io/codecov/c/github/meeshkan/micro-jaymock?style=for-the-badge">
+	</a>
+	<br>
+</div>
 
 ## Deployment
 
