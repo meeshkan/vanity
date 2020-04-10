@@ -7,7 +7,7 @@
 		<img src="https://img.shields.io/circleci/build/github/meeshkan/vanity?style=for-the-badge">
 	</a>
 	<a href="https://codecov.io/gh/meeshkan/vanity" style="display: inline-block;">
-		<img src="https://img.shields.io/codecov/c/github/meeshkan/micro-jaymock?style=for-the-badge">
+		<img src="https://img.shields.io/codecov/c/github/meeshkan/vanity?style=for-the-badge">
 	</a>
 	<br>
 </div>
