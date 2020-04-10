@@ -1,6 +1,6 @@
-# vanity backend
+# VANITY backend
 
-- Backend for the [Vanity](https://github.com/Meeshkan/vanity) project.
+> Backend for the [Vanity](https://github.com/Meeshkan/vanity) project.
 
 ## Development
 

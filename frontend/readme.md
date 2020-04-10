@@ -1,6 +1,6 @@
-# vanity frontend
+# VANITY frontend
 
-- Frontend for the [Vanity](https://github.com/Meeshkan/vanity) project.
+> Frontend for the [Vanity](https://github.com/Meeshkan/vanity) project.
 
 ## Development
 
