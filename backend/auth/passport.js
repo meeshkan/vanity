@@ -30,7 +30,7 @@ const strategyCallback = async (accessToken, refreshToken, profile, done) => {
 			username,
 			email,
 			token: accessToken,
-			avatar: photos && photos.length > 0 ? photos[0].value : 'https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light',
+			avatar: photos[0].value,
 		},
 		{
 			returning: true,
