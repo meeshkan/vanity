@@ -1,7 +1,7 @@
 const { serial: test } = require('ava');
 const moment = require('moment');
 const _ = require('lodash');
-const { USER, SAMPLE_METRICS, GH_PROFILE } = require('../__fixtures__');
+const { USER, SAMPLE_METRICS, GH_PROFILE, REPOS } = require('../__fixtures__');
 const { GITHUB_USER_TOKEN } = require('../../config');
 const { User, Snapshot } = require('../../models');
 const {
@@ -37,6 +37,7 @@ test.before(async t => {
 			email: GH_PROFILE.emails[0].value,
 			token: GITHUB_USER_TOKEN,
 			avatar: GH_PROFILE.photos[0].value,
+			repos: REPOS,
 		},
 		{
 			returning: true,
@@ -199,6 +200,11 @@ test('fetchComparison() returns comparison of week apart snapshots', async t => 
 	);
 
 	const comparison = await fetchComparison(t.context.userId);
+	const expectedRepoNames = REPOS
+		.filter(repo => repo.selected)
+		.map(repo => repo.name);
+	const actualRepoNames = comparison.map(repo => repo.name);
+	t.deepEqual(actualRepoNames, expectedRepoNames);
 	t.true(comparison.length > 0);
 	t.true(comparison.every(containsRepoKeys));
 	t.true(comparison.every(containsComparisonKeys));

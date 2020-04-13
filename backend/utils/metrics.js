@@ -1,5 +1,5 @@
 const moment = require('moment');
-const { Snapshot } = require('../models');
+const { Snapshot, User } = require('../models');
 const { fetchUserRepoStats } = require('./github');
 
 const WEEK_IN_DAYS = 7;
@@ -66,8 +66,14 @@ const fetchCurrent = async (id, selectedRepos) => {
 
 const fetchComparison = async id => {
 	const snapshots = await userSnapshots(id);
+	const user = await User.findByPk(id);
+	const { repos } = user.get({ plain: true });
+	const selectedRepos = repos
+		.filter(repo => repo.selected)
+		.map(repo => repo.name);
 	const { latest, previous } = subjectedSnapshot(snapshots);
-	return compareSnapshots({ latest, previous });
+	return compareSnapshots({ latest, previous })
+		.filter(repo => selectedRepos.includes(repo.name));
 };
 
 module.exports = {
