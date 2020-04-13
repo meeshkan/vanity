@@ -18,7 +18,7 @@ test.before(async t => {
 	const [user] = await User.upsert(
 		{
 			username: GH_PROFILE.username,
-			email: GH_PROFILE.email,
+			email: GH_PROFILE.emails[0].value,
 			token: GITHUB_USER_TOKEN,
 			avatar: GH_PROFILE.photos[0].value,
 			repos: REPOS,
