@@ -78,3 +78,20 @@ test('sends a weekly email', async t => {
 
 	SGMailSend.restore();
 });
+
+test('sends a sample email', async t => {
+	const SGMailSend = sinon.stub(SGMail, 'send');
+	SGMailSend.returns(Promise.resolve(SENDGRID_SUCCESS));
+
+	const data = {
+		user: USER,
+		metrics: SAMPLE_METRICS,
+	};
+
+	const response = await sendSample(data);
+	t.true(SGMailSend.calledOnce);
+	sinon.assert.calledWith(SGMailSend, createSampleEmail(data));
+	t.deepEqual(response, SENDGRID_SUCCESS);
+
+	SGMailSend.restore();
+});
