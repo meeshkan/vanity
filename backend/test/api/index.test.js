@@ -1,6 +1,6 @@
 const { serial: test } = require('ava');
 const request = require('supertest');
-const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
+const { OK, UNAUTHORIZED, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('http-status');
 const _ = require('lodash');
 const { GH_PROFILE, REPOS } = require('../__fixtures__');
 const { GITHUB_USER_TOKEN } = require('../../config');
@@ -112,6 +112,20 @@ test('POST /api/preferences updates repos - authenticated', async t => {
 
 	const userByID = await User.findByPk(id);
 	t.deepEqual(userByID.get({ plain: true }).repos, ALTERED_REPOS);
+});
+
+test('POST /api/preferences returns 500 - invalid token', async t => {
+	const { username, avatar } = t.context.user;
+	const user = { id: 'invalid id', username, avatar };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.post('/api/preferences')
+		.set('authorization', JSON.stringify({ token }))
+		.send({ repos: REPOS });
+
+	t.is(response.status, INTERNAL_SERVER_ERROR);
+	t.is(response.body.name, 'SequelizeDatabaseError');
 });
 
 test('POST /api/unsubscribe returns 401 - without body', async t => {
