@@ -62,4 +62,5 @@ module.exports = {
 	createSampleEmail,
 	sendSample,
 	send,
+	sendEmail,
 };

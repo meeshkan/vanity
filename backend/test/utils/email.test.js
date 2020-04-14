@@ -6,9 +6,10 @@ const {
 	createSampleEmail,
 	sendSample,
 	send,
+	sendEmail,
 } = require('../../utils/email');
 const { USER, WEEKLY_METRICS, SAMPLE_METRICS, SENDGRID_SUCCESS } = require('../__fixtures__');
-const { EMAIL_CONFIG } = require('../../config');
+const { EMAIL_CONFIG, SENDGRID_API_KEY } = require('../../config');
 
 const HTML_REGEX = /\s?<!doctype html>|(<html\b[^>]*>|<body\b[^>]*>|<x-[^>]+>)+/i;
 
@@ -94,4 +95,39 @@ test('sends a sample email', async t => {
 	t.deepEqual(response, SENDGRID_SUCCESS);
 
 	SGMailSend.restore();
+});
+
+test('sends an email', async t => {
+	const SGMailSetApiKey = sinon.stub(SGMail, 'setApiKey');
+	const SGMailSend = sinon.stub(SGMail, 'send');
+	SGMailSend.returns(Promise.resolve(SENDGRID_SUCCESS));
+
+	const email = {
+		to: USER.email,
+		from: EMAIL_CONFIG.vanityAddress,
+		subject: EMAIL_CONFIG.subject,
+		html: '<html><body><h1>Just Another Email</h1></body></html>',
+	};
+
+	const response = await sendEmail(email);
+	t.true(SGMailSetApiKey.calledOnce);
+	sinon.assert.calledWith(SGMailSetApiKey, SENDGRID_API_KEY);
+	t.true(SGMailSend.calledOnce);
+	sinon.assert.calledWith(SGMailSend, email);
+	t.deepEqual(response, SENDGRID_SUCCESS);
+
+	SGMailSetApiKey.restore();
+	SGMailSend.restore();
+});
+
+test('handles invalid emails', async t => {
+	const email = {
+		to: 'not_a_valid_email',
+		from: EMAIL_CONFIG.vanityAddress,
+		subject: EMAIL_CONFIG.subject,
+		html: '<html><body><h1>Just Another Email</h1></body></html>',
+	};
+
+	const error = await t.throwsAsync(sendEmail(email));
+	t.is(error.message, 'Bad Request');
 });
