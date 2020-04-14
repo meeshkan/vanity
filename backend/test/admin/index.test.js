@@ -41,10 +41,19 @@ test('GET /admin returns 401 - unauthenticated', async t => {
 	t.is(response.status, UNAUTHORIZED);
 });
 
-test('GET /admin returns 404 - authenticated', async t => {
+test('GET /admin returns 404 - authenticated admin user', async t => {
 	const { id, username, avatar } = t.context.user;
 	const user = { id, username, avatar };
 	const token = generateToken(user);
+
+	await User.update(
+		{
+			admin: true,
+		},
+		{
+			where: { id },
+		}
+	);
 
 	const response = await request(app)
 		.get('/admin')
@@ -59,10 +68,41 @@ test('GET /admin/queues returns 401 - unauthenticated', async t => {
 	t.is(response.status, UNAUTHORIZED);
 });
 
-test('GET /admin/queues returns admin dashboard - authenticated', async t => {
+test('GET /admin/queues returns 401 - authenticated non-admin user', async t => {
 	const { id, username, avatar } = t.context.user;
 	const user = { id, username, avatar };
 	const token = generateToken(user);
+
+	await User.update(
+		{
+			admin: false,
+		},
+		{
+			where: { id },
+		}
+	);
+
+	const response = await request(app)
+		.get('/admin/queues')
+		.set('Cookie', [`jwt=${token}`])
+		.send();
+
+	t.is(response.status, UNAUTHORIZED);
+});
+
+test('GET /admin/queues returns admin dashboard - authenticated admin user', async t => {
+	const { id, username, avatar } = t.context.user;
+	const user = { id, username, avatar };
+	const token = generateToken(user);
+
+	await User.update(
+		{
+			admin: true,
+		},
+		{
+			where: { id },
+		}
+	);
 
 	const response = await request(app)
 		.get('/admin/queues')
