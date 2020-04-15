@@ -6,7 +6,7 @@
 	</a>
 	<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 	<a href="https://vanity.dev">
-		Visit VANITY
+		Visit vanity.dev
 	</a>
 </div>
 
