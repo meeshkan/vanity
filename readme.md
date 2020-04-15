@@ -3,11 +3,12 @@
 		<img src="https://nikolaskama.me/content/images/2020/04/vanity_logo.png">
 	</a>
 	<br>
-	<a href="https://circleci.com/gh/meeshkan/vanity" style="display: inline-block;">
-		<img src="https://img.shields.io/circleci/build/github/meeshkan/vanity?style=for-the-badge">
+	<a href="https://dev.to/meeshkan/weekly-metrics-for-your-github-repos-with-vanity-3jf7">
+		Read the article
 	</a>
-	<a href="https://codecov.io/gh/meeshkan/vanity" style="display: inline-block;">
-		<img src="https://img.shields.io/codecov/c/github/meeshkan/vanity?style=for-the-badge">
+	<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	<a href="https://vanity.dev">
+		Visit VANITY
 	</a>
 	<br>
 </div>
