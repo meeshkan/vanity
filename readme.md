@@ -1,8 +1,6 @@
+![VANITY Logo](https://nikolaskama.me/content/images/2020/04/vanity_logo.png)
+
 <div align="center">
-	<a href="https://vanity.dev">
-		<img src="https://nikolaskama.me/content/images/2020/04/vanity_logo.png">
-	</a>
-	<br>
 	<a href="https://dev.to/meeshkan/weekly-metrics-for-your-github-repos-with-vanity-3jf7">
 		Read the article
 	</a>
@@ -10,8 +8,9 @@
 	<a href="https://vanity.dev">
 		Visit VANITY
 	</a>
-	<br>
 </div>
+
+---
 
 ## Deployment
 
