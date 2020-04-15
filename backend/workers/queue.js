@@ -1,12 +1,9 @@
-const Redis = require('ioredis');
 const Queue = require('bull');
-const { REDIS_URL } = require('../config');
 const logger = require('../utils/logger');
+const { createRedis } = require('./redis');
 
-const REDIS_OPTIONS = { connectTimeout: 10000 };
-
-const client = new Redis(REDIS_URL, REDIS_OPTIONS);
-const subscriber = new Redis(REDIS_URL, REDIS_OPTIONS);
+const client = createRedis();
+const subscriber = createRedis();
 
 const createQueue = name => {
 	const log = logger.child({ module: `queue:${name}` });
@@ -18,7 +15,7 @@ const createQueue = name => {
 				case 'subscriber':
 					return subscriber;
 				default:
-					return new Redis(REDIS_URL, REDIS_OPTIONS);
+					return createRedis();
 			}
 		},
 		settings: {
