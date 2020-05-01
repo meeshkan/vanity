@@ -9,6 +9,7 @@ const extendGot = token => token ?
 		prefixUrl: 'https://api.github.com/',
 		headers: {
 			authorization: `token ${token}`,
+			accept: 'application/vnd.github.machine-man-preview+json',
 		},
 		responseType: 'json',
 	}) : got.extend({
@@ -97,6 +98,12 @@ const fetchUserRepos = async (user, token) => {
 	return extractRepoInfo(repos);
 };
 
+const fetchUserInstallations = async token => {
+	gitGot = extendGot(token);
+	const { body: installations } = await restGithub('user/installations');
+	return installations;
+};
+
 const fetchUserRepoStats = async id => {
 	const userByID = await User.findByPk(id);
 	const user = userByID.get({ plain: true });
@@ -113,4 +120,5 @@ const fetchUserRepoStats = async id => {
 module.exports = {
 	fetchUserRepos,
 	fetchUserRepoStats,
+	fetchUserInstallations,
 };
