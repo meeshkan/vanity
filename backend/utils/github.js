@@ -98,6 +98,12 @@ const fetchUserRepos = async (user, token) => {
 	return extractRepoInfo(repos);
 };
 
+const fetchUserEmails = async (user, token) => {
+	gitGot = extendGot(token);
+	const { body: emails } = await restGithub('user/emails');
+	return emails;
+};
+
 const fetchUserInstallations = async token => {
 	gitGot = extendGot(token);
 	const { body: installations } = await restGithub('user/installations');
@@ -120,5 +126,6 @@ const fetchUserRepoStats = async id => {
 module.exports = {
 	fetchUserRepos,
 	fetchUserRepoStats,
+	fetchUserEmails,
 	fetchUserInstallations,
 };
