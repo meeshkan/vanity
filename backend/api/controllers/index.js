@@ -3,15 +3,31 @@ const { UnauthorizedError, UnsubscriptionError } = require('../../utils/errors')
 const { verifyToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
 const { User } = require('../../models');
+const { fetchUserInstallations } = require('../../utils/github');
 
 const preferences = async (req, res) => {
 	try {
 		const auth = req.headers.authorization;
-		const { token } = JSON.parse(auth);
-		const user = await verifyToken(token);
+		const { token: jwt } = JSON.parse(auth);
+		const user = await verifyToken(jwt);
 		const userByID = await User.findByPk(user.id);
-		const { repos } = userByID.get({ plain: true });
+		const { repos, metricTypes, token: accessToken } = userByID.get({ plain: true });
 		user.repos = repos;
+		const installations = await fetchUserInstallations(accessToken);
+		user.appInstalled = installations.total_count > 0;
+		user.metricTypes = metricTypes.map(metricType => {
+			if (['views', 'clones'].includes(metricType.name)) {
+				if (installations.total_count > 0) {
+					metricType.disabled = false;
+				} else {
+					metricType.selected = false;
+					metricType.disabled = true;
+				}
+			}
+
+			return metricType;
+		});
+
 		res.status(OK).send(user);
 	} catch (error) {
 		res
