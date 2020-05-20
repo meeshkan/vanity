@@ -58,6 +58,27 @@ const updateRepos = async (req, res) => {
 	}
 };
 
+const updateMetricTypes = async (req, res) => {
+	try {
+		const { metricTypes } = req.body;
+		const auth = req.headers.authorization;
+		const { token } = JSON.parse(auth);
+		const user = await verifyToken(token);
+		User.update(
+			{ metricTypes },
+			{
+				where: {
+					id: user.id,
+				},
+			}
+		)
+			.then(returned => res.status(OK).json({ res: returned }))
+			.catch(error => res.status(INTERNAL_SERVER_ERROR).json(error));
+	} catch (error) {
+		res.status(UNAUTHORIZED).json(UnauthorizedError);
+	}
+};
+
 const UnsubscriptionErrors = {
 	MISMATCH: UnsubscriptionError('Email did not match token'),
 	INVALID_TOKEN: UnsubscriptionError('Unsubscription token is invalid'),
@@ -96,5 +117,6 @@ const unsubscribe = async (req, res) => {
 module.exports = {
 	preferences,
 	updateRepos,
+	updateMetricTypes,
 	unsubscribe,
 };
