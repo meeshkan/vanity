@@ -38,8 +38,5 @@ module.exports = {
 		following: 54,
 		created_at: '2014-09-28T08:08:27Z',
 		updated_at: '2020-02-24T17:01:03Z'
-	},
-	emails: [
-		{ value: 'nikolaos@meeshkan.com', primary: true, verified: true }
-	]
+	}
 };
