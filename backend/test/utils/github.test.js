@@ -1,7 +1,7 @@
 const test = require('ava');
 const { User } = require('../../models');
 const { GITHUB_USER_TOKEN } = require('../../config');
-const { GH_PROFILE } = require('../__fixtures__');
+const { GH_PROFILE, USER } = require('../__fixtures__');
 const {
 	fetchUserRepos,
 	fetchUserRepoStats,
@@ -18,7 +18,7 @@ test.before(async t => {
 	const [user] = await User.upsert(
 		{
 			username: GH_PROFILE.username,
-			email: GH_PROFILE.emails[0].value,
+			email: USER.email,
 			token: GITHUB_USER_TOKEN,
 			avatar: GH_PROFILE.photos[0].value,
 		},

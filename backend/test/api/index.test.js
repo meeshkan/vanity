@@ -2,7 +2,7 @@ const { serial: test } = require('ava');
 const request = require('supertest');
 const { OK, UNAUTHORIZED, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('http-status');
 const _ = require('lodash');
-const { GH_PROFILE, REPOS } = require('../__fixtures__');
+const { GH_PROFILE, USER, REPOS } = require('../__fixtures__');
 const { GITHUB_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
@@ -18,7 +18,7 @@ test.before(async t => {
 	const [user] = await User.upsert(
 		{
 			username: GH_PROFILE.username,
-			email: GH_PROFILE.emails[0].value,
+			email: USER.email,
 			token: GITHUB_USER_TOKEN,
 			avatar: GH_PROFILE.photos[0].value,
 			repos: REPOS,

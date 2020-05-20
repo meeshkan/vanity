@@ -1,6 +1,6 @@
 const { serial: test } = require('ava');
 const { strategyCallback } = require('../../auth/passport');
-const { GH_PROFILE } = require('../__fixtures__');
+const { GH_PROFILE, USER } = require('../__fixtures__');
 const { User } = require('../../models');
 
 const userRepoKeys = ['name', 'fork', 'selected'];
@@ -31,7 +31,7 @@ test('user was stored in DB', async t => {
 	t.false(user.admin);
 	t.is(user.avatar, GH_PROFILE.photos[0].value);
 	t.true(user.createdAt instanceof Date);
-	t.is(user.email, GH_PROFILE.emails[0].value);
+	t.is(user.email, USER.email);
 	t.is(user.id, id);
 	t.true(Array.isArray(user.repos));
 	t.true(user.repos.length > 0);
