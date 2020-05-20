@@ -1,7 +1,7 @@
 const test = require('ava');
 const { User } = require('../../models');
 const { GITHUB_USER_TOKEN } = require('../../config');
-const { GH_PROFILE, USER } = require('../__fixtures__');
+const { GH_PROFILE, USER, METRIC_TYPES } = require('../__fixtures__');
 const {
 	fetchUserRepos,
 	fetchUserRepoStats,
@@ -21,6 +21,7 @@ test.before(async t => {
 			email: USER.email,
 			token: GITHUB_USER_TOKEN,
 			avatar: GH_PROFILE.photos[0].value,
+			metricTypes: METRIC_TYPES,
 		},
 		{
 			returning: true,

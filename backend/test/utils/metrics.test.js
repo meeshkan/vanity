@@ -1,7 +1,7 @@
 const { serial: test } = require('ava');
 const moment = require('moment');
 const _ = require('lodash');
-const { USER, SAMPLE_METRICS, GH_PROFILE, REPOS } = require('../__fixtures__');
+const { USER, SAMPLE_METRICS, GH_PROFILE, REPOS, METRIC_TYPES } = require('../__fixtures__');
 const { GITHUB_USER_TOKEN } = require('../../config');
 const { User, Snapshot } = require('../../models');
 const {
@@ -38,6 +38,7 @@ test.before(async t => {
 			token: GITHUB_USER_TOKEN,
 			avatar: GH_PROFILE.photos[0].value,
 			repos: REPOS,
+			metricTypes: METRIC_TYPES,
 		},
 		{
 			returning: true,

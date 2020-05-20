@@ -2,7 +2,7 @@ const { serial: test } = require('ava');
 const request = require('supertest');
 const { OK, UNAUTHORIZED, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('http-status');
 const _ = require('lodash');
-const { GH_PROFILE, USER, REPOS } = require('../__fixtures__');
+const { GH_PROFILE, USER, REPOS, METRIC_TYPES } = require('../__fixtures__');
 const { GITHUB_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
@@ -22,6 +22,7 @@ test.before(async t => {
 			token: GITHUB_USER_TOKEN,
 			avatar: GH_PROFILE.photos[0].value,
 			repos: REPOS,
+			metricTypes: METRIC_TYPES,
 		},
 		{
 			returning: true,
