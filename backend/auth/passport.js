@@ -21,6 +21,25 @@ const filterUser = user => {
 
 const containSameElements = (x, y) => _.isEqual(_.sortBy(x), _.sortBy(y));
 
+const setDefaultMetricTypes = async id => {
+	const metricTypes = [
+		{ name: 'stars', selected: true, disabled: false },
+		{ name: 'forks', selected: true, disabled: false },
+		{ name: 'views', selected: false, disabled: true },
+		{ name: 'clones', selected: false, disabled: true },
+	];
+
+	await User.update(
+		{
+			metricTypes,
+		},
+		{
+			where: { id },
+			fields: ['metricTypes'],
+		},
+	);
+};
+
 const strategyCallback = async (accessToken, refreshToken, profile, done) => {
 	const { username, photos } = profile;
 	const emails = await fetchUserEmails(username, accessToken);
@@ -73,6 +92,7 @@ const strategyCallback = async (accessToken, refreshToken, profile, done) => {
 			}
 
 			if (created) {
+				setDefaultMetricTypes(user.id);
 				ingestMetricsJob(user);
 				sendSampleEmailJob(user);
 				sendEmailJob(user);
