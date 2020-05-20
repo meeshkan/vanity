@@ -113,14 +113,42 @@ const fetchUserInstallations = async token => {
 const fetchUserRepoStats = async id => {
 	const userByID = await User.findByPk(id);
 	const user = userByID.get({ plain: true });
+	const selectedMetricTypes = user.metricTypes
+		.filter(metricType => metricType.selected)
+		.map(metricType => metricType.name);
+
 	gitGot = extendGot(user.token);
 	const userRepos = await fetchRepos(user.username);
 	const stats = await extractRepoStats(userRepos);
-	return Promise.all(stats.map(async repo => {
-		repo.views = await viewCount(user.username, repo.name);
-		repo.clones = await cloneCount(user.username, repo.name);
-		return repo;
-	}));
+
+	const repos = await Promise.all(stats
+		.map(repo => {
+			Object.keys(repo).forEach(key => {
+				if (!selectedMetricTypes.includes(key) && key !== 'name') {
+					delete stats[key];
+				}
+			});
+
+			return repo;
+		})
+		.map(async repo => {
+			try {
+				if (selectedMetricTypes.includes('views')) {
+					repo.views = await viewCount(user.username, repo.name);
+				}
+
+				if (selectedMetricTypes.includes('clones')) {
+					repo.clones = await cloneCount(user.username, repo.name);
+				}
+
+				return repo;
+			} catch (_) {
+				return repo;
+			}
+		})
+	);
+
+	return repos;
 };
 
 module.exports = {
