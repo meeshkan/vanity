@@ -21,16 +21,10 @@ const {
 	GITHUB_USER_TOKEN,
 } = process.env;
 
-const GITHUB_SCOPE = [
-	'user:email',
-	'public_repo',
-];
-
 const PASSPORT_DEFAULT_OPTIONS = {
 	clientID: GITHUB_CLIENT_ID,
 	clientSecret: GITHUB_CLIENT_SECRET,
 	callbackURL: GITHUB_REDIRECT_URI,
-	scope: GITHUB_SCOPE,
 };
 
 const PASSPORT_OPTIONS = {
@@ -40,7 +34,6 @@ const PASSPORT_OPTIONS = {
 		clientID: 'GITHUB_CLIENT_ID',
 		clientSecret: 'GITHUB_CLIENT_SECRET',
 		callbackURL: 'GITHUB_REDIRECT_URI',
-		scope: 'GITHUB_SCOPE',
 	},
 };
 
@@ -118,7 +111,6 @@ module.exports = {
 	JWT_SECRET,
 	CORS_OPTIONS,
 	REDIS_URL,
-	GITHUB_SCOPE,
 	LOG_LEVEL,
 	LOG_FILE,
 	QUEUE_CRON,
