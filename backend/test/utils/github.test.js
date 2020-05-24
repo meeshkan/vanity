@@ -7,6 +7,7 @@ const {
 	fetchUserRepos,
 	fetchUserRepoStats,
 	fetchUserEmails,
+	fetchUserInstallations,
 } = require('../../utils/github');
 
 const repoKeys = ['fork', 'name'];
@@ -87,4 +88,13 @@ test('fetchUserEmails() fetches user emails', async t => {
 	t.true(emails.every(containsEmailKeys));
 	const containsEmail = emailObject => emailObject.email.match(emailRegex);
 	t.true(emails.every(containsEmail));
+});
+
+test('fetchUserInstallations() fetches user installations', async t => {
+	const { token } = t.context.user;
+	const installations = await fetchUserInstallations(token);
+	t.is(installations.total_count, 1);
+	t.is(installations.installations[0].account.login, GH_PROFILE.username);
+	t.is(installations.installations[0].app_slug, 'vanity-dev');
+	t.deepEqual(installations.installations[0].permissions, { administration: 'read', metadata: 'read' });
 });
