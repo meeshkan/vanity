@@ -3,7 +3,7 @@ const request = require('supertest');
 const { OK, UNAUTHORIZED, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('http-status');
 const _ = require('lodash');
 const { GH_PROFILE, USER, REPOS, METRIC_TYPES } = require('../__fixtures__');
-const { GITHUB_USER_TOKEN } = require('../../config');
+const { GITHUB_USER_TOKEN, GITHUB_NO_INSTALLATION_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
 const { ingestMetricsJob, sendEmailJob } = require('../../workers/jobs');
@@ -88,6 +88,46 @@ test('GET /api/preferences returns user w/ repos and metric types - authenticate
 	t.true(response.body.repos.every(containsRepoKeys));
 	t.is(response.body.username, username);
 	t.deepEqual(response.body.metricTypes, METRIC_TYPES);
+});
+
+test('GET /api/preferences returns disabled views and clones - authenticated w/o app installation', async t => {
+	const { id, username, avatar } = t.context.user;
+	const user = { id, username, avatar };
+	const token = generateToken(user);
+
+	const ALTERED_METRIC_TYPES = _.cloneDeep(METRIC_TYPES).map(metricType => {
+		if (['views', 'clones'].includes(metricType.name)) {
+			metricType.disabled = true;
+			metricType.selected = false;
+		}
+
+		return metricType;
+	});
+
+	await User.update(
+		{
+			token: GITHUB_NO_INSTALLATION_USER_TOKEN,
+		},
+		{
+			where: { id },
+		}
+	);
+
+	const response = await request(app)
+		.get('/api/preferences')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.deepEqual(response.body.metricTypes, ALTERED_METRIC_TYPES);
+
+	await User.update(
+		{
+			token: GITHUB_USER_TOKEN,
+		},
+		{
+			where: { id },
+		}
+	);
 });
 
 test('POST /api/preferences/repos returns 401 - unaunthenticated', async t => {
