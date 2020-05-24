@@ -90,12 +90,12 @@ test('GET /api/preferences returns user w/ repos and metric types - authenticate
 	t.deepEqual(response.body.metricTypes, METRIC_TYPES);
 });
 
-test('POST /api/preferences returns 401 - unaunthenticated', async t => {
-	const response = await request(app).post('/api/preferences');
+test('POST /api/preferences/repos returns 401 - unaunthenticated', async t => {
+	const response = await request(app).post('/api/preferences/repos');
 	t.is(response.status, UNAUTHORIZED);
 });
 
-test('POST /api/preferences updates repos - authenticated', async t => {
+test('POST /api/preferences/repos updates repos - authenticated', async t => {
 	const { id, username, avatar } = t.context.user;
 	const user = { id, username, avatar };
 	const token = generateToken(user);
@@ -106,7 +106,7 @@ test('POST /api/preferences updates repos - authenticated', async t => {
 	});
 
 	const alteredResponse = await request(app)
-		.post('/api/preferences')
+		.post('/api/preferences/repos')
 		.set('authorization', JSON.stringify({ token }))
 		.send({ repos: ALTERED_REPOS });
 
@@ -116,13 +116,13 @@ test('POST /api/preferences updates repos - authenticated', async t => {
 	t.deepEqual(userByID.get({ plain: true }).repos, ALTERED_REPOS);
 });
 
-test('POST /api/preferences returns 500 - invalid token', async t => {
+test('POST /api/preferences/repos returns 500 - invalid token', async t => {
 	const { username, avatar } = t.context.user;
 	const user = { id: 'invalid id', username, avatar };
 	const token = generateToken(user);
 
 	const response = await request(app)
-		.post('/api/preferences')
+		.post('/api/preferences/repos')
 		.set('authorization', JSON.stringify({ token }))
 		.send({ repos: REPOS });
 
