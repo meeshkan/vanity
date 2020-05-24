@@ -50,7 +50,7 @@ Unsubscribe.getInitialProps = async ({ req, res, query }) => {
 			return res.writeHead(302, { Location: '/' }).end();
 		}
 
-        Router.push('/');
+		Router.push('/');
 	}
 
 	try {

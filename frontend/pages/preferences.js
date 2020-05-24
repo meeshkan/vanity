@@ -8,13 +8,14 @@ import moment from 'moment';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import Repos from '../components/Repos';
+import MetricTypes from '../components/MetricTypes';
 import { withAuthSync } from '../utils/auth';
 import getHost from '../utils/get-host';
 import { cookies, logout } from '../logic/preferences';
 import '../styles/preferences.css';
 
 export const Preferences = props => {
-	const { username, repos, token } = props;
+	const { username, repos, metricTypes, token, appInstalled } = props;
 
 	return (
 		<Layout>
@@ -30,6 +31,15 @@ export const Preferences = props => {
 							{moment().startOf('day').add(9, 'hours').day(8).toString()}
 						</span>
 					</p>
+					<hr />
+					<MetricTypes metricTypes={metricTypes} token={token} />
+					{appInstalled ? <br /> : (
+						<span className='avenir pv3 dib lh-copy'>
+							If you'd like to receive repo <i>views</i> and <i>clones</i>,
+							<br/>please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the VANITY GitHub App</a>.
+						</span>
+					)}
+					<hr />
 					{(repos && repos.length > 0) ?
 						<Repos repos={repos} token={token} /> : (
 							<>
@@ -38,6 +48,7 @@ export const Preferences = props => {
 							</>
 						)}
 					<br />
+					<hr />
 					<div className='pv4'>
 						<a
 							className='link dim f5 link dim ph3 pv2 mb2 dib white bg-blue'
@@ -56,6 +67,8 @@ export const Preferences = props => {
 Preferences.propTypes = {
 	username: PropTypes.string.isRequired,
 	repos: PropTypes.array.isRequired,
+	metricTypes: PropTypes.array.isRequired,
+	appInstalled: PropTypes.bool.isRequired,
 	token: PropTypes.string.isRequired,
 };
 

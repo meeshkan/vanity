@@ -9,6 +9,7 @@ const extendGot = token => token ?
 		prefixUrl: 'https://api.github.com/',
 		headers: {
 			authorization: `token ${token}`,
+			accept: 'application/vnd.github.machine-man-preview+json',
 		},
 		responseType: 'json',
 	}) : got.extend({
@@ -97,20 +98,62 @@ const fetchUserRepos = async (user, token) => {
 	return extractRepoInfo(repos);
 };
 
+const fetchUserEmails = async (user, token) => {
+	gitGot = extendGot(token);
+	const { body: emails } = await restGithub('user/emails');
+	return emails;
+};
+
+const fetchUserInstallations = async token => {
+	gitGot = extendGot(token);
+	const { body: installations } = await restGithub('user/installations');
+	return installations;
+};
+
 const fetchUserRepoStats = async id => {
 	const userByID = await User.findByPk(id);
 	const user = userByID.get({ plain: true });
+	const selectedMetricTypes = user.metricTypes
+		.filter(metricType => metricType.selected)
+		.map(metricType => metricType.name);
+
 	gitGot = extendGot(user.token);
 	const userRepos = await fetchRepos(user.username);
 	const stats = await extractRepoStats(userRepos);
-	return Promise.all(stats.map(async repo => {
-		repo.views = await viewCount(user.username, repo.name);
-		repo.clones = await cloneCount(user.username, repo.name);
-		return repo;
-	}));
+
+	const repos = await Promise.all(stats
+		.map(repo => {
+			Object.keys(repo).forEach(key => {
+				if (!selectedMetricTypes.includes(key) && key !== 'name') {
+					delete stats[key];
+				}
+			});
+
+			return repo;
+		})
+		.map(async repo => {
+			try {
+				if (selectedMetricTypes.includes('views')) {
+					repo.views = await viewCount(user.username, repo.name);
+				}
+
+				if (selectedMetricTypes.includes('clones')) {
+					repo.clones = await cloneCount(user.username, repo.name);
+				}
+
+				return repo;
+			} catch (_) {
+				return repo;
+			}
+		})
+	);
+
+	return repos;
 };
 
 module.exports = {
 	fetchUserRepos,
 	fetchUserRepoStats,
+	fetchUserEmails,
+	fetchUserInstallations,
 };

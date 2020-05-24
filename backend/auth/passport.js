@@ -2,7 +2,7 @@ const passport = require('passport');
 const GithubStrategy = require('passport-github').Strategy;
 const _ = require('lodash');
 const { User } = require('../models');
-const { fetchUserRepos } = require('../utils/github');
+const { fetchUserRepos, fetchUserEmails } = require('../utils/github');
 const {
 	ingestMetricsJob,
 	sendEmailJob,
@@ -10,7 +10,7 @@ const {
 } = require('../workers/jobs');
 const { PASSPORT_OPTIONS, NODE_ENV } = require('../config');
 
-const getPrimaryEmail = emails => emails.filter(email => email.primary)[0].value; // TODO: ask user which email he/she prefers to use
+const getPrimaryEmail = emails => emails.filter(email => email.primary)[0].email; // TODO: ask user which email he/she prefers to use
 
 const filterUser = user => {
 	['admin', 'token', 'email', 'updatedAt', 'createdAt', 'repos'].forEach(key => {
@@ -21,8 +21,28 @@ const filterUser = user => {
 
 const containSameElements = (x, y) => _.isEqual(_.sortBy(x), _.sortBy(y));
 
+const setDefaultMetricTypes = async id => {
+	const metricTypes = [
+		{ name: 'stars', selected: true, disabled: false },
+		{ name: 'forks', selected: true, disabled: false },
+		{ name: 'views', selected: false, disabled: true },
+		{ name: 'clones', selected: false, disabled: true },
+	];
+
+	await User.update(
+		{
+			metricTypes,
+		},
+		{
+			where: { id },
+			fields: ['metricTypes'],
+		},
+	);
+};
+
 const strategyCallback = async (accessToken, refreshToken, profile, done) => {
-	const { username, emails, photos } = profile;
+	const { username, photos } = profile;
+	const emails = await fetchUserEmails(username, accessToken);
 	const email = getPrimaryEmail(emails);
 	let latestRepos = await fetchUserRepos(username, accessToken);
 	User.upsert(
@@ -72,6 +92,7 @@ const strategyCallback = async (accessToken, refreshToken, profile, done) => {
 			}
 
 			if (created) {
+				setDefaultMetricTypes(user.id);
 				ingestMetricsJob(user);
 				sendSampleEmailJob(user);
 				sendEmailJob(user);

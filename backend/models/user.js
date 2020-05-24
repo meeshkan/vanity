@@ -39,6 +39,10 @@ module.exports = (Sequelize, DataTypes) => {
 			type: DataTypes.JSON,
 			allowNull: true,
 		},
+		metricTypes: {
+			type: DataTypes.JSON,
+			allowNull: true,
+		},
 	});
 
 	User.associate = models => {

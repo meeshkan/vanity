@@ -11,7 +11,7 @@ export function logout() {
 
 export async function updateRepos(token, repos) {
 	try {
-		const response = await fetch('/api/preferences', {
+		const response = await fetch('/api/preferences/repos', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -19,6 +19,26 @@ export async function updateRepos(token, repos) {
 				'content-type': 'application/json',
 			},
 			body: JSON.stringify({ repos }),
+		});
+
+		if (response.ok) {
+			Router.push('/preferences');
+		}
+	} catch (error) {
+		console.log(error); // TODO: handle error
+	}
+}
+
+export async function updateMetricTypes(token, metricTypes) {
+	try {
+		const response = await fetch('/api/preferences/metric-types', {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				authorization: JSON.stringify({ token }),
+				'content-type': 'application/json',
+			},
+			body: JSON.stringify({ metricTypes }),
 		});
 
 		if (response.ok) {

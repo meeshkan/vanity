@@ -4,6 +4,7 @@ const USER = require('./user');
 const SNAPSHOT = require('./snapshot');
 const SENDGRID_SUCCESS = require('./sendgrid-success');
 const REPOS = require('./repos');
+const METRIC_TYPES = require('./metric-types');
 const GH_PROFILE = require('./gh-profile');
 
 module.exports = {
@@ -13,5 +14,6 @@ module.exports = {
 	SNAPSHOT,
 	SENDGRID_SUCCESS,
 	REPOS,
+	METRIC_TYPES,
 	GH_PROFILE,
 };
