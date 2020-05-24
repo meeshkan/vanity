@@ -24,11 +24,13 @@ Alternatively, to deploy `vanity` manually:
 ~ ❯❯❯ npm install -g now
 ```
 
-#### 2. Create GitHub OAuth application
+#### 2. Create GitHub App
 
-[Follow these steps](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/) to create a GitHub OAuth app.
+[Follow these steps](https://developer.github.com/apps/building-github-apps/creating-a-github-app/) to create a GitHub App.
 
 Make sure the callback URL is set to the [now alias](https://zeit.co/docs/configuration#project/alias) (or custom domain) that you are going to be using, plus the endpoint `/auth/github/callback` (i.e., `{DOMAIN}.now.sh/auth/github/callback`, such as `vanity.meeshkan.now.sh/auth/github/callback`).
+
+Additionally, change the "Administration" *repository* permissions and "Email addresses" *user* premissions to read-only access.
 
 #### 3. Start `Redis` and `PostgreSQL` instances
 
@@ -63,9 +65,9 @@ If you're using Docker, run:
 ~/vanity ❯❯❯ # docker-compose down  # Teardown when done
 ```
 
-#### 2. Create GitHub OAuth application
+#### 2. Create GitHub App
 
-[Follow these steps](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/) to create a GitHub OAuth app. Make sure the callback URL is set to `http://localhost:3000/auth/github/callback`.
+[Follow these steps](https://developer.github.com/apps/building-github-apps/creating-a-github-app/) to create a GitHub App. Make sure the callback URL is set to `http://localhost:3000/auth/github/callback`. Finally, change the "Administration" repository permissions to read-only access and "Email addresses" user premissions to read-only access as well.
 
 #### 3. Create `.env`
 
