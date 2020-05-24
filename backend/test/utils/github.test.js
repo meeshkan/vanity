@@ -36,7 +36,8 @@ test.before(async t => {
 });
 
 test('fetchUserRepos() fetches user repos', async t => {
-	const repos = await fetchUserRepos(t.context.user.username, t.context.user.token);
+	const { username, token } = t.context.user;
+	const repos = await fetchUserRepos(username, token);
 	t.true(repos.length > 0);
 	t.true(repos.every(containsRepoKeys));
 });
