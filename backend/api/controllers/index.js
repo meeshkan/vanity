@@ -19,7 +19,7 @@ const preferences = async (req, res) => {
 		user.appInstalled = installations.total_count > 0;
 		user.metricTypes = metricTypes.map(metricType => {
 			if (metricTypesRequiringInstallation.includes(metricType.name)) {
-				if (installations.total_count > 0) {
+				if (user.appInstalled) {
 					metricType.disabled = false;
 				} else {
 					metricType.selected = false;
