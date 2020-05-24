@@ -11,7 +11,7 @@ export function logout() {
 
 export async function updateRepos(token, repos) {
 	try {
-		const response = await fetch('/api/preferences', {
+		const response = await fetch('/api/preferences/repos', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
