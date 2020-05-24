@@ -32,7 +32,6 @@ test('user was stored in DB', async t => {
 	t.false(user.admin);
 	t.is(user.avatar, GH_PROFILE.photos[0].value);
 	t.true(user.createdAt instanceof Date);
-	t.is(user.email, USER.email);
 	t.is(user.id, id);
 	t.true(Array.isArray(user.repos));
 	t.true(user.repos.length > 0);
