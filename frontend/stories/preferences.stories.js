@@ -9,6 +9,13 @@ export const fewRepos = () => (
 		token='foo'
 		updateRepos={() => {}}
 		login={() => {}}
+		appInstalled={true}
+		metricTypes={[
+			{ name: 'stars', selected: true, disabled: false },
+			{ name: 'forks', selected: false, disabled: false },
+			{ name: 'views', selected: true, disabled: false },
+			{ name: 'clones', selected: true, disabled: false },
+		]}
 		repos={[
 			{ name: 'repo-one', fork: false, selected: false },
 			{ name: 'repo-two', fork: true, selected: false },
@@ -23,6 +30,13 @@ export const manyRepos = () => (
 		token='foo'
 		updateRepos={() => {}}
 		login={() => {}}
+		appInstalled={false}
+		metricTypes={[
+			{ name: 'stars', selected: true, disabled: false },
+			{ name: 'forks', selected: true, disabled: false },
+			{ name: 'views', selected: false, disabled: true },
+			{ name: 'clones', selected: false, disabled: true },
+		]}
 		repos={[
 			{ name: 'repo-one', fork: false, selected: false },
 			{ name: 'repo-two', fork: true, selected: false },
