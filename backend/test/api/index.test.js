@@ -175,6 +175,28 @@ test('POST /api/preferences/metric-types returns 401 - unaunthenticated', async 
 	t.is(response.status, UNAUTHORIZED);
 });
 
+test('POST /api/preferences/metric-types updates metric types - authenticated', async t => {
+	const { id, username, avatar } = t.context.user;
+	const user = { id, username, avatar };
+	const token = generateToken(user);
+
+	const ALTERED_METRIC_TYPES = _.cloneDeep(METRIC_TYPES).map(metricType => {
+		metricType.selected = false;
+		return metricType;
+	});
+
+	const alteredResponse = await request(app)
+		.post('/api/preferences/metric-types')
+		.set('authorization', JSON.stringify({ token }))
+		.send({ metricTypes: ALTERED_METRIC_TYPES });
+
+	t.is(alteredResponse.status, OK);
+
+	const userByID = await User.findByPk(id);
+	t.deepEqual(userByID.get({ plain: true }).metricTypes, ALTERED_METRIC_TYPES);
+});
+
+
 test('POST /api/unsubscribe returns 401 - without body', async t => {
 	const response = await request(app).post('/api/unsubscribe');
 	t.is(response.status, UNAUTHORIZED);
