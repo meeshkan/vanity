@@ -10,7 +10,7 @@ const {
 const repoKeys = ['fork', 'name'];
 const containsRepoKeys = repo => repoKeys.every(key => key in repo);
 
-const repoStatKeys = ['forks', 'name', 'stars', 'views', 'clones'];
+let repoStatKeys = [];
 const containsRepoStatKeys = repo => repoStatKeys.every(key => key in repo);
 
 test.before(async t => {
@@ -36,9 +36,12 @@ test('fetchUserRepos() fetches user repos', async t => {
 	t.true(repos.every(containsRepoKeys));
 });
 
-test('fetchUserRepoStats() fetches user repo stats', async t => {
+test('fetchUserRepoStats() fetches user repo stats with ALL metric types selected', async t => {
 	t.timeout(10000);
 	const repos = await fetchUserRepoStats(t.context.user.id);
 	t.true(repos.length > 0);
+	repoStatKeys = METRIC_TYPES
+		.filter(metricType => metricType.selected)
+		.map(metricType => metricType.name);
 	t.true(repos.every(containsRepoStatKeys));
 });
