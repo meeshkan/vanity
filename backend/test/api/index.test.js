@@ -69,7 +69,7 @@ test('GET /api/preferences returns 401 - unaunthenticated', async t => {
 	t.is(response.status, UNAUTHORIZED);
 });
 
-test('GET /api/preferences returns user w/ repos - authenticated', async t => {
+test('GET /api/preferences returns user w/ repos and metric types - authenticated', async t => {
 	const { id, username, avatar } = t.context.user;
 	const user = { id, username, avatar };
 	const token = generateToken(user);
@@ -87,6 +87,7 @@ test('GET /api/preferences returns user w/ repos - authenticated', async t => {
 	t.is(response.body.repos.length, REPOS.length);
 	t.true(response.body.repos.every(containsRepoKeys));
 	t.is(response.body.username, username);
+	t.deepEqual(response.body.metricTypes, METRIC_TYPES);
 });
 
 test('POST /api/preferences returns 401 - unaunthenticated', async t => {
