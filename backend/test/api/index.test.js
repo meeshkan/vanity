@@ -196,6 +196,19 @@ test('POST /api/preferences/metric-types updates metric types - authenticated', 
 	t.deepEqual(userByID.get({ plain: true }).metricTypes, ALTERED_METRIC_TYPES);
 });
 
+test('POST /api/preferences/metric-types returns 500 - invalid token', async t => {
+	const { username, avatar } = t.context.user;
+	const user = { id: 'invalid id', username, avatar };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.post('/api/preferences/metric-types')
+		.set('authorization', JSON.stringify({ token }))
+		.send({ metricTypes: METRIC_TYPES });
+
+	t.is(response.status, INTERNAL_SERVER_ERROR);
+	t.is(response.body.name, 'SequelizeDatabaseError');
+});
 
 test('POST /api/unsubscribe returns 401 - without body', async t => {
 	const response = await request(app).post('/api/unsubscribe');
