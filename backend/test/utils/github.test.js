@@ -6,6 +6,7 @@ const { GH_PROFILE, USER, METRIC_TYPES } = require('../__fixtures__');
 const {
 	fetchUserRepos,
 	fetchUserRepoStats,
+	fetchUserEmails,
 } = require('../../utils/github');
 
 const repoKeys = ['fork', 'name'];
@@ -13,6 +14,8 @@ const containsRepoKeys = repo => repoKeys.every(key => key in repo);
 
 let repoStatKeys = [];
 const containsRepoStatKeys = repo => repoStatKeys.every(key => key in repo);
+
+const emailRegex = /.+@.+\..+/;
 
 test.before(async t => {
 	await User.sync();
@@ -76,3 +79,12 @@ test('fetchUserRepoStats() fetches user repo stats with SOME metric types select
 	t.true(repos.every(containsRepoStatKeys));
 });
 
+test('fetchUserEmails() fetches user emails', async t => {
+	const { username, token } = t.context.user;
+	const emails = await fetchUserEmails(username, token);
+	const emailKeys = ['email', 'primary', 'verified', 'visibility'];
+	const containsEmailKeys = emailObject => emailKeys.every(key => key in emailObject);
+	t.true(emails.every(containsEmailKeys));
+	const containsEmail = emailObject => emailObject.email.match(emailRegex);
+	t.true(emails.every(containsEmail));
+});
