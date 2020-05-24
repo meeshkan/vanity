@@ -170,6 +170,11 @@ test('POST /api/preferences/repos returns 500 - invalid token', async t => {
 	t.is(response.body.name, 'SequelizeDatabaseError');
 });
 
+test('POST /api/preferences/metric-types returns 401 - unaunthenticated', async t => {
+	const response = await request(app).post('/api/preferences/metric-types');
+	t.is(response.status, UNAUTHORIZED);
+});
+
 test('POST /api/unsubscribe returns 401 - without body', async t => {
 	const response = await request(app).post('/api/unsubscribe');
 	t.is(response.status, UNAUTHORIZED);
