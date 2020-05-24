@@ -12,7 +12,7 @@ function MetricType({ metric, index, handleToggle }) {
 			<th className='bb b--white-20 tr pb3 pv3'>
 				<Toggle
 					defaultChecked={metric.selected}
-                    disabled={metric.disabled}
+					disabled={metric.disabled}
 					icons={false}
 					onChange={event => handleToggle(event, index)}
 				/>
