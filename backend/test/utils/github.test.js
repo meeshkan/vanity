@@ -1,4 +1,5 @@
 const test = require('ava');
+const _ = require('lodash');
 const { User } = require('../../models');
 const { GITHUB_USER_TOKEN } = require('../../config');
 const { GH_PROFILE, USER, METRIC_TYPES } = require('../__fixtures__');
@@ -45,3 +46,33 @@ test('fetchUserRepoStats() fetches user repo stats with ALL metric types selecte
 		.map(metricType => metricType.name);
 	t.true(repos.every(containsRepoStatKeys));
 });
+
+test('fetchUserRepoStats() fetches user repo stats with SOME metric types selected', async t => {
+	t.timeout(10000);
+	const { id } = t.context.user;
+
+	const ALTERED_METRIC_TYPES = _.cloneDeep(METRIC_TYPES).map(metricType => {
+		if (['views', 'stars'].includes(metricType.name)) {
+			metricType.selected = false;
+		}
+
+		return metricType;
+	});
+
+	await User.update(
+		{
+			metricTypes: ALTERED_METRIC_TYPES,
+		},
+		{
+			where: { id },
+		}
+	);
+
+	const repos = await fetchUserRepoStats(id);
+	t.true(repos.length > 0);
+	repoStatKeys = ALTERED_METRIC_TYPES
+		.filter(metricType => metricType.selected)
+		.map(metricType => metricType.name);
+	t.true(repos.every(containsRepoStatKeys));
+});
+
