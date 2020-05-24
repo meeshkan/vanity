@@ -28,3 +28,23 @@ export async function updateRepos(token, repos) {
 		console.log(error); // TODO: handle error
 	}
 }
+
+export async function updateMetricTypes(token, metricTypes) {
+	try {
+		const response = await fetch('/api/preferences/metric-types', {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				authorization: JSON.stringify({ token }),
+				'content-type': 'application/json',
+			},
+			body: JSON.stringify({ metricTypes }),
+		});
+
+		if (response.ok) {
+			Router.push('/preferences');
+		}
+	} catch (error) {
+		console.log(error); // TODO: handle error
+	}
+}
