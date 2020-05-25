@@ -13,8 +13,7 @@ const {
 const repoKeys = ['fork', 'name'];
 const containsRepoKeys = repo => repoKeys.every(key => key in repo);
 
-let repoStatKeys = [];
-const containsRepoStatKeys = repo => repoStatKeys.every(key => key in repo);
+const containsRepoStatKeys = (repo, repoStatKeys) => repoStatKeys.every(key => key in repo);
 
 const emailRegex = /.+@.+\..+/;
 
@@ -46,10 +45,10 @@ test('fetchUserRepoStats() fetches user repo stats with ALL metric types selecte
 	t.timeout(10000);
 	const repos = await fetchUserRepoStats(t.context.user.id);
 	t.true(repos.length > 0);
-	repoStatKeys = METRIC_TYPES
+	const repoStatKeys = METRIC_TYPES
 		.filter(metricType => metricType.selected)
 		.map(metricType => metricType.name);
-	t.true(repos.every(containsRepoStatKeys));
+	t.true(repos.every(repo => containsRepoStatKeys(repo, repoStatKeys)));
 });
 
 test('fetchUserRepoStats() fetches user repo stats with SOME metric types selected', async t => {
@@ -75,10 +74,10 @@ test('fetchUserRepoStats() fetches user repo stats with SOME metric types select
 
 	const repos = await fetchUserRepoStats(id);
 	t.true(repos.length > 0);
-	repoStatKeys = ALTERED_METRIC_TYPES
+	const repoStatKeys = ALTERED_METRIC_TYPES
 		.filter(metricType => metricType.selected)
 		.map(metricType => metricType.name);
-	t.true(repos.every(containsRepoStatKeys));
+	t.true(repos.every(repo => containsRepoStatKeys(repo, repoStatKeys)));
 });
 
 test('fetchUserEmails() fetches user emails', async t => {
