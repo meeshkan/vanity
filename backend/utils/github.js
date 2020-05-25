@@ -2,31 +2,46 @@ const got = require('got');
 const array = require('lodash/array');
 const { User } = require('../models');
 
-let gitGot;
+const gotOptions = {
+	prefixUrl: 'https://api.github.com/',
+	responseType: 'json',
+};
 
-const extendGot = token => token ?
-	got.extend({
-		prefixUrl: 'https://api.github.com/',
-		headers: {
-			authorization: `token ${token}`,
-			accept: 'application/vnd.github.machine-man-preview+json',
-		},
-		responseType: 'json',
-	}) : got.extend({
-		prefixUrl: 'https://api.github.com/',
-		responseType: 'json',
-	});
-
-const restGithub = path => gitGot.get(path);
-
-const fetchRepos = async (user, pageNumber = 1) => {
-	const { body: repos } = await restGithub(`users/${user}/repos?per_page=100&page=${pageNumber}`);
-	if (repos.length < 100) {
-		return repos;
+class RESTGitHubClient {
+	constructor(token) {
+		this.request = token ?
+			got.extend({
+				headers: {
+					authorization: `token ${token}`,
+					accept: 'application/vnd.github.machine-man-preview+json',
+				},
+				...gotOptions,
+			}) : got.extend(gotOptions);
 	}
 
-	return array.concat(repos, await fetchRepos(user, ++pageNumber));
-};
+	get(path) {
+		return this.request.get(path);
+	}
+
+	async fetchRepos(user, pageNumber = 1) {
+		const { body: repos } = await this.get(`users/${user}/repos?per_page=100&page=${pageNumber}`);
+		if (repos.length < 100) {
+			return repos;
+		}
+
+		return array.concat(repos, await this.fetchRepos(user, ++pageNumber));
+	}
+
+	async viewCount(user, repo) {
+		const { body: views } = await this.get(`repos/${user}/${repo}/traffic/views`);
+		return views.count;
+	}
+
+	async cloneCount(user, repo) {
+		const { body: clones } = await this.get(`repos/${user}/${repo}/traffic/clones`);
+		return clones.count;
+	}
+}
 
 const extractRepoInfo = repos => repos.map(repo => {
 	return {
@@ -42,16 +57,6 @@ const extractRepoStats = repos => repos.map(repo => {
 		forks: repo.forks_count,
 	};
 });
-
-const viewCount = async (user, repo) => {
-	const { body: views } = await restGithub(`repos/${user}/${repo}/traffic/views`);
-	return views.count;
-};
-
-const cloneCount = async (user, repo) => {
-	const { body: clones } = await restGithub(`repos/${user}/${repo}/traffic/clones`);
-	return clones.count;
-};
 
 /* TODO: collect further metrics
 const issueCount = async (user, repo) => {
@@ -93,20 +98,20 @@ const commitCount = async (user, repo, pageNumber = 0) => {
 */
 
 const fetchUserRepos = async (user, token) => {
-	gitGot = extendGot(token);
-	const repos = await fetchRepos(user);
+	const client = new RESTGitHubClient(token);
+	const repos = await client.fetchRepos(user);
 	return extractRepoInfo(repos);
 };
 
 const fetchUserEmails = async (user, token) => {
-	gitGot = extendGot(token);
-	const { body: emails } = await restGithub('user/emails');
+	const client = new RESTGitHubClient(token);
+	const { body: emails } = await client.get('user/emails');
 	return emails;
 };
 
 const fetchUserInstallations = async token => {
-	gitGot = extendGot(token);
-	const { body: installations } = await restGithub('user/installations');
+	const client = new RESTGitHubClient(token);
+	const { body: installations } = await client.get('user/installations');
 	return installations;
 };
 
@@ -117,8 +122,8 @@ const fetchUserRepoStats = async id => {
 		.filter(metricType => metricType.selected)
 		.map(metricType => metricType.name);
 
-	gitGot = extendGot(user.token);
-	const userRepos = await fetchRepos(user.username);
+	const client = new RESTGitHubClient(user.token);
+	const userRepos = await client.fetchRepos(user.username);
 	const stats = await extractRepoStats(userRepos);
 
 	const repos = await Promise.all(stats
@@ -134,11 +139,11 @@ const fetchUserRepoStats = async id => {
 		.map(async repo => {
 			try {
 				if (selectedMetricTypes.includes('views')) {
-					repo.views = await viewCount(user.username, repo.name);
+					repo.views = await client.viewCount(user.username, repo.name);
 				}
 
 				if (selectedMetricTypes.includes('clones')) {
-					repo.clones = await cloneCount(user.username, repo.name);
+					repo.clones = await client.cloneCount(user.username, repo.name);
 				}
 
 				return repo;
