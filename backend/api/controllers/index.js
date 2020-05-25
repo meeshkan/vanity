@@ -45,16 +45,20 @@ const updateRepos = async (req, res) => {
 		const auth = req.headers.authorization;
 		const { token } = JSON.parse(auth);
 		const user = await verifyToken(token);
-		User.update(
-			{ repos },
-			{
-				where: {
-					id: user.id,
-				},
-			}
-		)
-			.then(returned => res.status(OK).json({ res: returned }))
-			.catch(error => res.status(UNAUTHORIZED).json(error));
+		try {
+			const returned = await User.update(
+				{ repos },
+				{
+					where: {
+						id: user.id,
+					},
+				}
+			);
+
+			return res.status(OK).json({ res: returned });
+		} catch (error) {
+			return res.status(UNAUTHORIZED).json(error);
+		}
 	} catch (error) {
 		res.status(UNAUTHORIZED).json(UnauthorizedError);
 	}
@@ -66,16 +70,20 @@ const updateMetricTypes = async (req, res) => {
 		const auth = req.headers.authorization;
 		const { token } = JSON.parse(auth);
 		const user = await verifyToken(token);
-		User.update(
-			{ metricTypes },
-			{
-				where: {
-					id: user.id,
-				},
-			}
-		)
-			.then(returned => res.status(OK).json({ res: returned }))
-			.catch(error => res.status(UNAUTHORIZED).json(error));
+		try {
+			const returned = await User.update(
+				{ metricTypes },
+				{
+					where: {
+						id: user.id,
+					},
+				}
+			);
+
+			return res.status(OK).json({ res: returned });
+		} catch (error) {
+			return res.status(UNAUTHORIZED).json(error);
+		}
 	} catch (error) {
 		res.status(UNAUTHORIZED).json(UnauthorizedError);
 	}
