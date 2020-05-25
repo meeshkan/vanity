@@ -156,7 +156,7 @@ test('POST /api/preferences/repos updates repos - authenticated', async t => {
 	t.deepEqual(userByID.get({ plain: true }).repos, ALTERED_REPOS);
 });
 
-test('POST /api/preferences/repos returns 500 - invalid token', async t => {
+test('POST /api/preferences/repos returns 401 - invalid token', async t => {
 	const { username, avatar } = t.context.user;
 	const user = { id: 'invalid id', username, avatar };
 	const token = generateToken(user);
@@ -166,7 +166,7 @@ test('POST /api/preferences/repos returns 500 - invalid token', async t => {
 		.set('authorization', JSON.stringify({ token }))
 		.send({ repos: REPOS });
 
-	t.is(response.status, INTERNAL_SERVER_ERROR);
+	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.name, 'SequelizeDatabaseError');
 });
 
@@ -196,7 +196,7 @@ test('POST /api/preferences/metric-types updates metric types - authenticated', 
 	t.deepEqual(userByID.get({ plain: true }).metricTypes, ALTERED_METRIC_TYPES);
 });
 
-test('POST /api/preferences/metric-types returns 500 - invalid token', async t => {
+test('POST /api/preferences/metric-types returns 401 - invalid token', async t => {
 	const { username, avatar } = t.context.user;
 	const user = { id: 'invalid id', username, avatar };
 	const token = generateToken(user);
@@ -206,7 +206,7 @@ test('POST /api/preferences/metric-types returns 500 - invalid token', async t =
 		.set('authorization', JSON.stringify({ token }))
 		.send({ metricTypes: METRIC_TYPES });
 
-	t.is(response.status, INTERNAL_SERVER_ERROR);
+	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.name, 'SequelizeDatabaseError');
 });
 
