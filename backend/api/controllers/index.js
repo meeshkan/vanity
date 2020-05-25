@@ -5,7 +5,7 @@ const { ingestMetrics, sendEmail } = require('../../workers/queues');
 const { User } = require('../../models');
 const { fetchUserInstallations } = require('../../utils/github');
 
-const metricTypesRequiringInstallation = ['views', 'clones'];
+const METRIC_TYPES_REQUIRING_INSTALLATION = ['views', 'clones'];
 
 const preferences = async (req, res) => {
 	try {
@@ -18,7 +18,7 @@ const preferences = async (req, res) => {
 		const installations = await fetchUserInstallations(accessToken);
 		user.appInstalled = installations.total_count > 0;
 		user.metricTypes = metricTypes.map(metricType => {
-			if (metricTypesRequiringInstallation.includes(metricType.name)) {
+			if (METRIC_TYPES_REQUIRING_INSTALLATION.includes(metricType.name)) {
 				if (user.appInstalled) {
 					metricType.disabled = false;
 				} else {

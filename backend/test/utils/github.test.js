@@ -10,12 +10,12 @@ const {
 	fetchUserInstallations,
 } = require('../../utils/github');
 
-const repoKeys = ['fork', 'name'];
-const containsRepoKeys = repo => repoKeys.every(key => key in repo);
+const REPO_KEYS = ['fork', 'name'];
+const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
 
 const containsRepoStatKeys = (repo, repoStatKeys) => repoStatKeys.every(key => key in repo);
 
-const emailRegex = /.+@.+\..+/;
+const EMAIL_REGEX = /.+@.+\..+/;
 
 test.before(async t => {
 	await User.sync();
@@ -86,7 +86,7 @@ test('fetchUserEmails() fetches user emails', async t => {
 	const emailKeys = ['email', 'primary', 'verified', 'visibility'];
 	const containsEmailKeys = emailObject => emailKeys.every(key => key in emailObject);
 	t.true(emails.every(containsEmailKeys));
-	const containsEmail = emailObject => emailObject.email.match(emailRegex);
+	const containsEmail = emailObject => emailObject.email.match(EMAIL_REGEX);
 	t.true(emails.every(containsEmail));
 });
 

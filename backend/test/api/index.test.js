@@ -10,8 +10,8 @@ const { ingestMetricsJob, sendEmailJob } = require('../../workers/jobs');
 const { User } = require('../../models');
 const app = require('../../server');
 
-const repoKeys = ['name', 'fork', 'selected'];
-const containsRepoKeys = repo => repoKeys.every(key => key in repo);
+const REPO_KEYS = ['name', 'fork', 'selected'];
+const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
 
 test.before(async t => {
 	await User.sync();

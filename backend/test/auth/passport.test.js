@@ -4,8 +4,8 @@ const { GH_PROFILE, USER } = require('../__fixtures__');
 const { User } = require('../../models');
 const { GITHUB_USER_TOKEN } = require('../../config');
 
-const userRepoKeys = ['name', 'fork', 'selected'];
-const containsUserRepoKeys = repo => userRepoKeys.every(key => key in repo);
+const USER_REPO_KEYS = ['name', 'fork', 'selected'];
+const containsUserRepoKeys = repo => USER_REPO_KEYS.every(key => key in repo);
 
 test.before(async t => {
 	await User.sync();

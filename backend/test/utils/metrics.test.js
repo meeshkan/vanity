@@ -14,16 +14,16 @@ const {
 	fetchComparison,
 } = require('../../utils/metrics');
 
-const repoKeys = ['name', 'stars', 'forks', 'views', 'clones'];
-const containsRepoKeys = repo => repoKeys.every(key => key in repo);
+const REPO_KEYS = ['name', 'stars', 'forks', 'views', 'clones'];
+const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
 
-const comparsionKeys = ['latest', 'difference'];
-const containsComparisonKeys = repo => repoKeys.every(key => {
+const COMPARISON_KEYS = ['latest', 'difference'];
+const containsComparisonKeys = repo => REPO_KEYS.every(key => {
 	if (key === 'name') {
 		return true;
 	}
 
-	return comparsionKeys.every(comparsionKey => comparsionKey in repo[key]);
+	return COMPARISON_KEYS.every(comparsionKey => comparsionKey in repo[key]);
 });
 
 const dateIsNDaysAgo = (date, days) => moment(date).add(days, 'days').isSame(moment(), 'day');
