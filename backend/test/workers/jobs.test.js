@@ -18,24 +18,6 @@ const user = {
 	username: USER.username,
 };
 
-test.before('pre-test cleanup', t => {
-	const queues = [ingestMetrics, sendEmail, sendSampleEmail];
-	const states = ['delayed', 'wait', 'active', 'completed', 'failed'];
-	queues.forEach(queue => {
-		states.forEach(state => queue.clean(0, state));
-	});
-});
-
-test.after('post-test cleanup', async t => {
-	const repeatableQueues = [ingestMetrics, sendEmail];
-	repeatableQueues.forEach(async queue => {
-		const jobs = await queue.getRepeatableJobs();
-		jobs.forEach(job => {
-			queue.removeRepeatableByKey(job.key);
-		});
-	});
-});
-
 test('ingestMetricsJob creates job', async t => {
 	const job = await ingestMetricsJob(user);
 	t.is(job.returnvalue, null);
@@ -44,6 +26,7 @@ test('ingestMetricsJob creates job', async t => {
 	t.deepEqual(job.data, { userID: user.id });
 	t.regex(job.id, /repeat:[a-z0-9]+:\d+/);
 	t.true(job.delay > 0);
+	job.remove();
 
 	const [taskedJob] = await ingestMetrics.getRepeatableJobs();
 	t.is(taskedJob.cron, QUEUE_CRON.METRICS);
@@ -54,6 +37,7 @@ test('ingestMetricsJob creates job', async t => {
 	t.is(taskedJob.name, '__default__');
 	t.true(taskedJob.next > 0);
 	t.is(taskedJob.tz, null);
+	ingestMetrics.removeRepeatableByKey(taskedJob.key);
 });
 
 test('sendEmailJob creates job', async t => {
@@ -64,6 +48,7 @@ test('sendEmailJob creates job', async t => {
 	t.deepEqual(job.data.user, user);
 	t.regex(job.id, /repeat:[a-z0-9]+:\d+/);
 	t.true(job.delay > 0);
+	job.remove();
 
 	const [taskedJob] = await sendEmail.getRepeatableJobs();
 	t.is(taskedJob.cron, QUEUE_CRON.EMAIL);
@@ -74,6 +59,7 @@ test('sendEmailJob creates job', async t => {
 	t.is(taskedJob.name, '__default__');
 	t.true(taskedJob.next > 0);
 	t.is(taskedJob.tz, null);
+	sendEmail.removeRepeatableByKey(taskedJob.key);
 });
 
 test('sendSampleEmailJob creates job', async t => {
@@ -86,6 +72,7 @@ test('sendSampleEmailJob creates job', async t => {
 	t.deepEqual(job.data.user, { ...user, ...selectedRepos });
 	t.regex(job.id, /\d+/);
 	t.is(job.delay, 0);
+	job.discard();
 
 	const [taskedJob] = await sendSampleEmail.getRepeatableJobs();
 	t.is(taskedJob, undefined);

@@ -31,24 +31,6 @@ test.before(async t => {
 	t.context.user = user.get({ plain: true });
 });
 
-test.before('pre-test cleanup', t => {
-	const queues = [ingestMetrics, sendEmail];
-	const states = ['delayed', 'wait', 'active', 'completed', 'failed'];
-	queues.forEach(queue => {
-		states.forEach(state => queue.clean(0, state));
-	});
-});
-
-test.after('post-test cleanup', async t => {
-	const repeatableQueues = [ingestMetrics, sendEmail];
-	repeatableQueues.forEach(async queue => {
-		const jobs = await queue.getRepeatableJobs();
-		jobs.forEach(job => {
-			queue.removeRepeatableByKey(job.key);
-		});
-	});
-});
-
 test.after.always('cleanup', async t => {
 	if (t.context.user.id) {
 		await User.destroy({

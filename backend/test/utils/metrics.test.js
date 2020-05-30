@@ -57,6 +57,24 @@ test.before(async t => {
 	t.context.snapshotId = snapshot.get({ plain: true }).id;
 });
 
+test.after.always('cleanup', async t => {
+	if (t.context.userId) {
+		await User.destroy({
+			where: {
+				id: t.context.userId,
+			},
+		});
+	}
+
+	if (t.context.snapshotId) {
+		await Snapshot.destroy({
+			where: {
+				userId: t.context.snapshotId,
+			},
+		});
+	}
+});
+
 test('userSnapshots() finds user snapshots', async t => {
 	const snapshots = await userSnapshots(t.context.userId);
 	t.true(snapshots.length > 0);

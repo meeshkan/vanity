@@ -34,6 +34,16 @@ test.before(async t => {
 	t.context.user = user.get({ plain: true });
 });
 
+test.after.always('cleanup', async t => {
+	if (t.context.user.id) {
+		await User.destroy({
+			where: {
+				id: t.context.user.id,
+			},
+		});
+	}
+});
+
 test('fetchUserRepos() fetches user repos', async t => {
 	const { username, token } = t.context.user;
 	const repos = await fetchUserRepos(username, token);
