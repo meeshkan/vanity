@@ -16,8 +16,8 @@ const containsRepoStatKeys = (repo, repoStatKeys) => repoStatKeys.every(key => k
 
 const EMAIL_REGEX = /.+@.+\..+/;
 
-test.before('create test user', createTestUser);
-test.after.always('destroy test user', destroyTestUser);
+test.serial.before('create test user', createTestUser);
+test.serial.after.always('destroy test user', destroyTestUser);
 
 test('fetchUserRepos() fetches user repos', async t => {
 	const { username, token } = t.context.user;
@@ -26,7 +26,7 @@ test('fetchUserRepos() fetches user repos', async t => {
 	t.true(repos.every(containsRepoKeys));
 });
 
-test('fetchUserRepoStats() fetches user repo stats with ALL metric types selected', async t => {
+test.serial('fetchUserRepoStats() fetches user repo stats with ALL metric types selected', async t => {
 	t.timeout(10000);
 	const repos = await fetchUserRepoStats(t.context.user.id);
 	t.true(repos.length > 0);
@@ -36,7 +36,7 @@ test('fetchUserRepoStats() fetches user repo stats with ALL metric types selecte
 	t.true(repos.every(repo => containsRepoStatKeys(repo, repoStatKeys)));
 });
 
-test('fetchUserRepoStats() fetches user repo stats with SOME metric types selected', async t => {
+test.serial('fetchUserRepoStats() fetches user repo stats with SOME metric types selected', async t => {
 	t.timeout(10000);
 	const { id } = t.context.user;
 

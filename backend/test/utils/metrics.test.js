@@ -1,4 +1,4 @@
-const { serial: test } = require('ava');
+const test = require('ava');
 const moment = require('moment');
 const _ = require('lodash');
 const { USER, SAMPLE_METRICS, REPOS } = require('../__fixtures__');
@@ -33,10 +33,10 @@ const containsComparisonKeys = repo => REPO_KEYS.every(key => {
 
 const dateIsNDaysAgo = (date, days) => moment(date).add(days, 'days').isSame(moment(), 'day');
 
-test.before('create test user', createTestUser);
-test.before('create test snapshot', createTestSnapshot);
-test.after.always('destroy test user', destroyTestUser);
-test.after.always('destroy test snapshot', destroyTestSnapshot);
+test.serial.before('create test user', createTestUser);
+test.serial.before('create test snapshot', createTestSnapshot);
+test.serial.after.always('destroy test user', destroyTestUser);
+test.serial.after.always('destroy test snapshot', destroyTestSnapshot);
 
 test('userSnapshots() finds user snapshots', async t => {
 	const snapshots = await userSnapshots(t.context.user.id);
@@ -125,7 +125,7 @@ test('daysSinceSnapshot() fetches snapshots N days apart', async t => {
 	await snapshot.destroy();
 });
 
-test('subjectedSnapshot() fetches week apart snapshots', async t => {
+test.serial('subjectedSnapshot() fetches week apart snapshots', async t => {
 	const WEEK_IN_DAYS = 7;
 	const snapshot = await createSnapshot(
 		{

@@ -1,4 +1,4 @@
-const { serial: test } = require('ava');
+const test = require('ava');
 const request = require('supertest');
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const _ = require('lodash');
@@ -13,8 +13,8 @@ const app = require('../../server');
 const REPO_KEYS = ['name', 'fork', 'selected'];
 const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
 
-test.before('create test user', createTestUser);
-test.after.always('destroy test user', destroyTestUser);
+test.serial.before('create test user', createTestUser);
+test.serial.after.always('destroy test user', destroyTestUser);
 
 test('GET /api returns 404', async t => {
 	const response = await request(app).get('/api');
@@ -47,7 +47,7 @@ test('GET /api/preferences returns user w/ repos and metric types - authenticate
 	t.deepEqual(response.body.metricTypes, METRIC_TYPES);
 });
 
-test('GET /api/preferences returns disabled views and clones - authenticated w/o app installation', async t => {
+test.serial('GET /api/preferences returns disabled views and clones - authenticated w/o app installation', async t => {
 	const { id, username, avatar } = t.context.user;
 	const user = { id, username, avatar };
 	const token = generateToken(user);
@@ -186,7 +186,7 @@ test('POST /api/unsubscribe removes repeatable jobs - with appropriate body', as
 	t.true(jobs.every(job => !job));
 });
 
-test('POST /api/unsubscribe rejects tampered email', async t => {
+test.serial('POST /api/unsubscribe rejects tampered email', async t => {
 	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
@@ -212,7 +212,7 @@ test('POST /api/unsubscribe rejects tampered email', async t => {
 	t.false(jobs.every(job => !job));
 });
 
-test('POST /api/unsubscribe returns error when email has already been unsubscribed', async t => {
+test.serial('POST /api/unsubscribe returns error when email has already been unsubscribed', async t => {
 	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);

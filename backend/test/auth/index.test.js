@@ -1,4 +1,4 @@
-const { serial: test } = require('ava');
+const test = require('ava');
 const request = require('supertest');
 const { OK, UNAUTHORIZED, FOUND } = require('http-status');
 const { GH_PROFILE } = require('../__fixtures__');

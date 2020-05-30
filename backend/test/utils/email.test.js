@@ -63,7 +63,7 @@ test('generates sample email for empty metrics', async t => {
 	t.regex(email.html, /It seems like you don&apos;t have any repos yet/);
 });
 
-test('sends a weekly email', async t => {
+test.serial('sends a weekly email', async t => {
 	const SGMailSend = sinon.stub(SGMail, 'send');
 	SGMailSend.returns(Promise.resolve(SENDGRID_SUCCESS));
 
@@ -80,7 +80,7 @@ test('sends a weekly email', async t => {
 	SGMailSend.restore();
 });
 
-test('sends a sample email', async t => {
+test.serial('sends a sample email', async t => {
 	const SGMailSend = sinon.stub(SGMail, 'send');
 	SGMailSend.returns(Promise.resolve(SENDGRID_SUCCESS));
 
@@ -97,7 +97,7 @@ test('sends a sample email', async t => {
 	SGMailSend.restore();
 });
 
-test('sends an email', async t => {
+test.serial('sends an email', async t => {
 	const SGMailSetApiKey = sinon.stub(SGMail, 'setApiKey');
 	const SGMailSend = sinon.stub(SGMail, 'send');
 	SGMailSend.returns(Promise.resolve(SENDGRID_SUCCESS));
