@@ -1,6 +1,6 @@
 const { serial: test } = require('ava');
 const request = require('supertest');
-const { OK, UNAUTHORIZED, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('http-status');
+const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const _ = require('lodash');
 const { GH_PROFILE, USER, REPOS, METRIC_TYPES } = require('../__fixtures__');
 const { GITHUB_USER_TOKEN, GITHUB_NO_INSTALLATION_USER_TOKEN } = require('../../config');
