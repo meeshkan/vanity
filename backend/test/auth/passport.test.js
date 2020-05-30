@@ -1,7 +1,8 @@
 const { serial: test } = require('ava');
-const { strategyCallback } = require('../../auth/passport');
-const { GH_PROFILE, USER } = require('../__fixtures__');
+const { createStrategyCallback } = require('../../auth/passport');
+const { GH_PROFILE } = require('../__fixtures__');
 const { User } = require('../../models');
+const { DummyUserScheduler } = require('../../models/user-scheduler');
 const { GITHUB_USER_TOKEN } = require('../../config');
 
 const USER_REPO_KEYS = ['name', 'fork', 'selected'];
@@ -13,6 +14,7 @@ test.before(async t => {
 });
 
 test.cb('passport callback creates user', t => {
+	const strategyCallback = createStrategyCallback(DummyUserScheduler);
 	strategyCallback(GITHUB_USER_TOKEN, undefined, GH_PROFILE, (error, user) => {
 		t.is(error, null);
 		t.not(user, null);

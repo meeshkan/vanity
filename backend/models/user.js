@@ -1,6 +1,19 @@
+const _ = require('lodash');
 const { NODE_ENV } = require('../config');
 
+const containSameElements = (x, y) => _.isEqual(_.sortBy(x), _.sortBy(y));
+const getPrimaryEmail = emails => emails.filter(email => email.primary)[0].email; // TODO: ask user which email he/she prefers to use
+
+const DEFAULT_USER_METRIC_TYPES = [
+	{ name: 'stars', selected: true, disabled: false },
+	{ name: 'forks', selected: true, disabled: false },
+	{ name: 'views', selected: false, disabled: true },
+	{ name: 'clones', selected: false, disabled: true },
+];
+
 module.exports = (Sequelize, DataTypes) => {
+	const { UserScheduler } = require('./user-scheduler');
+	const { fetchUserRepos, fetchUserEmails } = require('../utils/github');
 	const User = Sequelize.define('User', {
 		username: {
 			type: DataTypes.STRING,
@@ -19,7 +32,6 @@ module.exports = (Sequelize, DataTypes) => {
 		},
 		token: {
 			type: DataTypes.STRING,
-			allowNull: NODE_ENV === 'test',
 			unique: true,
 			validate: {
 				is: /^[a-z0-9]+$/i,
@@ -51,6 +63,51 @@ module.exports = (Sequelize, DataTypes) => {
 			as: 'snapshots',
 			onDelete: 'CASCADE',
 		});
+	};
+
+	User.beforeCreate((user, options) => {
+		let UserSchedulerClass = options.userSchedulerClass;
+
+		if (!UserSchedulerClass) {
+			UserSchedulerClass = UserScheduler;
+		}
+
+		user.userScheduler = new UserSchedulerClass();
+	});
+
+	User.afterCreate((user, _) => {
+		user.userScheduler.scheduleForUser(user);
+		user.metricTypes = DEFAULT_USER_METRIC_TYPES;
+		user.save();
+	});
+
+	User.findFromUsername = username => {
+		return User.findOne({ where: { username }});
+	};
+
+	User.prototype.updateFromGitHub = async function () {
+		const emails = await fetchUserEmails(this.username, this.token);
+		this.email = getPrimaryEmail(emails);
+
+		let latestRepos = await fetchUserRepos(this.username, this.token);
+		if (!(this.repos && containSameElements(latestRepos.map(repo => repo.name), this.repos.map(repo => repo.name)))) {
+			latestRepos = latestRepos.map(repo => {
+				repo.selected = !repo.fork;
+				return repo;
+			});
+
+			if (this.repos === null) {
+				this.repos = latestRepos;
+			} else {
+				latestRepos.forEach(repo => {
+					if (!this.repos.map(repo => repo.name).includes(repo.name)) {
+						this.repos.push(repo);
+					}
+				});
+			}
+		}
+
+		this.save();
 	};
 
 	return User;

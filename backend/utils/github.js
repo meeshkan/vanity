@@ -1,6 +1,5 @@
 const got = require('got');
 const array = require('lodash/array');
-const { User } = require('../models');
 
 const gotOptions = {
 	prefixUrl: 'https://api.github.com/',
@@ -116,6 +115,7 @@ const fetchUserInstallations = async token => {
 };
 
 const fetchUserRepoStats = async id => {
+	const { User } = require('../models');
 	const userByID = await User.findByPk(id);
 	const user = userByID.get({ plain: true });
 	const selectedMetricTypes = user.metricTypes

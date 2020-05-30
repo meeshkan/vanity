@@ -1,11 +1,11 @@
 const moment = require('moment');
-const { Snapshot, User } = require('../models');
 const { fetchUserRepoStats } = require('./github');
 
 const WEEK_IN_DAYS = 7;
 const ZERO = 0;
 
 const userSnapshots = async id => {
+	const { Snapshot } = require('../models');
 	const snapshots = await Snapshot.findAll({
 		where: {
 			userId: id,
@@ -50,6 +50,7 @@ const compareSnapshots = ({ latest, previous }) => {
 };
 
 const ingest = async id => {
+	const { Snapshot } = require('../models');
 	const metrics = await fetchUserRepoStats(id);
 	const snapshot = await Snapshot.create({
 		metrics,
@@ -65,12 +66,13 @@ const fetchCurrent = async (id, selectedRepos) => {
 };
 
 const fetchComparison = async id => {
-	const snapshots = await userSnapshots(id);
+	const { User } = require('../models');
 	const user = await User.findByPk(id);
 	const { repos } = user.get({ plain: true });
 	const selectedRepos = repos
 		.filter(repo => repo.selected)
 		.map(repo => repo.name);
+	const snapshots = await userSnapshots(id);
 	const { latest, previous } = subjectedSnapshot(snapshots);
 	return compareSnapshots({ latest, previous })
 		.filter(repo => selectedRepos.includes(repo.name));
