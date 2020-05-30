@@ -9,7 +9,8 @@
   },
   "ava": {
     "files": [
-      "!test/__fixtures__/*"
+      "!test/__fixtures__/*",
+      "!test/helpers/*"
     ]
   },
   "xo": {
@@ -17,7 +18,8 @@
       "object-curly-spacing": 0,
       "comma-dangle": 0,
       "ava/use-test": 0,
-      "new-cap": 0
+      "new-cap": 0,
+      "ava/no-import-test-files": 0
     },
     "overrides": [
       {

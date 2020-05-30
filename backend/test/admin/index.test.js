@@ -1,40 +1,14 @@
 const { serial: test } = require('ava');
 const request = require('supertest');
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
-const { GH_PROFILE, USER } = require('../__fixtures__');
-const { GITHUB_USER_TOKEN } = require('../../config');
+const { createTestUser, destroyTestUser, setUserAdmin } = require('../helpers');
 const { generateToken } = require('../../utils/token');
-const { User } = require('../../models');
 const app = require('../../server');
 
 const HTML_REGEX = /\s?<!doctype html>|(<html\b[^>]*>|<body\b[^>]*>|<x-[^>]+>)+/i;
 
-test.before(async t => {
-	await User.sync();
-	const [user] = await User.upsert(
-		{
-			username: GH_PROFILE.username,
-			email: USER.email,
-			token: GITHUB_USER_TOKEN,
-			avatar: GH_PROFILE.photos[0].value,
-			admin: true,
-		},
-		{
-			returning: true,
-		}
-	);
-	t.context.user = user.get({ plain: true });
-});
-
-test.after.always('cleanup', async t => {
-	if (t.context.user.id) {
-		await User.destroy({
-			where: {
-				id: t.context.user.id,
-			},
-		});
-	}
-});
+test.before('create test user', createTestUser);
+test.after.always('destroy test user', destroyTestUser);
 
 test('GET /admin returns 401 - unauthenticated', async t => {
 	const response = await request(app).get('/admin');
@@ -46,14 +20,7 @@ test('GET /admin returns 404 - authenticated admin user', async t => {
 	const user = { id, username, avatar };
 	const token = generateToken(user);
 
-	await User.update(
-		{
-			admin: true,
-		},
-		{
-			where: { id },
-		}
-	);
+	await setUserAdmin(t.context.user, true);
 
 	const response = await request(app)
 		.get('/admin')
@@ -73,14 +40,7 @@ test('GET /admin/queues returns 401 - authenticated non-admin user', async t => 
 	const user = { id, username, avatar };
 	const token = generateToken(user);
 
-	await User.update(
-		{
-			admin: false,
-		},
-		{
-			where: { id },
-		}
-	);
+	await setUserAdmin(t.context.user, false);
 
 	const response = await request(app)
 		.get('/admin/queues')
@@ -95,14 +55,7 @@ test('GET /admin/queues returns admin dashboard - authenticated admin user', asy
 	const user = { id, username, avatar };
 	const token = generateToken(user);
 
-	await User.update(
-		{
-			admin: true,
-		},
-		{
-			where: { id },
-		}
-	);
+	await setUserAdmin(t.context.user, true);
 
 	const response = await request(app)
 		.get('/admin/queues')

@@ -2,44 +2,19 @@ const { serial: test } = require('ava');
 const request = require('supertest');
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const _ = require('lodash');
-const { GH_PROFILE, USER, REPOS, METRIC_TYPES } = require('../__fixtures__');
+const { REPOS, METRIC_TYPES } = require('../__fixtures__');
+const { createTestUser, destroyTestUser, setUserToken, getUserById } = require('../helpers');
 const { GITHUB_USER_TOKEN, GITHUB_NO_INSTALLATION_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
 const { ingestMetricsJob, sendEmailJob } = require('../../workers/jobs');
-const { User } = require('../../models');
 const app = require('../../server');
 
 const REPO_KEYS = ['name', 'fork', 'selected'];
 const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
 
-test.before(async t => {
-	await User.sync();
-	const [user] = await User.upsert(
-		{
-			username: GH_PROFILE.username,
-			email: USER.email,
-			token: GITHUB_USER_TOKEN,
-			avatar: GH_PROFILE.photos[0].value,
-			repos: REPOS,
-			metricTypes: METRIC_TYPES,
-		},
-		{
-			returning: true,
-		}
-	);
-	t.context.user = user.get({ plain: true });
-});
-
-test.after.always('cleanup', async t => {
-	if (t.context.user.id) {
-		await User.destroy({
-			where: {
-				id: t.context.user.id,
-			},
-		});
-	}
-});
+test.before('create test user', createTestUser);
+test.after.always('destroy test user', destroyTestUser);
 
 test('GET /api returns 404', async t => {
 	const response = await request(app).get('/api');
@@ -86,14 +61,7 @@ test('GET /api/preferences returns disabled views and clones - authenticated w/o
 		return metricType;
 	});
 
-	await User.update(
-		{
-			token: GITHUB_NO_INSTALLATION_USER_TOKEN,
-		},
-		{
-			where: { id },
-		}
-	);
+	await setUserToken(t.context.user, GITHUB_NO_INSTALLATION_USER_TOKEN);
 
 	const response = await request(app)
 		.get('/api/preferences')
@@ -102,14 +70,7 @@ test('GET /api/preferences returns disabled views and clones - authenticated w/o
 	t.is(response.status, OK);
 	t.deepEqual(response.body.metricTypes, ALTERED_METRIC_TYPES);
 
-	await User.update(
-		{
-			token: GITHUB_USER_TOKEN,
-		},
-		{
-			where: { id },
-		}
-	);
+	await setUserToken(t.context.user, GITHUB_USER_TOKEN);
 });
 
 test('POST /api/preferences/repos returns 401 - unaunthenticated', async t => {
@@ -134,8 +95,8 @@ test('POST /api/preferences/repos updates repos - authenticated', async t => {
 
 	t.is(alteredResponse.status, OK);
 
-	const userByID = await User.findByPk(id);
-	t.deepEqual(userByID.get({ plain: true }).repos, ALTERED_REPOS);
+	const userByID = await getUserById(id);
+	t.deepEqual(userByID.repos, ALTERED_REPOS);
 });
 
 test('POST /api/preferences/repos returns 401 - invalid token', async t => {
@@ -174,8 +135,8 @@ test('POST /api/preferences/metric-types updates metric types - authenticated', 
 
 	t.is(alteredResponse.status, OK);
 
-	const userByID = await User.findByPk(id);
-	t.deepEqual(userByID.get({ plain: true }).metricTypes, ALTERED_METRIC_TYPES);
+	const userByID = await getUserById(id);
+	t.deepEqual(userByID.metricTypes, ALTERED_METRIC_TYPES);
 });
 
 test('POST /api/preferences/metric-types returns 401 - invalid token', async t => {

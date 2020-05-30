@@ -1,8 +1,7 @@
 const test = require('ava');
 const _ = require('lodash');
-const { User } = require('../../models');
-const { GITHUB_USER_TOKEN } = require('../../config');
-const { GH_PROFILE, USER, METRIC_TYPES } = require('../__fixtures__');
+const { GH_PROFILE, METRIC_TYPES } = require('../__fixtures__');
+const { createTestUser, destroyTestUser, setUserMetricTypes } = require('../helpers');
 const {
 	fetchUserRepos,
 	fetchUserRepoStats,
@@ -17,32 +16,8 @@ const containsRepoStatKeys = (repo, repoStatKeys) => repoStatKeys.every(key => k
 
 const EMAIL_REGEX = /.+@.+\..+/;
 
-test.before(async t => {
-	await User.sync();
-	const [user] = await User.upsert(
-		{
-			username: GH_PROFILE.username,
-			email: USER.email,
-			token: GITHUB_USER_TOKEN,
-			avatar: GH_PROFILE.photos[0].value,
-			metricTypes: METRIC_TYPES,
-		},
-		{
-			returning: true,
-		}
-	);
-	t.context.user = user.get({ plain: true });
-});
-
-test.after.always('cleanup', async t => {
-	if (t.context.user.id) {
-		await User.destroy({
-			where: {
-				id: t.context.user.id,
-			},
-		});
-	}
-});
+test.before('create test user', createTestUser);
+test.after.always('destroy test user', destroyTestUser);
 
 test('fetchUserRepos() fetches user repos', async t => {
 	const { username, token } = t.context.user;
@@ -73,14 +48,7 @@ test('fetchUserRepoStats() fetches user repo stats with SOME metric types select
 		return metricType;
 	});
 
-	await User.update(
-		{
-			metricTypes: ALTERED_METRIC_TYPES,
-		},
-		{
-			where: { id },
-		}
-	);
+	await setUserMetricTypes(t.context.user, ALTERED_METRIC_TYPES);
 
 	const repos = await fetchUserRepoStats(id);
 	t.true(repos.length > 0);

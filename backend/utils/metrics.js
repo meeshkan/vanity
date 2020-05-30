@@ -13,8 +13,7 @@ const userSnapshots = async id => {
 		order: [['createdAt', 'DESC']],
 	});
 
-	return snapshots
-		.map(snapshot => snapshot.get({ plain: true }));
+	return snapshots;
 };
 
 const daysSince = date => moment(date).diff(moment(), 'days');
@@ -67,8 +66,7 @@ const fetchCurrent = async (id, selectedRepos) => {
 
 const fetchComparison = async id => {
 	const { User } = require('../models');
-	const user = await User.findByPk(id);
-	const { repos } = user.get({ plain: true });
+	const { repos } = await User.findByPk(id);
 	const selectedRepos = repos
 		.filter(repo => repo.selected)
 		.map(repo => repo.name);
