@@ -6,7 +6,7 @@ const {
 	test: TEST_DB,
 	development: DEV_DB,
 	production: PROD_DB
-} = require('./sequelize'); 
+} = require('./sequelize');
 
 const {
 	GITHUB_CLIENT_ID,
