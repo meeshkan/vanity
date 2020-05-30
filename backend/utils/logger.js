@@ -14,7 +14,7 @@ const logger = createLogger({
 	exitOnError: false,
 });
 
-if (NODE_ENV !== 'production') {
+if (NODE_ENV === 'development') {
 	logger.add(new transports.Console({
 		format: combine(
 			timestamp({
