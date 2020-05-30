@@ -116,7 +116,7 @@ const unsubscribe = async (req, res) => {
 			return res.status(UNAUTHORIZED).json(UnsubscriptionErrors.ALREADY_UNSUBSCRIBED);
 		}
 
-		jobsToDelete.forEach(async job => await job.remove());
+		jobsToDelete.forEach(job => job.remove());
 
 		res.status(OK).json({ user: { email, id } });
 	} catch (error) {
