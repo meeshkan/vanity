@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const { NODE_ENV } = require('../config');
 
 const containSameElements = (x, y) => _.isEqual(_.sortBy(x), _.sortBy(y));
 const getPrimaryEmail = emails => emails.filter(email => email.primary)[0].email; // TODO: ask user which email he/she prefers to use
