@@ -259,13 +259,6 @@ module.exports = [
 		clones: { latest: 0, difference: 0 }
 	},
 	{
-		name: 'nephthys',
-		stars: { latest: 7, difference: 0 },
-		forks: { latest: 0, difference: 0 },
-		views: { latest: 0, difference: 0 },
-		clones: { latest: 0, difference: 0 }
-	},
-	{
 		name: 'now-name',
 		stars: { latest: 0, difference: 0 },
 		forks: { latest: 0, difference: 0 },

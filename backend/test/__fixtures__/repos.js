@@ -215,6 +215,11 @@ module.exports = [
 		selected: true
 	},
 	{
+		name: 'next.js',
+		fork: true,
+		selected: false
+	},
+	{
 		name: 'nephthys',
 		fork: false,
 		selected: false

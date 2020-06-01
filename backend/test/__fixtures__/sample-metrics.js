@@ -259,13 +259,6 @@ module.exports = [
 		clones: 9
 	},
 	{
-		name: 'nephthys',
-		stars: 8,
-		forks: 0,
-		views: 0,
-		clones: 0
-	},
-	{
 		name: 'now-name',
 		stars: 0,
 		forks: 0,
