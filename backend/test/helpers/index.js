@@ -1,6 +1,7 @@
 const { GH_PROFILE, USER, REPOS, METRIC_TYPES, SAMPLE_METRICS } = require('../__fixtures__');
 const { GITHUB_USER_TOKEN } = require('../../config');
 const { User, Snapshot } = require('../../models');
+const { DummyUserScheduler } = require('../../models/user-scheduler');
 
 const TEST_USER_VALUES = {
 	username: GH_PROFILE.username,
@@ -13,7 +14,10 @@ const TEST_USER_VALUES = {
 
 const createTestUser = async t => {
 	await User.sync();
-	const user = await User.create(TEST_USER_VALUES, { returning: true });
+	const user = await User.create(TEST_USER_VALUES, {
+		returning: true,
+		userSchedulerClass: DummyUserScheduler,
+	});
 	t.context.user = user;
 };
 
