@@ -22,12 +22,12 @@ const createStrategyCallback = UserSchedulerClass => {
 				avatar: photos[0].value,
 				token: accessToken
 			}, { userSchedulerClass: UserSchedulerClass });
-		}
-
-		try {
-			await user.updateFromGitHub();
-		} catch (error) {
-			return done(error);
+		} else {
+			try {
+				await user.updateFromGitHub();
+			} catch (error) {
+				return done(error);
+			}
 		}
 
 		return done(null, filterUser(user));

@@ -74,10 +74,9 @@ module.exports = (Sequelize, DataTypes) => {
 		user.userScheduler = new UserSchedulerClass();
 	});
 
-	User.afterCreate((user, _) => {
+	User.afterCreate(async (user, _) => {
+		user = await user.updateFromGitHub();
 		user.userScheduler.scheduleForUser(user);
-		user.metricTypes = DEFAULT_USER_METRIC_TYPES;
-		user.save();
 	});
 
 	User.findFromUsername = username => {
@@ -87,6 +86,10 @@ module.exports = (Sequelize, DataTypes) => {
 	User.prototype.updateFromGitHub = async function () {
 		const emails = await fetchUserEmails(this.username, this.token);
 		this.email = getPrimaryEmail(emails);
+
+		if (!this.metricTypes) {
+			this.metricTypes = DEFAULT_USER_METRIC_TYPES;
+		}
 
 		let latestRepos = await fetchUserRepos(this.username, this.token);
 		if (!(this.repos && containSameElements(latestRepos.map(repo => repo.name), this.repos.map(repo => repo.name)))) {
@@ -106,7 +109,7 @@ module.exports = (Sequelize, DataTypes) => {
 			}
 		}
 
-		this.save();
+		return this.save();
 	};
 
 	return User;
