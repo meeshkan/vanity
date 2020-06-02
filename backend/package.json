@@ -64,7 +64,8 @@
     "passport-github": "^1.1.0",
     "pg": "^7.18.2",
     "sequelize": "^5.21.5",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "winston-transport-sentry-node": "^0.3.1"
   },
   "devDependencies": {
     "ava": "^3.5.2",

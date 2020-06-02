@@ -1,15 +1,20 @@
 
 const { join } = require('path');
 const { createLogger, format, transports } = require('winston');
+const Sentry = require('winston-transport-sentry-node').default;
 const { combine, json, timestamp, simple } = format;
-const { NODE_ENV } = require('../config');
+const { NODE_ENV, SENTRY_DSN } = require('../config');
 
 const logger = createLogger({
 	level: 'info',
 	format: json(),
 	transports: [
-		new transports.File({ filename: join(__dirname, '../logs/error.log'), level: 'error' }),
-		new transports.File({ filename: join(__dirname, '../logs/combined.log') }),
+		new Sentry({
+			sentry: {
+            	dsn: SENTRY_DSN,
+			},
+			level: 'info'
+        })
 	],
 	exitOnError: false,
 });
