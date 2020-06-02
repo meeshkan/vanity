@@ -16,18 +16,18 @@ const createStrategyCallback = UserSchedulerClass => {
 		const { username, photos } = profile;
 		let user = await User.findFromUsername(username);
 
-		if (!user) {
-			user = await User.create({
-				username,
-				avatar: photos[0].value,
-				token: accessToken
-			}, { userSchedulerClass: UserSchedulerClass });
-		} else {
+		if (user) {
 			try {
 				await user.updateFromGitHub();
 			} catch (error) {
 				return done(error);
 			}
+		} else {
+			user = await User.create({
+				username,
+				avatar: photos[0].value,
+				token: accessToken
+			}, { userSchedulerClass: UserSchedulerClass });
 		}
 
 		return done(null, filterUser(user));
