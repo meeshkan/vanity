@@ -31,6 +31,14 @@ const containsComparisonKeys = repo => REPO_KEYS.every(key => {
 	return COMPARISON_KEYS.every(comparsionKey => comparsionKey in repo[key]);
 });
 
+const NEW_REPO_METRICS = {
+	name: 'new-repo',
+	stars: 4,
+	forks: 1,
+	views: 12,
+	clones: 0
+};
+
 const dateIsNDaysAgo = (date, days) => moment(date).add(days, 'days').isSame(moment(), 'day');
 
 test.serial.before('create test user', createTestUser);
@@ -98,6 +106,41 @@ test('compareSnapshots() compares snapshots', async t => {
 	t.true(alteredComparison.every(repo => repo.forks.difference === FORK_DIFFERENCE));
 	t.true(alteredComparison.every(repo => repo.views.difference === VIEW_DIFFERENCE));
 	t.true(alteredComparison.every(repo => repo.clones.difference === CLONE_DIFFERENCE));
+});
+
+test('compareSnapshots() ignores deleted repos', async t => {
+	const [snapshot] = await userSnapshots(t.context.user.id);
+
+	const alteredSnapshot = _.cloneDeep(snapshot);
+	alteredSnapshot.metrics.splice(0, 1);
+	alteredSnapshot.metrics.splice(alteredSnapshot.metrics.length - 1, 1);
+
+	const alteredComparison = await compareSnapshots({
+		latest: alteredSnapshot,
+		previous: snapshot
+	});
+
+	t.is(alteredComparison.length, snapshot.metrics.length - 2);
+	t.deepEqual(alteredComparison.map(repo => repo.name), alteredSnapshot.metrics.map(repo => repo.name));
+	t.true(alteredComparison.every(containsRepoKeys));
+	t.true(alteredComparison.every(containsComparisonKeys));
+});
+
+test('compareSnapshots() ignores new repos without prior metrics', async t => {
+	const [snapshot] = await userSnapshots(t.context.user.id);
+
+	const alteredSnapshot = _.cloneDeep(snapshot);
+	alteredSnapshot.metrics.push(NEW_REPO_METRICS);
+
+	const alteredComparison = await compareSnapshots({
+		latest: alteredSnapshot,
+		previous: snapshot
+	});
+
+	t.is(alteredComparison.length, snapshot.metrics.length);
+	t.deepEqual(alteredComparison.map(repo => repo.name), snapshot.metrics.map(repo => repo.name));
+	t.true(alteredComparison.every(containsRepoKeys));
+	t.true(alteredComparison.every(containsComparisonKeys));
 });
 
 test('daysSinceSnapshot() fetches snapshots N days apart', async t => {

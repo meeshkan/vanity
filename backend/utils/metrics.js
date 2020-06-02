@@ -33,19 +33,27 @@ const daysSinceSnapshot = (days, snapshots) => {
 const subjectedSnapshot = snapshots => daysSinceSnapshot(WEEK_IN_DAYS, snapshots);
 
 const compareSnapshots = ({ latest, previous }) => {
-	return (latest.metrics).map((_, index) => {
-		Object.keys(latest.metrics[index])
-			.forEach(key => {
-				if (key !== 'name') {
-					latest.metrics[index][key] = {
-						latest: latest.metrics[index][key],
-						difference: latest.metrics[index][key] - previous.metrics[index][key],
-					};
-				}
-			});
+	return latest.metrics
+		.map((_, index) => {
+			let latestMetricsAtIndex = latest.metrics[index];
+			const previousMetricsAtIndex = previous.metrics[index];
+			Object.keys(latestMetricsAtIndex)
+				.forEach(key => {
+					if (key !== 'name') {
+						try {
+							latestMetricsAtIndex[key] = {
+								latest: latestMetricsAtIndex[key],
+								difference: latestMetricsAtIndex[key] - previousMetricsAtIndex[key],
+							};
+						} catch (_) {
+							latestMetricsAtIndex = null;
+						}
+					}
+				});
 
-		return latest.metrics[index];
-	});
+			return latestMetricsAtIndex;
+		})
+		.filter(repo => repo !== null);
 };
 
 const ingest = async id => {
