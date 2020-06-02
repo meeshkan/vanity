@@ -14,7 +14,7 @@ const filterUser = user => {
 const createStrategyCallback = UserSchedulerClass => {
 	const strategyCallback = async (accessToken, refreshToken, profile, done) => {
 		const { username, photos } = profile;
-		let user = await User.findFromUsername(username);
+		let user = await User.findByUsername(username);
 
 		try {
 			if (user) {

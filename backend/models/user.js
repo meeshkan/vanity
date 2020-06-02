@@ -79,7 +79,7 @@ module.exports = (Sequelize, DataTypes) => {
 		user.userScheduler.scheduleForUser(user);
 	});
 
-	User.findFromUsername = username => {
+	User.findByUsername = username => {
 		return User.findOne({ where: { username }});
 	};
 
