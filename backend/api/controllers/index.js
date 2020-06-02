@@ -44,23 +44,14 @@ const updateRepos = async (req, res) => {
 		const { repos } = req.body;
 		const auth = req.headers.authorization;
 		const { token } = JSON.parse(auth);
-		const user = await verifyToken(token);
-		try {
-			const returned = await User.update(
-				{ repos },
-				{
-					where: {
-						id: user.id,
-					},
-				}
-			);
-
-			return res.status(OK).json({ res: returned });
-		} catch (error) {
-			return res.status(UNAUTHORIZED).json(error);
-		}
+		const user = await User.findByToken(token);
+		user.repos = repos;
+		await user.save({ fileds: ['repos'] });
+		return res.status(OK).json({
+			message: `Successfully updated repos for ${user.username}`
+		});
 	} catch (error) {
-		res.status(UNAUTHORIZED).json(UnauthorizedError);
+		res.status(UNAUTHORIZED).json(error);
 	}
 };
 
@@ -69,23 +60,14 @@ const updateMetricTypes = async (req, res) => {
 		const { metricTypes } = req.body;
 		const auth = req.headers.authorization;
 		const { token } = JSON.parse(auth);
-		const user = await verifyToken(token);
-		try {
-			const returned = await User.update(
-				{ metricTypes },
-				{
-					where: {
-						id: user.id,
-					},
-				}
-			);
-
-			return res.status(OK).json({ res: returned });
-		} catch (error) {
-			return res.status(UNAUTHORIZED).json(error);
-		}
+		const user = await User.findByToken(token);
+		user.metricTypes = metricTypes;
+		await user.save({ fields: ['metricTypes'] });
+		return res.status(OK).json({
+			message: `Successfully updated metric types for ${user.username}`
+		});
 	} catch (error) {
-		res.status(UNAUTHORIZED).json(UnauthorizedError);
+		res.status(UNAUTHORIZED).json(error);
 	}
 };
 

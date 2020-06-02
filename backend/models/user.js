@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const { verifyToken } = require('../utils/token');
 
 const containSameElements = (x, y) => _.isEqual(_.sortBy(x), _.sortBy(y));
 const getPrimaryEmail = emails => emails.filter(email => email.primary)[0].email; // TODO: ask user which email he/she prefers to use
@@ -81,6 +82,11 @@ module.exports = (Sequelize, DataTypes) => {
 
 	User.findByUsername = username => {
 		return User.findOne({ where: { username }});
+	};
+
+	User.findByToken = async token => {
+		const { id } = await verifyToken(token);
+		return User.findByPk(id);
 	};
 
 	User.prototype.updateFromGitHub = async function () {
