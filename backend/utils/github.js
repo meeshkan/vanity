@@ -116,8 +116,7 @@ const fetchUserInstallations = async token => {
 
 const fetchUserRepoStats = async id => {
 	const { User } = require('../models');
-	const userByID = await User.findByPk(id);
-	const user = userByID.get({ plain: true });
+	const user = await User.findByPk(id);
 	const selectedMetricTypes = user.metricTypes
 		.filter(metricType => metricType.selected)
 		.map(metricType => metricType.name);

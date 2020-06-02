@@ -7,8 +7,7 @@ const isAdmin = async (req, res, next) => {
 	try {
 		const token = req.cookies.jwt;
 		const userByToken = await verifyToken(token);
-		const userByID = await User.findByPk(userByToken.id);
-		const user = userByID.get({ plain: true });
+		const user = await User.findByPk(userByToken.id);
 		if (user.admin) {
 			return next();
 		}

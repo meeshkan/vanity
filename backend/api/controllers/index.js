@@ -12,8 +12,8 @@ const preferences = async (req, res) => {
 		const auth = req.headers.authorization;
 		const { token: jwt } = JSON.parse(auth);
 		const user = await verifyToken(jwt);
-		const userByID = await User.findByPk(user.id);
-		const { repos, metricTypes, token: accessToken } = userByID.get({ plain: true });
+		const userById = await User.findByPk(user.id);
+		const { repos, metricTypes, token: accessToken } = userById;
 		user.repos = repos;
 		const installations = await fetchUserInstallations(accessToken);
 		user.appInstalled = installations.total_count > 0;
