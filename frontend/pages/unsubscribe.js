@@ -73,7 +73,6 @@ Unsubscribe.getInitialProps = async ({ req, res, query }) => {
 			const { message } = errors;
 			return { message };
 		}
-
 	} catch (error) {
 		console.log(error); // TODO: handle error
 	}
