@@ -5,7 +5,7 @@ export default { title: 'Preferences' };
 
 export const fewRepos = () => (
 	<Preferences
-		appInstalled
+		isAppInstalled
 		username='Patricia'
 		token='foo'
 		updateRepos={() => {}}
@@ -30,7 +30,7 @@ export const manyRepos = () => (
 		token='foo'
 		updateRepos={() => {}}
 		login={() => {}}
-		appInstalled={false}
+		isAppInstalled={false}
 		metricTypes={[
 			{ name: 'stars', selected: true, disabled: false },
 			{ name: 'forks', selected: true, disabled: false },

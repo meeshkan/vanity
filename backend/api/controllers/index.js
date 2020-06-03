@@ -16,10 +16,10 @@ const preferences = async (req, res) => {
 		const { repos, metricTypes, token: accessToken } = userById;
 		user.repos = repos;
 		const installations = await fetchUserInstallations(accessToken);
-		user.appInstalled = installations.total_count > 0;
+		user.isAppInstalled = installations.total_count > 0;
 		user.metricTypes = metricTypes.map(metricType => {
 			if (METRIC_TYPES_REQUIRING_INSTALLATION.includes(metricType.name)) {
-				if (user.appInstalled) {
+				if (user.isAppInstalled) {
 					metricType.disabled = false;
 				} else {
 					metricType.selected = false;

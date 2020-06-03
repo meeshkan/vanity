@@ -15,7 +15,7 @@ import { cookies, logout } from '../logic/preferences';
 import '../styles/preferences.css';
 
 export const Preferences = props => {
-	const { username, repos, metricTypes, token, appInstalled } = props;
+	const { username, repos, metricTypes, token, isAppInstalled } = props;
 
 	return (
 		<Layout>
@@ -33,7 +33,7 @@ export const Preferences = props => {
 					</p>
 					<hr />
 					<MetricTypes metricTypes={metricTypes} token={token} />
-					{appInstalled ? <br /> : (
+					{isAppInstalled ? <br /> : (
 						<span className='avenir pv3 dib lh-copy'>
 							If you&apos;d like to receive repo <i>views</i> and <i>clones</i>,
 							{' '}
@@ -69,7 +69,7 @@ Preferences.propTypes = {
 	username: PropTypes.string.isRequired,
 	repos: PropTypes.array.isRequired,
 	metricTypes: PropTypes.array.isRequired,
-	appInstalled: PropTypes.bool.isRequired,
+	isAppInstalled: PropTypes.bool.isRequired,
 	token: PropTypes.string.isRequired,
 };
 
