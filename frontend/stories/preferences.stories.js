@@ -9,7 +9,7 @@ export const fewRepos = () => (
 		token='foo'
 		updateRepos={() => {}}
 		login={() => {}}
-		appInstalled={true}
+		appInstalled
 		metricTypes={[
 			{ name: 'stars', selected: true, disabled: false },
 			{ name: 'forks', selected: false, disabled: false },
