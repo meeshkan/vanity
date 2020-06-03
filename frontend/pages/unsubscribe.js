@@ -1,5 +1,6 @@
 import React from 'react';
 import Router from 'next/router';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
@@ -39,6 +40,16 @@ export const Unsubscribe = props => {
 			<Footer />
 		</Layout>
 	);
+};
+
+Unsubscribe.propTypes = {
+	message: PropTypes.string,
+	email: PropTypes.string,
+};
+
+Unsubscribe.defaultProps = {
+	message: undefined,
+	email: undefined,
 };
 
 Unsubscribe.getInitialProps = async ({ req, res, query }) => {
