@@ -35,6 +35,12 @@
         "rules": {
           "no-unused-vars": "off"
         }
+      },
+      {
+        "files": "pages/_document.js",
+        "rules": {
+          "react/no-danger": "off"
+        }
       }
     ],
     "rules": {
