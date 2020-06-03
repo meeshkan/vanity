@@ -29,6 +29,12 @@
         "rules": {
           "no-undef": "off"
         }
+      },
+      {
+        "files": "cypress/plugins/*",
+        "rules": {
+          "no-unused-vars": "off"
+        }
       }
     ],
     "rules": {
