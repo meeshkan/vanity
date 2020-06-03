@@ -45,7 +45,8 @@
         {
           "allow": [
             "*.css",
-            "**/*.css"
+            "**/*.css",
+            "cypress/support/**"
           ]
         }
       ],
