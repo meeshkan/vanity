@@ -5,11 +5,11 @@ export default { title: 'Preferences' };
 
 export const fewRepos = () => (
 	<Preferences
+		appInstalled
 		username='Patricia'
 		token='foo'
 		updateRepos={() => {}}
 		login={() => {}}
-		appInstalled
 		metricTypes={[
 			{ name: 'stars', selected: true, disabled: false },
 			{ name: 'forks', selected: false, disabled: false },
