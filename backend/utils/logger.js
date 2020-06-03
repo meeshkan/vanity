@@ -9,10 +9,10 @@ const logger = createLogger({
 	transports: [
 		new Sentry({
 			sentry: {
-            	dsn: SENTRY_DSN,
+				dsn: SENTRY_DSN,
 			},
 			level: 'info'
-        })
+		})
 	],
 	exitOnError: false,
 });
