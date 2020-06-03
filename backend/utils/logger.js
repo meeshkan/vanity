@@ -1,5 +1,3 @@
-
-const { join } = require('path');
 const { createLogger, format, transports } = require('winston');
 const Sentry = require('winston-transport-sentry-node').default;
 const { combine, json, timestamp, simple } = format;
