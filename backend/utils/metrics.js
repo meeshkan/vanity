@@ -75,13 +75,13 @@ const fetchCurrent = async (id, selectedRepos) => {
 const fetchComparison = async id => {
 	const { User } = require('../models');
 	const { repos } = await User.findByPk(id);
-	const selectedRepos = repos
+	const selectedRepos = new Set(repos
 		.filter(repo => repo.selected)
-		.map(repo => repo.name);
+		.map(repo => repo.name));
 	const snapshots = await userSnapshots(id);
 	const { latest, previous } = subjectedSnapshot(snapshots);
 	return compareSnapshots({ latest, previous })
-		.filter(repo => selectedRepos.includes(repo.name));
+		.filter(repo => selectedRepos.has(repo.name));
 };
 
 module.exports = {

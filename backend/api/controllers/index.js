@@ -6,7 +6,7 @@ const { User } = require('../../models');
 const { fetchUserInstallations } = require('../../utils/github');
 const logger = require('../../utils/logger');
 
-const METRIC_TYPES_REQUIRING_INSTALLATION = ['views', 'clones'];
+const METRIC_TYPES_REQUIRING_INSTALLATION = new Set(['views', 'clones']);
 
 const preferences = async (req, res) => {
 	try {
@@ -19,7 +19,7 @@ const preferences = async (req, res) => {
 		const installations = await fetchUserInstallations(accessToken);
 		user.isAppInstalled = installations.total_count > 0;
 		user.metricTypes = metricTypes.map(metricType => {
-			if (METRIC_TYPES_REQUIRING_INSTALLATION.includes(metricType.name)) {
+			if (METRIC_TYPES_REQUIRING_INSTALLATION.has(metricType.name)) {
 				if (user.isAppInstalled) {
 					metricType.disabled = false;
 				} else {
