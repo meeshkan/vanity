@@ -25,9 +25,7 @@ class Vanity extends App {
 	}
 
 	render() {
-		const { Component, pageProps } = this.props;
-
-		const { err } = this.props;
+		const { Component, pageProps, err } = this.props;
 		const modifiedPageProps = { ...pageProps, err };
 
 		return (
