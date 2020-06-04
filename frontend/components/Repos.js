@@ -6,7 +6,7 @@ import { updateRepos } from '../logic/preferences';
 function Repo({ repo, index, handleToggle }) {
 	return (
 		<tr key={repo.name}>
-			<th className='fw3 bb b--white-20 tl pb3 pr6 pv3'>
+			<th className='fw3 bb b--white-20 tl pb3 pr5 pv3'>
 				{repo.name}{repo.fork &&
 					<i className='material-icons md-18 light-blue'>
 						call_split
