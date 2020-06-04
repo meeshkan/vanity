@@ -11,7 +11,7 @@ test('GET /auth returns 401 - unauthenticated', async t => {
 });
 
 test('GET /auth returns user data - authenticated', async t => {
-	const id = parseInt(GH_PROFILE.id, 10);
+	const id = Number.parseInt(GH_PROFILE.id, 10);
 	const { username } = GH_PROFILE;
 	const avatar = GH_PROFILE.photos[0].value;
 	const user = { id, username, avatar };
