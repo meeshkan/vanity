@@ -8,9 +8,9 @@ const logger = require('../../utils/logger');
 
 const METRIC_TYPES_REQUIRING_INSTALLATION = new Set(['views', 'clones']);
 
-const preferences = async (req, res) => {
+const preferences = async (request, response) => {
 	try {
-		const auth = req.headers.authorization;
+		const auth = request.headers.authorization;
 		const { token: jwt } = JSON.parse(auth);
 		const user = await verifyToken(jwt);
 		const userById = await User.findByPk(user.id);
@@ -31,47 +31,47 @@ const preferences = async (req, res) => {
 			return metricType;
 		});
 
-		res.status(OK).send(user);
+		response.status(OK).send(user);
 	} catch (error) {
 		logger.error(error);
-		res
+		response
 			.clearCookie('github-user')
 			.clearCookie('jwt')
 			.status(UNAUTHORIZED).json(UnauthorizedError);
 	}
 };
 
-const updateRepos = async (req, res) => {
+const updateRepos = async (request, response) => {
 	try {
-		const { repos } = req.body;
-		const auth = req.headers.authorization;
+		const { repos } = request.body;
+		const auth = request.headers.authorization;
 		const { token } = JSON.parse(auth);
 		const user = await User.findByToken(token);
 		user.repos = repos;
 		await user.save({ fileds: ['repos'] });
-		return res.status(OK).json({
+		return response.status(OK).json({
 			message: `Successfully updated repos for ${user.username}`
 		});
 	} catch (error) {
 		logger.error(error);
-		res.status(UNAUTHORIZED).json(error);
+		response.status(UNAUTHORIZED).json(error);
 	}
 };
 
-const updateMetricTypes = async (req, res) => {
+const updateMetricTypes = async (request, response) => {
 	try {
-		const { metricTypes } = req.body;
-		const auth = req.headers.authorization;
+		const { metricTypes } = request.body;
+		const auth = request.headers.authorization;
 		const { token } = JSON.parse(auth);
 		const user = await User.findByToken(token);
 		user.metricTypes = metricTypes;
 		await user.save({ fields: ['metricTypes'] });
-		return res.status(OK).json({
+		return response.status(OK).json({
 			message: `Successfully updated metric types for ${user.username}`
 		});
 	} catch (error) {
 		logger.error(error);
-		res.status(UNAUTHORIZED).json(error);
+		response.status(UNAUTHORIZED).json(error);
 	}
 };
 
@@ -81,13 +81,13 @@ const UnsubscriptionErrors = {
 	ALREADY_UNSUBSCRIBED: UnsubscriptionError('Email has already been unsubscribed')
 };
 
-const unsubscribe = async (req, res) => {
+const unsubscribe = async (request, response) => {
 	try {
-		const { token, email } = req.body;
+		const { token, email } = request.body;
 		const { email: emailByToken, id } = await verifyToken(token);
 
 		if (emailByToken !== email) {
-			return res.status(UNAUTHORIZED).json(UnsubscriptionErrors.MISMATCH);
+			return response.status(UNAUTHORIZED).json(UnsubscriptionErrors.MISMATCH);
 		}
 
 		const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
@@ -99,15 +99,15 @@ const unsubscribe = async (req, res) => {
 		];
 
 		if (jobsToDelete.every(job => !job)) {
-			return res.status(UNAUTHORIZED).json(UnsubscriptionErrors.ALREADY_UNSUBSCRIBED);
+			return response.status(UNAUTHORIZED).json(UnsubscriptionErrors.ALREADY_UNSUBSCRIBED);
 		}
 
 		jobsToDelete.forEach(job => job.remove());
 
-		res.status(OK).json({ user: { email, id } });
+		response.status(OK).json({ user: { email, id } });
 	} catch (error) {
 		logger.error(error);
-		res.status(UNAUTHORIZED).json(UnsubscriptionErrors.INVALID_TOKEN);
+		response.status(UNAUTHORIZED).json(UnsubscriptionErrors.INVALID_TOKEN);
 	}
 };
 

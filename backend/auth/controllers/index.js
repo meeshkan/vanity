@@ -4,36 +4,36 @@ const { generateToken, verifyToken } = require('../../utils/token');
 const { passport } = require('../passport');
 const logger = require('../../utils/logger');
 
-const login = (req, res, next) => {
+const login = (request, response, next) => {
 	passport.authenticate('github', {
 		failureRedirect: '/login',
-	})(req, res, next);
+	})(request, response, next);
 };
 
-const setCookies = (req, res) => {
-	const { id, username, avatar } = req.user;
+const setCookies = (request, response) => {
+	const { id, username, avatar } = request.user;
 	const user = { id, username, avatar };
 	const token = generateToken(user);
-	res
+	response
 		.cookie('github-user', JSON.stringify(user))
 		.cookie('jwt', token)
 		.redirect('/preferences');
 };
 
-const sendUserData = async (req, res) => {
+const sendUserData = async (request, response) => {
 	try {
-		const token = req.cookies.jwt;
+		const token = request.cookies.jwt;
 		const user = await verifyToken(token);
-		res.status(OK).send(user);
+		response.status(OK).send(user);
 	} catch (error) {
 		logger.error(error);
-		res.status(UNAUTHORIZED).send(UnauthorizedError);
+		response.status(UNAUTHORIZED).send(UnauthorizedError);
 	}
 };
 
-const logout = (req, res) => {
-	req.logout();
-	res.redirect('/login');
+const logout = (request, response) => {
+	request.logout();
+	response.redirect('/login');
 };
 
 module.exports = {
