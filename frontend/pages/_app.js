@@ -3,8 +3,10 @@ import App from 'next/app';
 import Router from 'next/router';
 import * as Sentry from '@sentry/node';
 import { DefaultSeo as DefaultSEO } from 'next-seo';
+import { ToastContainer } from 'react-toastify';
 import SEO from '../next-seo.config';
 import { pageview } from '../utils/gtag';
+import 'react-toastify/dist/ReactToastify.css';
 import '../styles/app.css';
 
 Sentry.init({
@@ -32,6 +34,17 @@ class Vanity extends App {
 			<>
 				<DefaultSEO {...SEO} />
 				<Component {...modifiedPageProps} />
+				<ToastContainer
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					closeOnClick
+					position='bottom-right'
+					autoClose={4000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					rtl={false}
+				/>
 			</>
 		);
 	}
