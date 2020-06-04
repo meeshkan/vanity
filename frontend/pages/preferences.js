@@ -35,7 +35,7 @@ export const Preferences = props => {
 					<MetricTypes metricTypes={metricTypes} token={token} />
 					{isAppInstalled ? <br /> : (
 						<span className='avenir pv3 dib lh-copy'>
-							If you&apos;d like to receive repo <i>views</i> and <i>clones</i>,
+							If you&apos;d like to receive repo <em>views</em> and <em>clones</em>,
 							{' '}
 							<br/>please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the VANITY GitHub App</a>.
 						</span>
