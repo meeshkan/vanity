@@ -1,29 +1,29 @@
 body {
-    font-family: 'Space Mono', monospace;
-    text-rendering: optimizeLegibility;
-    word-break: break-word;
-    word-wrap: break-word;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-font-smoothing: antialiased;
-    font-variant-ligatures: none;
+	font-family: 'Space Mono', monospace;
+	text-rendering: optimizeLegibility;
+	word-break: break-word;
+	word-wrap: break-word;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-font-smoothing: antialiased;
+	font-variant-ligatures: none;
 }
 
 a {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .material-icons.md-18 {
-    font-size: 18px;
+	font-size: 18px;
 }
 
 .material-icons.md-24 {
-    font-size: 24px;
+	font-size: 24px;
 }
 
 .material-icons.md-36 {
-    font-size: 36px;
+	font-size: 36px;
 }
 
 .material-icons.md-48 {
-    font-size: 48px;
+	font-size: 48px;
 }
