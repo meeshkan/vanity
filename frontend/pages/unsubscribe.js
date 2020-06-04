@@ -2,6 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
+import { toast } from 'react-toastify';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import getHost from '../utils/get-host';
@@ -85,7 +86,8 @@ Unsubscribe.getInitialProps = async ({ req, res, query }) => {
 			return { message };
 		}
 	} catch (error) {
-		console.log(error); // TODO: handle error
+		console.error(error);
+		toast.error('Something went wrong. Please try refreshing the page.');
 	}
 };
 
