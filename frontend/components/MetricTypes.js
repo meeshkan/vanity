@@ -35,7 +35,7 @@ export default function MetricTypes({ metricTypes, token }) {
 
 	return (
 		<>
-			<p>choose the types of metrics you want to receive for each repo:</p>
+			<p className='f5 f4-ns lh-copy'>choose the types of metrics you want to receive for each repo:</p>
 			<div className='overflow-auto'>
 				<table className='f5 center' cellSpacing='0'>
 					<tbody className='lh-copy'>

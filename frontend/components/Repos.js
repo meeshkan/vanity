@@ -37,7 +37,7 @@ export default function Repos({ repos, token }) {
 
 	return (
 		<>
-			<p>choose the repos you want to receive metrics for:</p>
+			<p className='f5 f4-ns lh-copy'>choose the repos you want to receive metrics for:</p>
 			<div className='overflow-auto'>
 				<table className='f5 center' cellSpacing='0'>
 					<tbody className='lh-copy'>

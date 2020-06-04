@@ -25,7 +25,7 @@ export const Preferences = props => {
 					<p className='pb4'>
 						welcome, {username}
 					</p>
-					<p>
+					<p className='f5 f4-ns lh-copy'>
 						upcoming metrics email:<br/>
 						<span className='avenir pv3 dib'>
 							{moment().startOf('day').add(9, 'hours').day(8).toString()}
