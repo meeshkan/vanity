@@ -20,7 +20,7 @@ export const Preferences = props => {
 	return (
 		<Layout>
 			<main className='pa3 pa5-ns vh-100 w-100 white dt tc'>
-				<div className='f4 measure pt3 dtc v-mid'>
+				<div className='f4 measure pt5 pt3-ns dtc v-mid'>
 					<h2>preferences</h2>
 					<p className='pb4'>
 						welcome, {username}
