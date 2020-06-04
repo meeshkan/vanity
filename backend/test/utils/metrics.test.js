@@ -113,7 +113,7 @@ test('compareSnapshots() ignores deleted repos', async t => {
 
 	const alteredSnapshot = _.cloneDeep(snapshot);
 	alteredSnapshot.metrics.splice(0, 1);
-	alteredSnapshot.metrics.splice(alteredSnapshot.metrics.length - 1, 1);
+	alteredSnapshot.metrics.splice(-1, 1);
 
 	const alteredComparison = await compareSnapshots({
 		latest: alteredSnapshot,
