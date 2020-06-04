@@ -30,7 +30,7 @@ test('user was stored in DB', async t => {
 	t.true(user.createdAt instanceof Date);
 	t.true(Array.isArray(user.repos));
 	t.true(user.repos.length > 0);
-	t.true(user.repos.every(containsUserRepoKeys));
+	t.true(user.repos.every(repo => containsUserRepoKeys(repo)));
 	t.is(user.username, GH_PROFILE.username);
 	await user.destroy();
 });

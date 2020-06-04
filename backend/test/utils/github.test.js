@@ -23,7 +23,7 @@ test('fetchUserRepos() fetches user repos', async t => {
 	const { username, token } = t.context.user;
 	const repos = await fetchUserRepos(username, token);
 	t.true(repos.length > 0);
-	t.true(repos.every(containsRepoKeys));
+	t.true(repos.every(repo => containsRepoKeys(repo)));
 });
 
 test.serial('fetchUserRepoStats() fetches user repo stats with ALL metric types selected', async t => {
@@ -63,9 +63,9 @@ test('fetchUserEmails() fetches user emails', async t => {
 	const emails = await fetchUserEmails(username, token);
 	const emailKeys = ['email', 'primary', 'verified', 'visibility'];
 	const containsEmailKeys = emailObject => emailKeys.every(key => key in emailObject);
-	t.true(emails.every(containsEmailKeys));
+	t.true(emails.every(email => containsEmailKeys(email)));
 	const containsEmail = emailObject => emailObject.email.match(EMAIL_REGEX);
-	t.true(emails.every(containsEmail));
+	t.true(emails.every(email => containsEmail(email)));
 });
 
 test('fetchUserInstallations() fetches user installations', async t => {

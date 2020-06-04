@@ -42,7 +42,7 @@ test('GET /api/preferences returns user w/ repos and metric types - authenticate
 	t.is(response.body.id, id);
 	t.true(Array.isArray(response.body.repos));
 	t.is(response.body.repos.length, REPOS.length);
-	t.true(response.body.repos.every(containsRepoKeys));
+	t.true(response.body.repos.every(repo => containsRepoKeys(repo)));
 	t.is(response.body.username, username);
 	t.deepEqual(response.body.metricTypes, METRIC_TYPES);
 });

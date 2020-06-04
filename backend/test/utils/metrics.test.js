@@ -65,7 +65,7 @@ test('fetchCurrent() fetches current metrics', async t => {
 	const metrics = await fetchCurrent(t.context.user.id, USER.selectedRepos);
 	t.true(Array.isArray(metrics));
 	t.true(metrics.length === USER.selectedRepos.length);
-	t.true(metrics.every(containsRepoKeys));
+	t.true(metrics.every(repo => containsRepoKeys(repo)));
 });
 
 test('compareSnapshots() compares snapshots', async t => {
@@ -91,8 +91,8 @@ test('compareSnapshots() compares snapshots', async t => {
 	});
 
 	t.true(comparison.length > 0);
-	t.true(comparison.every(containsRepoKeys));
-	t.true(comparison.every(containsComparisonKeys));
+	t.true(comparison.every(repo => containsRepoKeys(repo)));
+	t.true(comparison.every(repo => containsComparisonKeys(repo)));
 
 	const alteredComparison = await compareSnapshots({
 		latest: alteredSnapshot,
@@ -100,8 +100,8 @@ test('compareSnapshots() compares snapshots', async t => {
 	});
 
 	t.true(alteredComparison.length > 0);
-	t.true(alteredComparison.every(containsRepoKeys));
-	t.true(alteredComparison.every(containsComparisonKeys));
+	t.true(alteredComparison.every(repo => containsRepoKeys(repo)));
+	t.true(alteredComparison.every(repo => containsComparisonKeys(repo)));
 	t.true(alteredComparison.every(repo => repo.stars.difference === STAR_DIFFERENCE));
 	t.true(alteredComparison.every(repo => repo.forks.difference === FORK_DIFFERENCE));
 	t.true(alteredComparison.every(repo => repo.views.difference === VIEW_DIFFERENCE));
@@ -122,8 +122,8 @@ test('compareSnapshots() ignores deleted repos', async t => {
 
 	t.is(alteredComparison.length, snapshot.metrics.length - 2);
 	t.deepEqual(alteredComparison.map(repo => repo.name), alteredSnapshot.metrics.map(repo => repo.name));
-	t.true(alteredComparison.every(containsRepoKeys));
-	t.true(alteredComparison.every(containsComparisonKeys));
+	t.true(alteredComparison.every(repo => containsRepoKeys(repo)));
+	t.true(alteredComparison.every(repo => containsComparisonKeys(repo)));
 });
 
 test('compareSnapshots() ignores new repos without prior metrics', async t => {
@@ -139,8 +139,8 @@ test('compareSnapshots() ignores new repos without prior metrics', async t => {
 
 	t.is(alteredComparison.length, snapshot.metrics.length);
 	t.deepEqual(alteredComparison.map(repo => repo.name), snapshot.metrics.map(repo => repo.name));
-	t.true(alteredComparison.every(containsRepoKeys));
-	t.true(alteredComparison.every(containsComparisonKeys));
+	t.true(alteredComparison.every(repo => containsRepoKeys(repo)));
+	t.true(alteredComparison.every(repo => containsComparisonKeys(repo)));
 });
 
 test('daysSinceSnapshot() fetches snapshots N days apart', async t => {
@@ -228,8 +228,8 @@ test('fetchComparison() returns comparison of week apart snapshots', async t => 
 	const actualRepoNames = comparison.map(repo => repo.name);
 	t.deepEqual(actualRepoNames, expectedRepoNames);
 	t.true(comparison.length > 0);
-	t.true(comparison.every(containsRepoKeys));
-	t.true(comparison.every(containsComparisonKeys));
+	t.true(comparison.every(repo => containsRepoKeys(repo)));
+	t.true(comparison.every(repo => containsComparisonKeys(repo)));
 	t.true(comparison.every(repo => repo.stars.difference === STAR_DIFFERENCE));
 	t.true(comparison.every(repo => repo.forks.difference === FORK_DIFFERENCE));
 	t.true(comparison.every(repo => repo.views.difference === VIEW_DIFFERENCE));
