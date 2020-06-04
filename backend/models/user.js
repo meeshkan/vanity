@@ -20,7 +20,7 @@ module.exports = (Sequelize, DataTypes) => {
 			allowNull: false,
 			unique: true,
 			validate: {
-				is: /^[a-z0-9_-]+$/i,
+				is: /^[\w-]+$/i,
 			},
 		},
 		email: {
@@ -34,7 +34,7 @@ module.exports = (Sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			unique: true,
 			validate: {
-				is: /^[a-z0-9]+$/i,
+				is: /^[a-z\d]+$/i,
 			},
 		},
 		admin: {

@@ -1,7 +1,7 @@
 const test = require('ava');
 const { generateToken, verifyToken } = require('../../utils/token');
 
-const JWT_REGEX = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]/;
+const JWT_REGEX = /^[\w-=]+\.[\w-=]+\.?[\w-.+/=]/;
 
 test('generates tokens', t => {
 	const token = generateToken({ foo: 'bar' });

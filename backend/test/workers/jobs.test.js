@@ -24,7 +24,7 @@ test('ingestMetricsJob creates job', async t => {
 	t.is(job.name, '__default__');
 	t.is(job.opts.attempts, QUEUE_ATTEMPTS.METRICS);
 	t.deepEqual(job.data, { userID: user.id });
-	t.regex(job.id, /repeat:[a-z0-9]+:\d+/);
+	t.regex(job.id, /repeat:[a-z\d]+:\d+/);
 	t.true(job.delay > 0);
 	job.remove();
 
@@ -46,7 +46,7 @@ test('sendEmailJob creates job', async t => {
 	t.is(job.name, '__default__');
 	t.is(job.opts.attempts, QUEUE_ATTEMPTS.METRICS);
 	t.deepEqual(job.data.user, user);
-	t.regex(job.id, /repeat:[a-z0-9]+:\d+/);
+	t.regex(job.id, /repeat:[a-z\d]+:\d+/);
 	t.true(job.delay > 0);
 	job.remove();
 
