@@ -1,6 +1,7 @@
 import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 export const cookies = ['github-user', 'jwt'];
 
@@ -25,7 +26,8 @@ export async function updateRepos(token, repos) {
 			Router.push('/preferences');
 		}
 	} catch (error) {
-		console.log(error); // TODO: handle error
+		console.error(error);
+		toast.error('Something went wrong. Please try again.');
 	}
 }
 
@@ -45,6 +47,7 @@ export async function updateMetricTypes(token, metricTypes) {
 			Router.push('/preferences');
 		}
 	} catch (error) {
-		console.log(error); // TODO: handle error
+		console.error(error);
+		toast.error('Something went wrong. Please try again.');
 	}
 }
