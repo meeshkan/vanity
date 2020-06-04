@@ -28,7 +28,7 @@ describe('Home page', () => {
 	it('has footer', () => {
 		cy.get('footer').within(() => {
 			cy.contains('a', 'Twitter').should('have.attr', 'href', 'https://twitter.com/meeshkanml');
-			cy.contains('a', 'GitHub').should('have.attr', 'href', 'https://github.com/meeshkan/vanity');
+			cy.contains('a', 'GitHub').should('have.attr', 'href', 'https://github.com/meeshkan');
 			cy.contains('a', 'Meeshkan').should('have.attr', 'href', 'http://meeshkan.com/');
 		});
 	});
@@ -62,7 +62,7 @@ describe('Login page', () => {
 	it('has footer', () => {
 		cy.get('footer').within(() => {
 			cy.contains('a', 'Twitter').should('have.attr', 'href', 'https://twitter.com/meeshkanml');
-			cy.contains('a', 'GitHub').should('have.attr', 'href', 'https://github.com/meeshkan/vanity');
+			cy.contains('a', 'GitHub').should('have.attr', 'href', 'https://github.com/meeshkan');
 			cy.contains('a', 'Meeshkan').should('have.attr', 'href', 'http://meeshkan.com/');
 		});
 	});

@@ -28,7 +28,7 @@ export default function Footer() {
 				</a>
 				<a
 					className='link black bg-transparent dim inline-flex items-center ma2 tc br2 pa2'
-					href='https://github.com/meeshkan/vanity'
+					href='https://github.com/meeshkan'
 					title='GitHub'
 				>
 					<svg
