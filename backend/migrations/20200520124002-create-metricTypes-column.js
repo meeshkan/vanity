@@ -12,7 +12,7 @@ module.exports = {
 		});
 	},
 
-	down: (queryInterface, Sequelize) => {
+	down: (queryInterface, _) => {
 		return queryInterface.sequelize.transaction(t => {
 			return Promise.all([
 				queryInterface.removeColumn('Users', 'metricTypes', { transaction: t })
