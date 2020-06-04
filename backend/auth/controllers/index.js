@@ -2,6 +2,7 @@ const { OK, UNAUTHORIZED } = require('http-status');
 const { UnauthorizedError } = require('../../utils/errors');
 const { generateToken, verifyToken } = require('../../utils/token');
 const { passport } = require('../passport');
+const logger = require('../../utils/logger');
 
 const login = (req, res, next) => {
 	passport.authenticate('github', {
@@ -25,6 +26,7 @@ const sendUserData = async (req, res) => {
 		const user = await verifyToken(token);
 		res.status(OK).send(user);
 	} catch (error) {
+		logger.error(error);
 		res.status(UNAUTHORIZED).send(UnauthorizedError);
 	}
 };

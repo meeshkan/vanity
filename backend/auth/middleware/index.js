@@ -1,6 +1,7 @@
 const { UNAUTHORIZED } = require('http-status');
 const { UnauthorizedError } = require('../../utils/errors');
 const { User } = require('../../models');
+const logger = require('../../utils/logger');
 
 const isAdmin = async (req, res, next) => {
 	try {
@@ -12,6 +13,7 @@ const isAdmin = async (req, res, next) => {
 
 		res.status(UNAUTHORIZED).json(UnauthorizedError);
 	} catch (error) {
+		logger.error(error);
 		res.status(UNAUTHORIZED).json(UnauthorizedError);
 	}
 };

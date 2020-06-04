@@ -4,6 +4,7 @@ const { verifyToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
 const { User } = require('../../models');
 const { fetchUserInstallations } = require('../../utils/github');
+const logger = require('../../utils/logger');
 
 const METRIC_TYPES_REQUIRING_INSTALLATION = ['views', 'clones'];
 
@@ -32,6 +33,7 @@ const preferences = async (req, res) => {
 
 		res.status(OK).send(user);
 	} catch (error) {
+		logger.error(error);
 		res
 			.clearCookie('github-user')
 			.clearCookie('jwt')
@@ -51,6 +53,7 @@ const updateRepos = async (req, res) => {
 			message: `Successfully updated repos for ${user.username}`
 		});
 	} catch (error) {
+		logger.error(error);
 		res.status(UNAUTHORIZED).json(error);
 	}
 };
@@ -67,6 +70,7 @@ const updateMetricTypes = async (req, res) => {
 			message: `Successfully updated metric types for ${user.username}`
 		});
 	} catch (error) {
+		logger.error(error);
 		res.status(UNAUTHORIZED).json(error);
 	}
 };
@@ -102,6 +106,7 @@ const unsubscribe = async (req, res) => {
 
 		res.status(OK).json({ user: { email, id } });
 	} catch (error) {
+		logger.error(error);
 		res.status(UNAUTHORIZED).json(UnsubscriptionErrors.INVALID_TOKEN);
 	}
 };
