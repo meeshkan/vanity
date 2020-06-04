@@ -31,7 +31,7 @@ export const Preferences = props => {
 							{moment().startOf('day').add(9, 'hours').day(8).toString()}
 						</span>
 					</p>
-					<hr />
+					<hr className='w-100 w-70-ns' />
 					<MetricTypes metricTypes={metricTypes} token={token} />
 					{isAppInstalled ? <br /> : (
 						<span className='avenir pv3 dib lh-copy'>
@@ -40,7 +40,7 @@ export const Preferences = props => {
 							<br/>please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the VANITY GitHub App</a>.
 						</span>
 					)}
-					<hr />
+					<hr className='w-100 w-70-ns' />
 					{(repos && repos.length > 0) ?
 						<Repos repos={repos} token={token} /> : (
 							<>
@@ -49,7 +49,7 @@ export const Preferences = props => {
 							</>
 						)}
 					<br />
-					<hr />
+					<hr className='w-100 w-70-ns' />
 					<div className='pv4'>
 						<a
 							className='link dim f5 link dim ph3 pv2 mb2 dib white bg-blue'
