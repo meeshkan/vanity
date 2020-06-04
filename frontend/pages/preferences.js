@@ -102,7 +102,7 @@ Preferences.getInitialProps = async ctx => {
 
 		return await redirectOnError();
 	} catch (error) {
-		console.error(error); // TODO: handle error
+		console.error(error);
 		return redirectOnError();
 	}
 };
