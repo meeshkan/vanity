@@ -45,7 +45,7 @@ const compareSnapshots = ({ latest, previous }) => {
 								latest: latestMetricsAtIndex[key],
 								difference: latestMetricsAtIndex[key] - previousMetricsAtIndex[key],
 							};
-						} catch (_) {
+						} catch {
 							latestMetricsAtIndex = null;
 						}
 					}

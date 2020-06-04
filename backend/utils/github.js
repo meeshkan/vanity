@@ -144,7 +144,7 @@ const fetchUserRepoStats = async id => {
 				if (selectedMetricTypes.includes('clones')) {
 					repo.clones = await client.cloneCount(user.username, repo.name);
 				}
-			} catch (_) {}
+			} catch {}
 
 			return repo;
 		})
