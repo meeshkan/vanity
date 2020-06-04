@@ -22,24 +22,13 @@ MyError.getInitialProps = async ({ res, err, asPath }) => {
 
 	errorInitialProps.hasGetInitialPropsRun = true;
 
-	if (res) {
-		// Running on the server, the response object is available.
-		if (res.statusCode === 404) {
-			return {
-				statusCode: 404
-			};
-		}
+	if (res.statusCode === 404) {
+		return { statusCode: 404 };
+	}
 
-		if (err) {
-			Sentry.captureException(err);
-			return errorInitialProps;
-		}
-	} else {
-		// Running on the client (browser).
-		if (err) {
-			Sentry.captureException(err);
-			return errorInitialProps;
-		}
+	if (err) {
+		Sentry.captureException(err);
+		return errorInitialProps;
 	}
 
 	// If this point is reached, getInitialProps was called without any
