@@ -5,7 +5,8 @@
     "dev": "micro-dev server.js -p $PORT",
     "coverage": "nyc npm test",
     "coverage:upload": "nyc report --reporter=lcov && codecov",
-    "coverage:check": "nyc report && nyc check-coverage --lines 90 --functions 70 --branches 60"
+    "coverage:check": "nyc report && nyc check-coverage --lines 90 --functions 70 --branches 60",
+    "storybook": "start-storybook"
   },
   "ava": {
     "files": [
@@ -35,6 +36,18 @@
             "error",
             {
               "argsIgnorePattern": "t"
+            }
+          ]
+        }
+      },
+      {
+        "files": "**/**/*",
+        "rules": {
+          "import/extensions": [
+            "error",
+            "never",
+            {
+              "ejs": "always"
             }
           ]
         }
@@ -68,8 +81,12 @@
     "winston-transport-sentry-node": "^0.3.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@storybook/html": "^5.3.19",
     "ava": "^3.5.2",
+    "babel-loader": "^8.1.0",
     "codecov": "^3.7.0",
+    "ejs-loader": "^0.4.1",
     "micro": "^9.3.4",
     "micro-dev": "^3.0.0",
     "sinon": "^9.0.2",
