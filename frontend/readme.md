@@ -16,8 +16,8 @@ You can then access the frontend service by navigating to [localhost:3000](http:
 
 ## Component development
 
-We use [storybook](https://storybook.js.org) for component development.  To get started, run:
+We use [storybook](https://storybook.js.org) for component development. To get started, run:
 
 ```
-npm run storybook
+~/v/frontend ❯❯❯ npm run storybook
 ```
