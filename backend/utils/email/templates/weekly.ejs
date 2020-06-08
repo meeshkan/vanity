@@ -1,165 +1,165 @@
 <html>
-    <head>
-        <title>Welcome to Vanity</title>
-        <link href='https://fonts.googleapis.com/css?family=Space+Mono' rel='stylesheet' />
-        <style>
-            body {
-                font-family: 'Space Mono', monospace;
-                text-rendering: optimizeLegibility;
-            }
+	<head>
+		<title>Welcome to Vanity</title>
+		<link href='https://fonts.googleapis.com/css?family=Space+Mono' rel='stylesheet' />
+		<style>
+			body {
+				font-family: 'Space Mono', monospace;
+				text-rendering: optimizeLegibility;
+			}
 
-            .container {
-                background-color: #EFEFEF;
-                text-align: center;
-                width: 60%;
-                margin: 0 auto;
-                padding: 40px;
-            }
+			.container {
+				background-color: #EFEFEF;
+				text-align: center;
+				width: 60%;
+				margin: 0 auto;
+				padding: 40px;
+			}
 
-            .heading {
-                padding-bottom: 2px;
-            }
+			.heading {
+				padding-bottom: 2px;
+			}
 
-            .heading h1 {
-                font-size: 2.5em;
-            }
+			.heading h1 {
+				font-size: 2.5em;
+			}
 
-            .heading h3 {
-                font-weight: 400;
-            }
+			.heading h3 {
+				font-weight: 400;
+			}
 
-            .metrics {
-                width: 80%;
-                margin: 0 auto;
-            }
+			.metrics {
+				width: 80%;
+				margin: 0 auto;
+			}
 
-            .metrics ol, .footer ul {
-                list-style-type: none;
-                padding: 0;
-            }
+			.metrics ol, .footer ul {
+				list-style-type: none;
+				padding: 0;
+			}
 
-            .metrics .no-repos {
-                font-weight: bold;
-                font-style: italic;
-                padding-bottom: 20px;
-            }
+			.metrics .no-repos {
+				font-weight: bold;
+				font-style: italic;
+				padding-bottom: 20px;
+			}
 
-            .repo {
-                padding-bottom: 15px;
-            }
+			.repo {
+				padding-bottom: 15px;
+			}
 
-            .repo h4 {
-                font-size: 1em;
-                font-weight: bold;
-                margin: 0;
-            }
+			.repo h4 {
+				font-size: 1em;
+				font-weight: bold;
+				margin: 0;
+			}
 
-            .repo .content {
-                background-color: #F8F8F8;
-                border-radius: 10px;
-                width: 100%;
-                margin: 0 auto;
-                padding: 10px 0 10px;
-            }
+			.repo .content {
+				background-color: #F8F8F8;
+				border-radius: 10px;
+				width: 100%;
+				margin: 0 auto;
+				padding: 10px 0 10px;
+			}
 
-            .repo .content .increase {
-                color: green;
-            }
+			.repo .content .increase {
+				color: green;
+			}
 
-            .repo .content .decrease {
-                color: red;
-            }
+			.repo .content .decrease {
+				color: red;
+			}
 
-            .repo .content .same {
-                color: grey;
-            }
+			.repo .content .same {
+				color: grey;
+			}
 
-            .repo .content .name {
-                padding: 2px 20px 5px 20px;
-            }
+			.repo .content .name {
+				padding: 2px 20px 5px 20px;
+			}
 
-            .stats {
-                padding: 0 10px 0 10px;
-                line-height: 2em;
-            }
+			.stats {
+				padding: 0 10px 0 10px;
+				line-height: 2em;
+			}
 
-            .stats li {
-                display: inline-block;
-                padding: 5px;
-                width: 110px;
-            }
+			.stats li {
+				display: inline-block;
+				padding: 5px;
+				width: 110px;
+			}
 
-            a {
-                color: black;
-                text-decoration: none;
-            }
+			a {
+				color: black;
+				text-decoration: none;
+			}
 
-            .footer ul {
-                display: block;
-            }
+			.footer ul {
+				display: block;
+			}
 
-            .footer li {
-                margin-bottom: 5px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="heading">
-                <h1>V A N I T Y</h1>
-                <h3><%= user.username %>'s metrics</h3>
-                <p>Your GitHub repo metrics for this week.</p>
-            </div>
+			.footer li {
+				margin-bottom: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="heading">
+				<h1>V A N I T Y</h1>
+				<h3><%= user.username %>'s metrics</h3>
+				<p>Your GitHub repo metrics for this week.</p>
+			</div>
 
-            <div class="metrics">
-                <% if (metrics.length > 0) { %>
-                    <ol>
-                    <% for (const repo of metrics) { %>
-                        <div class="repo">
-                            <div class="content">
-                                <div class="name">
-                                    <h4><%= repo.name %></h4>
-                                </div>
-                                <div class="stats">
-                                    <ol>
-                                        <% for (const metric of Object.keys(repo).filter(key => key !== 'name')) { %>
-                                            <li class="<%= metric %>">
-                                                <div class="value">
-                                                    <span class="latest"><%= repo[metric].latest %></span>
-                                                    <% if (repo[metric].difference > 0) { %>
-                                                        <span class="increase">(+<%= repo[metric].difference %>)</span>
-                                                    <% } else if (repo[metric].difference < 0) { %>
-                                                        <span class="decrease">(<%= repo[metric].difference %>)</span>
-                                                    <% } else { %>
-                                                        <span class="same">(+<%= repo[metric].difference %>)</span>
-                                                    <% } %>
-                                                </div>
-                                                <label>
-                                                    <%= repo[metric].latest === 1 ? metric.slice(0,-1) : metric %>
-                                                </label>
-                                            </li>
-                                        <% } %>
-                                    </ol>
-                                </div>
-                            </div>
-                        </div>
-                    <% } %>
-                    </ol>
-                <% } else { %>
-                    <p class="no-repos">
-                        It seems like you don&apos;t have any repos yet.<br/>
-                        Come back once you&apos;ve made a few.
-                    </p>
-                <% } %>
-            </div>
+			<div class="metrics">
+				<% if (metrics.length > 0) { %>
+					<ol>
+					<% for (const repo of metrics) { %>
+						<div class="repo">
+							<div class="content">
+								<div class="name">
+									<h4><%= repo.name %></h4>
+								</div>
+								<div class="stats">
+									<ol>
+										<% for (const metric of Object.keys(repo).filter(key => key !== 'name')) { %>
+											<li class="<%= metric %>">
+												<div class="value">
+													<span class="latest"><%= repo[metric].latest %></span>
+													<% if (repo[metric].difference > 0) { %>
+														<span class="increase">(+<%= repo[metric].difference %>)</span>
+													<% } else if (repo[metric].difference < 0) { %>
+														<span class="decrease">(<%= repo[metric].difference %>)</span>
+													<% } else { %>
+														<span class="same">(+<%= repo[metric].difference %>)</span>
+													<% } %>
+												</div>
+												<label>
+													<%= repo[metric].latest === 1 ? metric.slice(0,-1) : metric %>
+												</label>
+											</li>
+										<% } %>
+									</ol>
+								</div>
+							</div>
+						</div>
+					<% } %>
+					</ol>
+				<% } else { %>
+					<p class="no-repos">
+						It seems like you don&apos;t have any repos yet.<br/>
+						Come back once you&apos;ve made a few.
+					</p>
+				<% } %>
+			</div>
 
-            <div class="footer">
-                <ul>
-                    <li><a href="https://vanity.dev" target="_blank" class="dim">Vanity</a> &copy; 2020</li>
-                    <li><a href="https://vanity.dev/login" target="_blank" class="dim">Update your preferences</a></li>
-                    <li><a href="https://vanity.dev/unsubscribe?email=<%= user.email %>&token=<%= user.unsubscriptionToken %>" target="_blank" class="dim">Unsubscribe</a></li>
-                </ul>
-            </div>
-        </div>
-    </body>
+			<div class="footer">
+				<ul>
+					<li><a href="https://vanity.dev" target="_blank" class="dim">Vanity</a> &copy; 2020</li>
+					<li><a href="https://vanity.dev/login" target="_blank" class="dim">Update your preferences</a></li>
+					<li><a href="https://vanity.dev/unsubscribe?email=<%= user.email %>&token=<%= user.unsubscriptionToken %>" target="_blank" class="dim">Unsubscribe</a></li>
+				</ul>
+			</div>
+		</div>
+	</body>
 </html>
