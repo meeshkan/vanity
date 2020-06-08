@@ -33,9 +33,15 @@
                 margin: 0 auto;
             }
 
-            .metrics ol {
+            .metrics ol, .footer ul {
                 list-style-type: none;
                 padding: 0;
+            }
+
+            .metrics .no-repos {
+                font-weight: bold;
+                font-style: italic;
+                padding-bottom: 20px;
             }
 
             .metrics li {
@@ -46,6 +52,12 @@
                 padding-bottom: 15px;
             }
 
+            .repo h4 {
+                font-size: 1em;
+                font-weight: bold;
+                margin: 0;
+            }
+
             .repo .content {
                 background-color: #F8F8F8;
                 border-radius: 10px;
@@ -53,22 +65,19 @@
                 margin: 0 auto;
                 padding: 10px 0 10px;
             }
-            
+
             .repo .content .name {
                 font-weight: 500;
                 padding-bottom: 5px;
             }
 
-            .stats li + li::before {
-                content: " | ";
-            }
-
             .stats li {
                 display: inline-block;
+                padding: 2px;
             }
 
-            .stats .material-icons {
-                vertical-align: bottom !important;
+            .stats ol {
+                padding: 0 15px 0 15px;
             }
 
             a {
@@ -76,12 +85,12 @@
                 text-decoration: none;
             }
 
-            ul.flexbox {
-                display: -webkit-box;
-                display: -moz-box;
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
+            .footer ul {
+                display: block;
+            }
+
+            .footer li {
+                margin-bottom: 5px;
             }
         </style>
     </head>
@@ -103,9 +112,7 @@
                         <div class="repo">
                             <div class="content">
                                 <div class="name">
-                                    <li>
-                                        <%= repo.name %>
-                                    </li>
+                                    <h4><%= repo.name %></h4>
                                 </div>
                                 <div class="stats">
                                     <ol>
@@ -121,7 +128,7 @@
                     <% } %>
                     </ol>
                 <% } else { %>
-                    <p>
+                    <p class="no-repos">
                         It seems like you don&apos;t have any repos yet.<br/>
                         Come back once you&apos;ve made a few.
                     </p>
@@ -129,12 +136,11 @@
             </div>
 
             <div class="footer">
-                <a href="https://vanity.dev/login" target="_blank" class="dim">Update your preferences</a>
-                <br/>
-                <a href="https://vanity.dev/unsubscribe?email=<%= user.email %>&token=<%= user.unsubscriptionToken %>" target="_blank" class="dim">Unsubscribe</a>
-                <br/>
-                <a href="https://vanity.dev" target="_blank" class="dim">Vanity</a>
-                &copy; 2020
+                <ul>
+                    <li><a href="https://vanity.dev" target="_blank" class="dim">Vanity</a> &copy; 2020</li>
+                    <li><a href="https://vanity.dev/login" target="_blank" class="dim">Update your preferences</a></li>
+                    <li><a href="https://vanity.dev/unsubscribe?email=<%= user.email %>&token=<%= user.unsubscriptionToken %>" target="_blank" class="dim">Unsubscribe</a></li>
+                </ul>
             </div>
         </div>
     </body>

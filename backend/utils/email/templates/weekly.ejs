@@ -33,17 +33,25 @@
                 margin: 0 auto;
             }
 
-            .metrics ol {
+            .metrics ol, .footer ul {
                 list-style-type: none;
                 padding: 0;
             }
 
-            .metrics li {
-                display: inline;
+            .metrics .no-repos {
+                font-weight: bold;
+                font-style: italic;
+                padding-bottom: 20px;
             }
 
             .repo {
                 padding-bottom: 15px;
+            }
+
+            .repo h4 {
+                font-size: 1em;
+                font-weight: bold;
+                margin: 0;
             }
 
             .repo .content {
@@ -65,22 +73,20 @@
             .repo .content .same {
                 color: grey;
             }
-            
+
             .repo .content .name {
-                font-weight: 500;
-                padding-bottom: 5px;
+                padding: 2px 20px 5px 20px;
             }
 
-            .stats li + li::before {
-                content: " | ";
+            .stats {
+                padding: 0 10px 0 10px;
+                line-height: 2em;
             }
 
             .stats li {
                 display: inline-block;
-            }
-
-            .stats .material-icons {
-                vertical-align: bottom !important;
+                padding: 5px;
+                width: 110px;
             }
 
             a {
@@ -88,12 +94,12 @@
                 text-decoration: none;
             }
 
-            ul.flexbox {
-                display: -webkit-box;
-                display: -moz-box;
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
+            .footer ul {
+                display: block;
+            }
+
+            .footer li {
+                margin-bottom: 5px;
             }
         </style>
     </head>
@@ -102,7 +108,7 @@
             <div class="heading">
                 <h1>V A N I T Y</h1>
                 <h3><%= user.username %>'s metrics</h3>
-                <p>Your metrics for this week.</p>
+                <p>Your GitHub repo metrics for this week.</p>
             </div>
 
             <div class="metrics">
@@ -112,23 +118,25 @@
                         <div class="repo">
                             <div class="content">
                                 <div class="name">
-                                    <li>
-                                        <%= repo.name %>
-                                    </li>
+                                    <h4><%= repo.name %></h4>
                                 </div>
                                 <div class="stats">
                                     <ol>
                                         <% for (const metric of Object.keys(repo).filter(key => key !== 'name')) { %>
                                             <li class="<%= metric %>">
-                                                <span class="latest"><%= repo[metric].latest %></span>
-                                                <% if (repo[metric].difference > 0) { %>
-                                                    <span class="increase">(+<%= repo[metric].difference %>)</span>
-                                                <% } else if (repo[metric].difference < 0) { %>
-                                                    <span class="decrease">(<%= repo[metric].difference %>)</span>
-                                                <% } else { %>
-                                                    <span class="same">(+<%= repo[metric].difference %>)</span>
-                                                <% } %>
-                                                <%= repo[metric].latest === 1 ? metric.slice(0,-1) : metric %>
+                                                <div class="value">
+                                                    <span class="latest"><%= repo[metric].latest %></span>
+                                                    <% if (repo[metric].difference > 0) { %>
+                                                        <span class="increase">(+<%= repo[metric].difference %>)</span>
+                                                    <% } else if (repo[metric].difference < 0) { %>
+                                                        <span class="decrease">(<%= repo[metric].difference %>)</span>
+                                                    <% } else { %>
+                                                        <span class="same">(+<%= repo[metric].difference %>)</span>
+                                                    <% } %>
+                                                </div>
+                                                <label>
+                                                    <%= repo[metric].latest === 1 ? metric.slice(0,-1) : metric %>
+                                                </label>
                                             </li>
                                         <% } %>
                                     </ol>
@@ -138,7 +146,7 @@
                     <% } %>
                     </ol>
                 <% } else { %>
-                    <p>
+                    <p class="no-repos">
                         It seems like you don&apos;t have any repos yet.<br/>
                         Come back once you&apos;ve made a few.
                     </p>
@@ -146,12 +154,11 @@
             </div>
 
             <div class="footer">
-                <a href="https://vanity.dev/login" target="_blank" class="dim">Update your preferences</a>
-                <br/>
-                <a href="https://vanity.dev/unsubscribe?email=<%= user.email %>&token=<%= user.unsubscriptionToken %>" target="_blank" class="dim">Unsubscribe</a>
-                <br/>
-                <a href="https://vanity.dev" target="_blank" class="dim">Vanity</a>
-                &copy; 2020
+                <ul>
+                    <li><a href="https://vanity.dev" target="_blank" class="dim">Vanity</a> &copy; 2020</li>
+                    <li><a href="https://vanity.dev/login" target="_blank" class="dim">Update your preferences</a></li>
+                    <li><a href="https://vanity.dev/unsubscribe?email=<%= user.email %>&token=<%= user.unsubscriptionToken %>" target="_blank" class="dim">Unsubscribe</a></li>
+                </ul>
             </div>
         </div>
     </body>
