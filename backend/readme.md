@@ -13,3 +13,11 @@ Start the backend development server:
 ```
 
 You can then access the backend service by navigating to [localhost:3000](http://localhost:3000).
+
+## Component development
+
+We use [storybook](https://storybook.js.org) for component development (in this case, for the email templates). To get started, run:
+
+```
+~/v/backend ❯❯❯ npm run storybook
+```
