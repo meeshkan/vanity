@@ -3,6 +3,23 @@ import { Preferences } from '../pages/preferences';
 
 export default { title: 'Preferences' };
 
+export const noRepos = () => (
+	<Preferences
+		isAppInstalled
+		username='John'
+		token='foo'
+		updateRepos={() => {}}
+		login={() => {}}
+		metricTypes={[
+			{ name: 'stars', selected: true, disabled: false },
+			{ name: 'forks', selected: false, disabled: false },
+			{ name: 'views', selected: true, disabled: false },
+			{ name: 'clones', selected: true, disabled: false },
+		]}
+		repos={[]}
+	/>
+);
+
 export const fewRepos = () => (
 	<Preferences
 		isAppInstalled
