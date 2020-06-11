@@ -48,9 +48,14 @@ Vanity.getInitialProps = async ({ Component, ctx }) => {
 };
 
 Vanity.propTypes = {
-	Component: PropTypes.object.isRequired,
-	pageProps: PropTypes.object.isRequired,
-	err: PropTypes.object.isRequired,
+	Component: PropTypes.func.isRequired,
+	pageProps: PropTypes.object,
+	err: PropTypes.object,
+};
+
+Vanity.defaultProps = {
+	pageProps: undefined,
+	err: undefined,
 };
 
 export default Vanity;
