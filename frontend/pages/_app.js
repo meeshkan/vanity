@@ -1,5 +1,5 @@
 import React from 'react';
-import App from 'next/app';
+import PropTypes from 'prop-types';
 import Router from 'next/router';
 import * as Sentry from '@sentry/node';
 import { DefaultSeo as DefaultSEO } from 'next-seo';
@@ -16,38 +16,41 @@ Sentry.init({
 
 Router.events.on('routeChangeComplete', url => pageview(url));
 
-class Vanity extends App {
-	static async getInitialProps({ Component, ctx }) {
-		let pageProps = {};
-		if (Component.getInitialProps) {
-			pageProps = await Component.getInitialProps(ctx);
-		}
+const Vanity = ({ Component, pageProps, err }) => {
+	const modifiedPageProps = { ...pageProps, err };
 
-		return { pageProps };
+	return (
+		<>
+			<DefaultSEO {...SEO} />
+			<Component {...modifiedPageProps} />
+			<ToastContainer
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				closeOnClick
+				position='bottom-right'
+				autoClose={4000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				rtl={false}
+			/>
+		</>
+	);
+};
+
+Vanity.getInitialProps = async ({ Component, ctx }) => {
+	let pageProps = {};
+	if (Component.getInitialProps) {
+		pageProps = await Component.getInitialProps(ctx);
 	}
 
-	render() {
-		const { Component, pageProps, err } = this.props;
-		const modifiedPageProps = { ...pageProps, err };
+	return { pageProps };
+};
 
-		return (
-			<>
-				<DefaultSEO {...SEO} />
-				<Component {...modifiedPageProps} />
-				<ToastContainer
-					pauseOnFocusLoss
-					draggable
-					pauseOnHover
-					closeOnClick
-					position='bottom-right'
-					autoClose={4000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					rtl={false}
-				/>
-			</>
-		);
-	}
-}
+Vanity.propTypes = {
+	Component: PropTypes.object.isRequired,
+	pageProps: PropTypes.object.isRequired,
+	err: PropTypes.object.isRequired,
+};
 
 export default Vanity;

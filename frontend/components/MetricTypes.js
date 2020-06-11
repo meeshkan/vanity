@@ -3,23 +3,21 @@ import Toggle from 'react-toggle';
 import PropTypes from 'prop-types';
 import { updateMetricTypes } from '../logic/preferences';
 
-function MetricType({ metric, index, handleToggle }) {
-	return (
-		<tr key={metric.name}>
-			<th className='fw3 bb b--white-20 tl pb3 pr6 pv3'>
-				{metric.name}
-			</th>
-			<th className='bb b--white-20 tr pb3 pv3'>
-				<Toggle
-					defaultChecked={metric.selected}
-					disabled={metric.disabled}
-					icons={false}
-					onChange={event => handleToggle(event, index)}
-				/>
-			</th>
-		</tr>
-	);
-}
+const MetricType = ({ metric, index, handleToggle }) => (
+	<tr key={metric.name}>
+		<th className='fw3 bb b--white-20 tl pb3 pr6 pv3'>
+			{metric.name}
+		</th>
+		<th className='bb b--white-20 tr pb3 pv3'>
+			<Toggle
+				defaultChecked={metric.selected}
+				disabled={metric.disabled}
+				icons={false}
+				onChange={event => handleToggle(event, index)}
+			/>
+		</th>
+	</tr>
+);
 
 MetricType.propTypes = {
 	metric: PropTypes.object.isRequired,
@@ -27,11 +25,11 @@ MetricType.propTypes = {
 	handleToggle: PropTypes.func.isRequired,
 };
 
-export default function MetricTypes({ metricTypes, token }) {
-	function handleToggle(event, index) {
+const MetricTypes = ({ metricTypes, token }) => {
+	const handleToggle = (event, index) => {
 		metricTypes[index].selected = event.target.checked;
 		updateMetricTypes(token, metricTypes);
-	}
+	};
 
 	return (
 		<>
@@ -52,9 +50,11 @@ export default function MetricTypes({ metricTypes, token }) {
 			</div>
 		</>
 	);
-}
+};
 
 MetricTypes.propTypes = {
 	metricTypes: PropTypes.array.isRequired,
 	token: PropTypes.string.isRequired,
 };
+
+export default MetricTypes;

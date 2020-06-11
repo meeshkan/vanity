@@ -10,7 +10,7 @@ Router.onRouteChangeStart = () => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
 Router.onRouteChangeError = () => NProgress.done();
 
-export default function Nav() {
+const Nav = () => {
 	const [router, setRouter] = useState('');
 	const [avatarURL, setAvatarURL] = useState('');
 
@@ -95,4 +95,6 @@ export default function Nav() {
 			</header>
 		</div>
 	);
-}
+};
+
+export default Nav;

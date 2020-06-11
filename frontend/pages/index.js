@@ -2,12 +2,12 @@ import React from 'react';
 import Slider from '../components/Slider';
 import Layout from '../components/Layout';
 
-export default function Index() {
-	return (
-		<Layout>
-			<section>
-				<Slider />
-			</section>
-		</Layout>
-	);
-}
+const Index = () => (
+	<Layout>
+		<section>
+			<Slider />
+		</section>
+	</Layout>
+);
+
+export default Index;

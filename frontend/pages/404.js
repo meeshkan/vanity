@@ -1,6 +1,6 @@
 import React from 'react';
 import Error from 'next/error';
 
-export default function NotFound() {
-	return <Error statusCode={404} />;
-}
+const NotFound = () => <Error statusCode={404} />;
+
+export default NotFound;

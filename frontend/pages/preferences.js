@@ -14,56 +14,52 @@ import getHost from '../utils/get-host';
 import { cookies, logout } from '../logic/preferences';
 import '../styles/preferences.css';
 
-export const Preferences = props => {
-	const { username, repos, metricTypes, token, isAppInstalled } = props;
-
-	return (
-		<Layout>
-			<main className='pa3 pa5-ns vh-100 w-100 white dt tc'>
-				<div className='f4 measure pt5 pt3-ns dtc v-mid'>
-					<h2>preferences</h2>
-					<p className='pb4'>
-						welcome, {username}
-					</p>
-					<p className='f5 f4-ns lh-copy'>
-						upcoming metrics email:<br/>
-						<span className='avenir pv3 dib i'>
-							{moment().startOf('day').add(9, 'hours').day(8).toString()}
-						</span>
-					</p>
-					<hr className='w-100 w-70-ns' />
-					<MetricTypes metricTypes={metricTypes} token={token} />
-					{isAppInstalled ? <br /> : (
-						<span className='avenir pv3 dib lh-copy'>
-							If you&apos;d like to receive repo <em>views</em> and <em>clones</em>,
-							{' '}
-							<br/>please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the VANITY GitHub App</a>.
-						</span>
+export const Preferences = ({ username, repos, metricTypes, token, isAppInstalled }) => (
+	<Layout>
+		<main className='pa3 pa5-ns vh-100 w-100 white dt tc'>
+			<div className='f4 measure pt5 pt3-ns dtc v-mid'>
+				<h2>preferences</h2>
+				<p className='pb4'>
+					welcome, {username}
+				</p>
+				<p className='f5 f4-ns lh-copy'>
+					upcoming metrics email:<br/>
+					<span className='avenir pv3 dib i'>
+						{moment().startOf('day').add(9, 'hours').day(8).toString()}
+					</span>
+				</p>
+				<hr className='w-100 w-70-ns' />
+				<MetricTypes metricTypes={metricTypes} token={token} />
+				{isAppInstalled ? <br /> : (
+					<span className='avenir pv3 dib lh-copy'>
+						If you&apos;d like to receive repo <em>views</em> and <em>clones</em>,
+						{' '}
+						<br/>please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the VANITY GitHub App</a>.
+					</span>
+				)}
+				<hr className='w-100 w-70-ns' />
+				{(repos && repos.length > 0) ?
+					<Repos repos={repos} token={token} /> : (
+						<>
+							<p>It seems like you don&apos;t have any repos.</p>
+							<p>Come back once you&apos;ve made some.</p>
+						</>
 					)}
-					<hr className='w-100 w-70-ns' />
-					{(repos && repos.length > 0) ?
-						<Repos repos={repos} token={token} /> : (
-							<>
-								<p>It seems like you don&apos;t have any repos.</p>
-								<p>Come back once you&apos;ve made some.</p>
-							</>
-						)}
-					<br />
-					<hr className='w-100 w-70-ns' />
-					<div className='pv4'>
-						<a
-							className='link dim f5 link dim ph3 pv2 mb2 dib white bg-blue'
-							onClick={logout}
-						>
-							logout
-						</a>
-					</div>
+				<br />
+				<hr className='w-100 w-70-ns' />
+				<div className='pv4'>
+					<a
+						className='link dim f5 link dim ph3 pv2 mb2 dib white bg-blue'
+						onClick={logout}
+					>
+						logout
+					</a>
 				</div>
-			</main>
-			<Footer />
-		</Layout>
-	);
-};
+			</div>
+		</main>
+		<Footer />
+	</Layout>
+);
 
 Preferences.propTypes = {
 	username: PropTypes.string.isRequired,
