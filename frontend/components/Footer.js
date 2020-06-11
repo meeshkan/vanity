@@ -6,7 +6,7 @@ export default function Footer() {
 			<div className='w-100 ph3 pv4'>
 				<a
 					className='link black bg-transparent dim inline-flex items-center ma2 tc br2 pa2'
-					href='https://twitter.com/meeshkanml'
+					href='https://twitter.com/meeshkan'
 					title='Twitter'
 				>
 					<svg
