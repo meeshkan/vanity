@@ -10,9 +10,8 @@ export const Login = () => (
 			<div className='f4 lh-copy measure dtc v-mid'>
 				<h3>access your metrics preferences</h3>
 				<p>
-					<a href='/auth/github' className='white dim no-underline'>
-						<span className='v-mid'>Login with GitHub</span>
-						<br />
+					<a href='/auth/github' className='white dim no-underline db'>
+						<span className='v-mid db'>Login with GitHub</span>
 						<svg
 							className='dib mt3'
 							viewBox='0 0 24 24'

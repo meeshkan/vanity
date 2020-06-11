@@ -32,9 +32,8 @@ const Slider = () => (
 								<h3>start receiving your metrics</h3>
 								<p>
 									<Link href='/auth/github'>
-										<a className='white dim no-underline'>
-											<span className='v-mid'>Login with GitHub</span>
-											<br />
+										<a className='white dim no-underline db'>
+											<span className='v-mid db'>Login with GitHub</span>
 											<svg
 												className='dib mt3'
 												viewBox='0 0 24 24'

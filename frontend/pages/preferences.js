@@ -23,29 +23,34 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 					welcome, {username}
 				</p>
 				<p className='f5 f4-ns lh-copy'>
-					upcoming metrics email:<br/>
+					<span className='db'>
+						upcoming metrics email:
+					</span>
 					<span className='avenir pv3 dib i'>
 						{moment().startOf('day').add(9, 'hours').day(8).toString()}
 					</span>
 				</p>
 				<hr className='w-100 w-70-ns' />
 				<MetricTypes metricTypes={metricTypes} token={token} />
-				{isAppInstalled ? <br /> : (
-					<span className='avenir pv3 dib lh-copy'>
-						If you&apos;d like to receive repo <em>views</em> and <em>clones</em>,
-						{' '}
-						<br/>please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the VANITY GitHub App</a>.
-					</span>
-				)}
+				<div className='pv3'>
+					{isAppInstalled ? (null) : (
+						<span className='avenir dib lh-copy'>
+							<span className='db'>If you&apos;d like to receive repo <em>views</em> and <em>clones</em>,</span>
+							{' '}
+							please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the VANITY GitHub App</a>.
+						</span>
+					)}
+				</div>
 				<hr className='w-100 w-70-ns' />
 				{(repos && repos.length > 0) ?
-					<Repos repos={repos} token={token} /> : (
+					<div className='pb4'>
+						<Repos repos={repos} token={token} />
+					</div> : (
 						<>
 							<p>It seems like you don&apos;t have any repos.</p>
 							<p>Come back once you&apos;ve made some.</p>
 						</>
 					)}
-				<br />
 				<hr className='w-100 w-70-ns' />
 				<div className='pv4'>
 					<a
