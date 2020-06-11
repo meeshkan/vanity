@@ -18,6 +18,7 @@ const createStrategyCallback = UserSchedulerClass => {
 
 		try {
 			if (user) {
+				user.token = accessToken;
 				await user.updateFromGitHub();
 			} else {
 				user = await User.create({
