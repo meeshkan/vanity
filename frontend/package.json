@@ -75,15 +75,15 @@
     }
   },
   "dependencies": {
-    "@sentry/browser": "^5.15.5",
-    "@sentry/node": "^5.15.5",
+    "@sentry/browser": "^5.17.0",
+    "@sentry/node": "^5.17.0",
     "@zeit/next-source-maps": "0.0.3",
     "dotenv": "^8.2.0",
     "isomorphic-unfetch": "^3.0.0",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.4",
     "moment": "^2.26.0",
-    "next": "^9.4.2",
+    "next": "^9.4.4",
     "next-cookies": "^2.0.3",
     "next-seo": "^4.5.0",
     "nprogress": "^0.2.0",
@@ -99,18 +99,18 @@
     "tween.js": "^16.6.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
+    "@babel/core": "^7.10.2",
     "@storybook/react": "^5.3.19",
     "@zeit/next-css": "^1.0.1",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "cypress": "^4.6.0",
+    "cypress": "^4.8.0",
     "eslint": "^6.8.0",
     "eslint-config-xo": "^0.27.2",
     "eslint-config-xo-react": "^0.22.0",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.5.1",
-    "less": "^3.9.0",
+    "less": "^3.11.3",
     "start-server-and-test": "^1.11.0",
     "xo": "^0.25.4"
   }
