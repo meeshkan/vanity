@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "backend/server.js", 
-      "use": "@now/node",
+      "use": "@now/node@1.6.1",
       "config": {
         "bundle": false
       }
