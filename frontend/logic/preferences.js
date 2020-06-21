@@ -14,7 +14,6 @@ export async function updateRepos(token, repos) {
 	try {
 		const response = await fetch('/api/preferences/repos', {
 			method: 'POST',
-			credentials: 'include',
 			headers: {
 				authorization: JSON.stringify({ token }),
 				'content-type': 'application/json',
@@ -35,7 +34,6 @@ export async function updateMetricTypes(token, metricTypes) {
 	try {
 		const response = await fetch('/api/preferences/metric-types', {
 			method: 'POST',
-			credentials: 'include',
 			headers: {
 				authorization: JSON.stringify({ token }),
 				'content-type': 'application/json',

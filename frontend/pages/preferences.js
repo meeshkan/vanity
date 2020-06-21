@@ -89,7 +89,6 @@ Preferences.getInitialProps = async ctx => {
 
 	try {
 		const response = await fetch(url, {
-			credentials: 'include',
 			headers: {
 				authorization: JSON.stringify({ token }),
 			},
