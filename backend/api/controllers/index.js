@@ -8,15 +8,17 @@ const logger = require('../../utils/logger');
 
 const METRIC_TYPES_REQUIRING_INSTALLATION = new Set(['views', 'clones']);
 
+const getUserFromRequest = request => {
+	const auth = request.headers.authorization;
+	const { token } = JSON.parse(auth);
+	return User.findByToken(token);
+};
+
 const preferences = async (request, response) => {
 	try {
-		const auth = request.headers.authorization;
-		const { token: jwt } = JSON.parse(auth);
-		const user = await verifyToken(jwt);
-		const userById = await User.findByPk(user.id);
-		const { repos, metricTypes, token: accessToken } = userById;
-		user.repos = repos;
-		const installations = await fetchUserInstallations(accessToken);
+		const { id, username, repos, metricTypes, token } = await getUserFromRequest(request);
+		const user = { id, username, repos };
+		const installations = await fetchUserInstallations(token);
 		user.isAppInstalled = installations.total_count > 0;
 		user.metricTypes = metricTypes.map(metricType => {
 			if (METRIC_TYPES_REQUIRING_INSTALLATION.has(metricType.name)) {
@@ -44,9 +46,7 @@ const preferences = async (request, response) => {
 const updateRepos = async (request, response) => {
 	try {
 		const { repos } = request.body;
-		const auth = request.headers.authorization;
-		const { token } = JSON.parse(auth);
-		const user = await User.findByToken(token);
+		const user = await getUserFromRequest(request);
 		user.repos = repos;
 		await user.save({ fileds: ['repos'] });
 		return response.status(OK).json({
@@ -61,9 +61,7 @@ const updateRepos = async (request, response) => {
 const updateMetricTypes = async (request, response) => {
 	try {
 		const { metricTypes } = request.body;
-		const auth = request.headers.authorization;
-		const { token } = JSON.parse(auth);
-		const user = await User.findByToken(token);
+		const user = await getUserFromRequest(request);
 		user.metricTypes = metricTypes;
 		await user.save({ fields: ['metricTypes'] });
 		return response.status(OK).json({

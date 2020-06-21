@@ -36,9 +36,6 @@ test('GET /api/preferences returns user w/ repos and metric types - authenticate
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, OK);
-	t.is(response.body.avatar, avatar);
-	t.false(response.body.exp > 0);
-	t.true(response.body.iat > 0);
 	t.is(response.body.id, id);
 	t.true(Array.isArray(response.body.repos));
 	t.is(response.body.repos.length, REPOS.length);
