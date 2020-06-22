@@ -12,8 +12,6 @@ const {
 const REPO_KEYS = ['fork', 'name'];
 const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
 
-const containsRepoStatKeys = (repo, repoStatKeys) => repoStatKeys.every(key => key in repo);
-
 const EMAIL_REGEX = /.+@.+\..+/;
 
 test.serial.before('create test user', createTestUser);
@@ -30,18 +28,26 @@ test.serial('fetchUserRepoStats() fetches user repo stats with ALL metric types 
 	t.timeout(10000);
 	const repos = await fetchUserRepoStats(t.context.user.id);
 	t.true(repos.length > 0);
-	const repoStatKeys = METRIC_TYPES
+
+	const expectedStatKeys = METRIC_TYPES
 		.filter(metricType => metricType.selected)
-		.map(metricType => metricType.name);
-	t.true(repos.every(repo => containsRepoStatKeys(repo, repoStatKeys)));
+		.map(metricType => metricType.name)
+		.concat(['name'])
+		.sort();
+
+	repos.forEach(repo => {
+		const actualStatKeys = Object.keys(repo).sort();
+		t.deepEqual(actualStatKeys, expectedStatKeys);
+	});
 });
 
 test.serial('fetchUserRepoStats() fetches user repo stats with SOME metric types selected', async t => {
 	t.timeout(10000);
 	const { id } = t.context.user;
 
+	const UNSELECTED_METRIC_TYPES = new Set(['views', 'stars']);
 	const ALTERED_METRIC_TYPES = _.cloneDeep(METRIC_TYPES).map(metricType => {
-		if (['views', 'stars'].includes(metricType.name)) {
+		if (UNSELECTED_METRIC_TYPES.has(metricType.name)) {
 			metricType.selected = false;
 		}
 
@@ -52,10 +58,17 @@ test.serial('fetchUserRepoStats() fetches user repo stats with SOME metric types
 
 	const repos = await fetchUserRepoStats(id);
 	t.true(repos.length > 0);
-	const repoStatKeys = ALTERED_METRIC_TYPES
+
+	const expectedStatKeys = ALTERED_METRIC_TYPES
 		.filter(metricType => metricType.selected)
-		.map(metricType => metricType.name);
-	t.true(repos.every(repo => containsRepoStatKeys(repo, repoStatKeys)));
+		.map(metricType => metricType.name)
+		.concat(['name'])
+		.sort();
+
+	repos.forEach(repo => {
+		const actualStatKeys = Object.keys(repo).sort();
+		t.deepEqual(actualStatKeys, expectedStatKeys);
+	});
 });
 
 test('fetchUserEmails() fetches user emails', async t => {
