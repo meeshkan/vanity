@@ -129,7 +129,7 @@ const fetchUserRepoStats = async id => {
 		.map(repo => {
 			Object.keys(repo).forEach(key => {
 				if (!selectedMetricTypes.has(key) && key !== 'name') {
-					delete stats[key];
+					delete repo[key];
 				}
 			});
 
