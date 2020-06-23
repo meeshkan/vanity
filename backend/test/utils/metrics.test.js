@@ -1,13 +1,14 @@
 const test = require('ava');
 const moment = require('moment');
 const _ = require('lodash');
-const { USER, SAMPLE_METRICS, REPOS } = require('../__fixtures__');
+const { USER, SAMPLE_METRICS, REPOS, METRIC_TYPES } = require('../__fixtures__');
 const {
 	createTestUser,
 	createTestSnapshot,
 	destroyTestUser,
 	destroyTestSnapshot,
 	createSnapshot,
+	setUserMetricTypes,
 } = require('../helpers');
 const {
 	userSnapshots,
@@ -18,6 +19,8 @@ const {
 	subjectedSnapshot,
 	fetchComparison,
 } = require('../../utils/metrics');
+
+const WEEK_IN_DAYS = 7;
 
 const REPO_KEYS = ['name', 'stars', 'forks', 'views', 'clones'];
 const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
@@ -169,7 +172,6 @@ test('daysSinceSnapshot() fetches snapshots N days apart', async t => {
 });
 
 test.serial('subjectedSnapshot() fetches week apart snapshots', async t => {
-	const WEEK_IN_DAYS = 7;
 	const snapshot = await createSnapshot(
 		{
 			metrics: SAMPLE_METRICS,
@@ -192,8 +194,7 @@ test.serial('subjectedSnapshot() fetches week apart snapshots', async t => {
 	await snapshot.destroy();
 });
 
-test('fetchComparison() returns comparison of week apart snapshots', async t => {
-	const WEEK_IN_DAYS = 7;
+test.serial('fetchComparison() returns comparison of week apart snapshots', async t => {
 	const STAR_DIFFERENCE = 3;
 	const FORK_DIFFERENCE = 10;
 	const VIEW_DIFFERENCE = 6;
@@ -234,6 +235,57 @@ test('fetchComparison() returns comparison of week apart snapshots', async t => 
 	t.true(comparison.every(repo => repo.forks.difference === FORK_DIFFERENCE));
 	t.true(comparison.every(repo => repo.views.difference === VIEW_DIFFERENCE));
 	t.true(comparison.every(repo => repo.clones.difference === CLONE_DIFFERENCE));
+
+	await previousSnapshot.destroy();
+});
+
+test.serial('fetchComparison() returns comparison based on selected metric types', async t => {
+	const [snapshot] = await userSnapshots(t.context.user.id);
+
+	const previousSnapshot = await createSnapshot(
+		{
+			metrics: snapshot.metrics,
+			userId: t.context.user.id,
+			createdAt: moment().subtract(WEEK_IN_DAYS, 'days'),
+		},
+		{
+			returning: true,
+		}
+	);
+
+	const UNSELECTED_METRIC_TYPES = new Set(['views', 'forks']);
+	const ALTERED_METRIC_TYPES = _.cloneDeep(METRIC_TYPES).map(metricType => {
+		if (UNSELECTED_METRIC_TYPES.has(metricType.name)) {
+			metricType.selected = false;
+		}
+
+		return metricType;
+	});
+
+	await setUserMetricTypes(t.context.user, ALTERED_METRIC_TYPES);
+
+	const comparison = await fetchComparison(t.context.user.id);
+	t.true(comparison.length > 0);
+
+	const actualRepoNames = comparison.map(repo => repo.name);
+	const expectedRepoNames = REPOS
+		.filter(repo => repo.selected)
+		.map(repo => repo.name);
+
+	t.deepEqual(actualRepoNames, expectedRepoNames);
+
+	const EXPECTED_REPO_KEYS = REPO_KEYS.filter(key => !UNSELECTED_METRIC_TYPES.has(key));
+	comparison.forEach(repo => {
+		t.deepEqual(Object.keys(repo), EXPECTED_REPO_KEYS);
+	});
+
+	t.true(comparison.every(repo => EXPECTED_REPO_KEYS.every(key => {
+		if (key === 'name') {
+			return true;
+		}
+
+		return COMPARISON_KEYS.every(comparsionKey => comparsionKey in repo[key]);
+	})));
 
 	await previousSnapshot.destroy();
 });

@@ -74,14 +74,29 @@ const fetchCurrent = async (id, selectedRepos) => {
 
 const fetchComparison = async id => {
 	const { User } = require('../models');
-	const { repos } = await User.findByPk(id);
+	const { repos, metricTypes } = await User.findByPk(id);
+
 	const selectedRepos = new Set(repos
 		.filter(repo => repo.selected)
 		.map(repo => repo.name));
+
+	const selectedMetricTypes = new Set(metricTypes
+		.filter(metricType => metricType.selected)
+		.map(metricType => metricType.name));
+
 	const snapshots = await userSnapshots(id);
 	const { latest, previous } = subjectedSnapshot(snapshots);
 	return compareSnapshots({ latest, previous })
-		.filter(repo => selectedRepos.has(repo.name));
+		.filter(repo => selectedRepos.has(repo.name))
+		.map(repo => {
+			Object.keys(repo).forEach(key => {
+				if (!selectedMetricTypes.has(key) && key !== 'name') {
+					delete repo[key];
+				}
+			});
+
+			return repo;
+		});
 };
 
 module.exports = {
