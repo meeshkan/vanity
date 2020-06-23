@@ -117,8 +117,9 @@ const fetchUserInstallations = async token => {
 const fetchUserRepoStats = async id => {
 	const { User } = require('../models');
 	const user = await User.findByPk(id);
-	const selectedMetricTypes = new Set(user.metricTypes
-		.filter(metricType => metricType.selected)
+
+	const disabledMetricTypes = new Set(user.metricTypes
+		.filter(metricType => metricType.disabled)
 		.map(metricType => metricType.name));
 
 	const client = new RESTGitHubClient(user.token);
@@ -126,22 +127,13 @@ const fetchUserRepoStats = async id => {
 	const stats = await extractRepoStats(userRepos);
 
 	const repos = await Promise.all(stats
-		.map(repo => {
-			Object.keys(repo).forEach(key => {
-				if (!selectedMetricTypes.has(key) && key !== 'name') {
-					delete repo[key];
-				}
-			});
-
-			return repo;
-		})
 		.map(async repo => {
 			try {
-				if (selectedMetricTypes.has('views')) {
+				if (!disabledMetricTypes.has('views')) {
 					repo.views = await client.viewCount(user.username, repo.name);
 				}
 
-				if (selectedMetricTypes.has('clones')) {
+				if (!disabledMetricTypes.has('clones')) {
 					repo.clones = await client.cloneCount(user.username, repo.name);
 				}
 			} catch {}

@@ -1,7 +1,6 @@
 const test = require('ava');
-const _ = require('lodash');
 const { GH_PROFILE, METRIC_TYPES } = require('../__fixtures__');
-const { createTestUser, destroyTestUser, setUserMetricTypes } = require('../helpers');
+const { createTestUser, destroyTestUser } = require('../helpers');
 const {
 	fetchUserRepos,
 	fetchUserRepoStats,
@@ -24,43 +23,13 @@ test('fetchUserRepos() fetches user repos', async t => {
 	t.true(repos.every(repo => containsRepoKeys(repo)));
 });
 
-test.serial('fetchUserRepoStats() fetches user repo stats with ALL metric types selected', async t => {
+test.serial('fetchUserRepoStats() fetches user repo stats', async t => {
 	t.timeout(10000);
 	const repos = await fetchUserRepoStats(t.context.user.id);
 	t.true(repos.length > 0);
 
 	const expectedStatKeys = METRIC_TYPES
-		.filter(metricType => metricType.selected)
-		.map(metricType => metricType.name)
-		.concat(['name'])
-		.sort();
-
-	repos.forEach(repo => {
-		const actualStatKeys = Object.keys(repo).sort();
-		t.deepEqual(actualStatKeys, expectedStatKeys);
-	});
-});
-
-test.serial('fetchUserRepoStats() fetches user repo stats with SOME metric types selected', async t => {
-	t.timeout(10000);
-	const { id } = t.context.user;
-
-	const UNSELECTED_METRIC_TYPES = new Set(['views', 'stars']);
-	const ALTERED_METRIC_TYPES = _.cloneDeep(METRIC_TYPES).map(metricType => {
-		if (UNSELECTED_METRIC_TYPES.has(metricType.name)) {
-			metricType.selected = false;
-		}
-
-		return metricType;
-	});
-
-	await setUserMetricTypes(t.context.user, ALTERED_METRIC_TYPES);
-
-	const repos = await fetchUserRepoStats(id);
-	t.true(repos.length > 0);
-
-	const expectedStatKeys = ALTERED_METRIC_TYPES
-		.filter(metricType => metricType.selected)
+		.filter(metricType => !metricType.disabled)
 		.map(metricType => metricType.name)
 		.concat(['name'])
 		.sort();
