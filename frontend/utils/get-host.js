@@ -1,4 +1,4 @@
-// https://github.com/zeit/next.js/blob/master/examples/with-cookie-auth/utils/get-host.js
+// https://github.com/vercel/next.js/tree/canary/examples/with-cookie-auth/utils/get-host.js
 // This is not production ready, (except with providers that ensure a secure host, like Now)
 // For production consider the usage of environment variables and NODE_ENV
 const getHost = req => {

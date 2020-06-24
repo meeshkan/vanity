@@ -3,14 +3,14 @@
   "builds": [
     {
       "src": "backend/server.js", 
-      "use": "@now/node@1.6.1",
+      "use": "@vercel/node@1.6.1",
       "config": {
         "bundle": false
       }
     },
     {
       "src": "frontend/package.json",
-      "use": "@now/next"
+      "use": "@vercel/next"
     }
   ],
   "routes": [
