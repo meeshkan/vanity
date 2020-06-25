@@ -1,12 +1,29 @@
 import React from 'react';
 import Toggle from 'react-toggle';
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
 import { updateMetricTypes } from '../logic/preferences';
+
+const metricTypeTimePeriod = {
+	stars: 'total',
+	forks: 'total',
+	views: 'weekly',
+	clones: 'weekly',
+};
 
 const MetricType = ({ metric, index, handleToggle }) => (
 	<tr key={metric.name}>
 		<th className='fw3 bb b--white-20 tl pb3 pr6 pv3'>
-			{metric.name}
+			<span
+				data-tip={metricTypeTimePeriod[metric.name]}
+			>
+				{metric.name}
+			</span>
+			<ReactTooltip
+				effect='solid'
+				place='right'
+				type='light'
+			/>
 		</th>
 		<th className='bb b--white-20 tr pb3 pv3'>
 			<Toggle
