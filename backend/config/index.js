@@ -51,9 +51,7 @@ const CORS_OPTIONS = {
 };
 
 const QUEUE_CRON = {
-	// METRICS: '* * * * *',
 	METRICS: '0 0 * * *',
-	// EMAIL: '*/2 * * * *',
 	EMAIL: '0 0 * * MON',
 };
 
