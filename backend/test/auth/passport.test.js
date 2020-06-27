@@ -6,7 +6,6 @@ const { DummyUserScheduler } = require('../../models/user-scheduler');
 const { GITHUB_USER_TOKEN } = require('../../config');
 
 const USER_REPO_KEYS = ['name', 'fork', 'selected'];
-const containsUserRepoKeys = repo => USER_REPO_KEYS.every(key => key in repo);
 
 test.before('synchronize user model', syncUserModel);
 
@@ -30,7 +29,7 @@ test('user was stored in DB', async t => {
 	t.true(user.createdAt instanceof Date);
 	t.true(Array.isArray(user.repos));
 	t.true(user.repos.length > 0);
-	t.true(user.repos.every(repo => containsUserRepoKeys(repo)));
+	user.repos.forEach(repo => t.deepEqual(Object.keys(repo), USER_REPO_KEYS));
 	t.is(user.username, GH_PROFILE.username);
 	await user.destroy();
 });

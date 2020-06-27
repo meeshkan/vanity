@@ -11,7 +11,6 @@ const { ingestMetricsJob, sendEmailJob } = require('../../workers/jobs');
 const app = require('../../server');
 
 const REPO_KEYS = ['name', 'fork', 'selected'];
-const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
 
 test.serial.before('create test user', createTestUser);
 test.serial.after.always('destroy test user', destroyTestUser);
@@ -39,7 +38,7 @@ test('GET /api/preferences returns user w/ repos and metric types - authenticate
 	t.is(response.body.id, id);
 	t.true(Array.isArray(response.body.repos));
 	t.is(response.body.repos.length, REPOS.length);
-	t.true(response.body.repos.every(repo => containsRepoKeys(repo)));
+	response.body.repos.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
 	t.is(response.body.username, username);
 	t.deepEqual(response.body.metricTypes, METRIC_TYPES);
 });

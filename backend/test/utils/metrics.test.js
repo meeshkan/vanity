@@ -23,16 +23,7 @@ const {
 const WEEK_IN_DAYS = 7;
 
 const REPO_KEYS = ['name', 'stars', 'forks', 'views', 'clones'];
-const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
-
 const COMPARISON_KEYS = ['latest', 'difference'];
-const containsComparisonKeys = repo => REPO_KEYS.every(key => {
-	if (key === 'name') {
-		return true;
-	}
-
-	return COMPARISON_KEYS.every(comparsionKey => comparsionKey in repo[key]);
-});
 
 const NEW_REPO_METRICS = {
 	name: 'new-repo',
@@ -68,7 +59,7 @@ test('fetchCurrent() fetches current metrics', async t => {
 	const metrics = await fetchCurrent(t.context.user.id, USER.selectedRepos);
 	t.true(Array.isArray(metrics));
 	t.true(metrics.length === USER.selectedRepos.length);
-	t.true(metrics.every(repo => containsRepoKeys(repo)));
+	metrics.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
 });
 
 test('compareSnapshots() compares snapshots', async t => {
@@ -94,8 +85,13 @@ test('compareSnapshots() compares snapshots', async t => {
 	});
 
 	t.true(comparison.length > 0);
-	t.true(comparison.every(repo => containsRepoKeys(repo)));
-	t.true(comparison.every(repo => containsComparisonKeys(repo)));
+	comparison.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
+	comparison.forEach(repo => {
+		t.deepEqual(Object.keys(repo), REPO_KEYS);
+		Object.keys(repo).filter(key => key !== 'name').forEach(key => {
+			t.deepEqual(Object.keys(repo[key]), COMPARISON_KEYS);
+		});
+	});
 
 	const alteredComparison = await compareSnapshots({
 		latest: alteredSnapshot,
@@ -103,8 +99,13 @@ test('compareSnapshots() compares snapshots', async t => {
 	});
 
 	t.true(alteredComparison.length > 0);
-	t.true(alteredComparison.every(repo => containsRepoKeys(repo)));
-	t.true(alteredComparison.every(repo => containsComparisonKeys(repo)));
+	alteredComparison.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
+	alteredComparison.forEach(repo => {
+		t.deepEqual(Object.keys(repo), REPO_KEYS);
+		Object.keys(repo).filter(key => key !== 'name').forEach(key => {
+			t.deepEqual(Object.keys(repo[key]), COMPARISON_KEYS);
+		});
+	});
 	t.true(alteredComparison.every(repo => repo.stars.difference === STAR_DIFFERENCE));
 	t.true(alteredComparison.every(repo => repo.forks.difference === FORK_DIFFERENCE));
 	t.true(alteredComparison.every(repo => repo.views.difference === VIEW_DIFFERENCE));
@@ -125,8 +126,13 @@ test('compareSnapshots() ignores deleted repos', async t => {
 
 	t.is(alteredComparison.length, snapshot.metrics.length - 2);
 	t.deepEqual(alteredComparison.map(repo => repo.name), alteredSnapshot.metrics.map(repo => repo.name));
-	t.true(alteredComparison.every(repo => containsRepoKeys(repo)));
-	t.true(alteredComparison.every(repo => containsComparisonKeys(repo)));
+	alteredComparison.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
+	alteredComparison.forEach(repo => {
+		t.deepEqual(Object.keys(repo), REPO_KEYS);
+		Object.keys(repo).filter(key => key !== 'name').forEach(key => {
+			t.deepEqual(Object.keys(repo[key]), COMPARISON_KEYS);
+		});
+	});
 });
 
 test('compareSnapshots() ignores new repos without prior metrics', async t => {
@@ -142,8 +148,13 @@ test('compareSnapshots() ignores new repos without prior metrics', async t => {
 
 	t.is(alteredComparison.length, snapshot.metrics.length);
 	t.deepEqual(alteredComparison.map(repo => repo.name), snapshot.metrics.map(repo => repo.name));
-	t.true(alteredComparison.every(repo => containsRepoKeys(repo)));
-	t.true(alteredComparison.every(repo => containsComparisonKeys(repo)));
+	alteredComparison.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
+	alteredComparison.forEach(repo => {
+		t.deepEqual(Object.keys(repo), REPO_KEYS);
+		Object.keys(repo).filter(key => key !== 'name').forEach(key => {
+			t.deepEqual(Object.keys(repo[key]), COMPARISON_KEYS);
+		});
+	});
 });
 
 test('daysSinceSnapshot() fetches snapshots N days apart', async t => {
@@ -229,8 +240,13 @@ test.serial('fetchComparison() returns comparison of week apart snapshots', asyn
 	const actualRepoNames = comparison.map(repo => repo.name);
 	t.deepEqual(actualRepoNames, expectedRepoNames);
 	t.true(comparison.length > 0);
-	t.true(comparison.every(repo => containsRepoKeys(repo)));
-	t.true(comparison.every(repo => containsComparisonKeys(repo)));
+	comparison.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
+	comparison.forEach(repo => {
+		t.deepEqual(Object.keys(repo), REPO_KEYS);
+		Object.keys(repo).filter(key => key !== 'name').forEach(key => {
+			t.deepEqual(Object.keys(repo[key]), COMPARISON_KEYS);
+		});
+	});
 	t.true(comparison.every(repo => repo.stars.difference === STAR_DIFFERENCE));
 	t.true(comparison.every(repo => repo.forks.difference === FORK_DIFFERENCE));
 	t.true(comparison.every(repo => repo.views.difference === VIEW_DIFFERENCE));
@@ -275,17 +291,13 @@ test.serial('fetchComparison() returns comparison based on selected metric types
 	t.deepEqual(actualRepoNames, expectedRepoNames);
 
 	const EXPECTED_REPO_KEYS = REPO_KEYS.filter(key => !UNSELECTED_METRIC_TYPES.has(key));
+	comparison.forEach(repo => t.deepEqual(Object.keys(repo), EXPECTED_REPO_KEYS));
 	comparison.forEach(repo => {
 		t.deepEqual(Object.keys(repo), EXPECTED_REPO_KEYS);
+		Object.keys(repo).filter(key => key !== 'name').forEach(key => {
+			t.deepEqual(Object.keys(repo[key]), COMPARISON_KEYS);
+		});
 	});
-
-	t.true(comparison.every(repo => EXPECTED_REPO_KEYS.every(key => {
-		if (key === 'name') {
-			return true;
-		}
-
-		return COMPARISON_KEYS.every(comparsionKey => comparsionKey in repo[key]);
-	})));
 
 	await previousSnapshot.destroy();
 });

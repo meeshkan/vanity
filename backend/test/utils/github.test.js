@@ -8,8 +8,8 @@ const {
 	fetchUserInstallations,
 } = require('../../utils/github');
 
-const REPO_KEYS = ['fork', 'name'];
-const containsRepoKeys = repo => REPO_KEYS.every(key => key in repo);
+const REPO_KEYS = ['name', 'fork'];
+const EMAIL_KEYS = ['email', 'primary', 'verified', 'visibility'];
 
 const EMAIL_REGEX = /.+@.+\..+/;
 
@@ -20,7 +20,7 @@ test('fetchUserRepos() fetches user repos', async t => {
 	const { username, token } = t.context.user;
 	const repos = await fetchUserRepos(username, token);
 	t.true(repos.length > 0);
-	t.true(repos.every(repo => containsRepoKeys(repo)));
+	repos.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
 });
 
 test.serial('fetchUserRepoStats() fetches user repo stats', async t => {
@@ -43,11 +43,8 @@ test.serial('fetchUserRepoStats() fetches user repo stats', async t => {
 test('fetchUserEmails() fetches user emails', async t => {
 	const { username, token } = t.context.user;
 	const emails = await fetchUserEmails(username, token);
-	const emailKeys = ['email', 'primary', 'verified', 'visibility'];
-	const containsEmailKeys = emailObject => emailKeys.every(key => key in emailObject);
-	t.true(emails.every(email => containsEmailKeys(email)));
-	const containsEmail = emailObject => emailObject.email.match(EMAIL_REGEX);
-	t.true(emails.every(email => containsEmail(email)));
+	emails.forEach(emailObject => Object.keys(emailObject), EMAIL_KEYS);
+	emails.forEach(emailObject => t.regex(emailObject.email, EMAIL_REGEX));
 });
 
 test('fetchUserInstallations() fetches user installations', async t => {
