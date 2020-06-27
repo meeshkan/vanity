@@ -2,8 +2,6 @@ import React from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import Nav from './Nav';
-import 'tachyons/css/tachyons.min.css';
-import '../styles/layout.css';
 
 const Layout = ({ children, title }) => (
 	<div>

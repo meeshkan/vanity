@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Router from 'next/router';
 import Cookies from 'js-cookie';
 import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
 
 NProgress.configure({ showSpinner: false });
 Router.onRouteChangeStart = () => NProgress.start();

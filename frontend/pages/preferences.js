@@ -12,7 +12,6 @@ import MetricTypes from '../components/MetricTypes';
 import { withAuthSync } from '../utils/auth';
 import getHost from '../utils/get-host';
 import { cookies, logout } from '../logic/preferences';
-import '../styles/preferences.css';
 
 export const Preferences = ({ username, repos, metricTypes, token, isAppInstalled }) => (
 	<Layout>

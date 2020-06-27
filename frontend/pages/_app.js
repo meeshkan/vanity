@@ -7,7 +7,12 @@ import { ToastContainer } from 'react-toastify';
 import SEO from '../next-seo.config';
 import { pageview } from '../utils/gtag';
 import 'react-toastify/dist/ReactToastify.css';
+import 'tachyons/css/tachyons.min.css';
+import 'nprogress/nprogress.css';
 import '../styles/app.css';
+import '../styles/layout.css';
+import '../styles/preferences.css';
+import '../styles/slider.css';
 
 Sentry.init({
 	dsn: process.env.SENTRY_DSN,

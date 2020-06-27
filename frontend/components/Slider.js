@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import Footer from './Footer';
-import '../styles/slider.css';
 
 const Page = ({ children }) => (
 	<div className='slider-item relative slide'>
