@@ -63,8 +63,8 @@ const QUEUE_ATTEMPTS = {
 
 const EMAIL_CONFIG = {
 	vanityAddress: 'vanity@meeshkan.com',
-	subject: 'Your VANITY metrics for this week',
-	sampleSubject: 'Welcome to VANITY',
+	subject: '📈Your Vanity metrics',
+	sampleSubject: 'Welcome to Vanity',
 };
 
 const SEQUELIZE_CONFIG = {
