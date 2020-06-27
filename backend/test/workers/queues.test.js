@@ -1,5 +1,6 @@
 const test = require('ava');
 const sinon = require('sinon');
+const moment = require('moment');
 const metrics = require('../../utils/metrics');
 const email = require('../../utils/email');
 const {
@@ -53,7 +54,8 @@ test('sendEmailWorker calls metrics.fetchComparison() and email.send()', async t
 	sinon.assert.calledWith(fetchComparison, user.id);
 	sinon.assert.calledWith(send, {
 		user,
-		metrics: WEEKLY_METRICS
+		metrics: WEEKLY_METRICS,
+		date: moment().format('LL')
 	});
 
 	t.deepEqual(jobResult, SENDGRID_SUCCESS);

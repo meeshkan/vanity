@@ -1,4 +1,5 @@
 import { storiesOf } from '@storybook/html';
+import moment from 'moment';
 import sampleEmailTemplate from '../utils/email/templates/sample.ejs';
 import weeklyEmailTemplate from '../utils/email/templates/weekly.ejs';
 import SAMPLE_METRICS from '../test/__fixtures__/sample-metrics';
@@ -19,8 +20,10 @@ storiesOf('Weekly Email', module)
 	.add('with repos', () => weeklyEmailTemplate({
 		user: USER,
 		metrics: WEEKLY_METRICS,
+		date: moment().format('LL'),
 	}))
 	.add('with no repos', () => weeklyEmailTemplate({
 		user: USER,
 		metrics: [],
+		date: moment().format('LL'),
 	}));

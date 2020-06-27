@@ -1,6 +1,7 @@
 const test = require('ava');
 const sinon = require('sinon');
 const SGMail = require('@sendgrid/mail');
+const moment = require('moment');
 const {
 	createWeeklyEmail,
 	createSampleEmail,
@@ -17,6 +18,7 @@ test('generates weekly email', async t => {
 	const email = await createWeeklyEmail({
 		user: USER,
 		metrics: WEEKLY_METRICS,
+		date: moment().format('LL'),
 	});
 
 	t.is(email.to, USER.email);
@@ -29,6 +31,7 @@ test('generates weekly email for empty metrics', async t => {
 	const email = await createWeeklyEmail({
 		user: USER,
 		metrics: [],
+		date: moment().format('LL'),
 	});
 
 	t.is(email.to, USER.email);
@@ -70,6 +73,7 @@ test.serial('sends a weekly email', async t => {
 	const data = {
 		user: USER,
 		metrics: WEEKLY_METRICS,
+		date: moment().format('LL'),
 	};
 
 	const response = await send(data);

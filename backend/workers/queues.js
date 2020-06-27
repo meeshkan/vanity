@@ -1,6 +1,7 @@
 const { setQueues } = require('bull-board');
 const metrics = require('../utils/metrics');
 const email = require('../utils/email');
+const moment = require('moment');
 const { generateToken } = require('../utils/token');
 const { createQueue } = require('./queue');
 
@@ -19,7 +20,8 @@ const sendEmailWorker = async job => {
 	const weekMetrics = await metrics.fetchComparison(user.id);
 	return email.send({
 		user,
-		metrics: weekMetrics
+		metrics: weekMetrics,
+		date: moment().format('LL')
 	});
 };
 
