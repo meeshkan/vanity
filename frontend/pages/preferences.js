@@ -11,7 +11,7 @@ import Repos from '../components/Repos';
 import MetricTypes from '../components/MetricTypes';
 import { withAuthSync } from '../utils/auth';
 import getHost from '../utils/get-host';
-import { cookies, logout } from '../logic/preferences';
+import { COOKIES, logout } from '../logic/preferences';
 
 export const Preferences = ({ username, repos, metricTypes, token, isAppInstalled }) => (
 	<Layout>
@@ -78,7 +78,7 @@ Preferences.getInitialProps = async ctx => {
 	const url = `${getHost(ctx.req) || ''}/api/preferences`;
 
 	const redirectOnError = () => {
-		cookies.forEach(cookie => Cookies.remove(cookie));
+		COOKIES.forEach(cookie => Cookies.remove(cookie));
 		if (typeof window === 'undefined') {
 			return ctx.res.writeHead(302, { Location: '/login' }).end();
 		}

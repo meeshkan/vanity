@@ -3,7 +3,7 @@ import fetch from 'isomorphic-unfetch';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 
-export const cookies = ['github-user', 'jwt'];
+export const COOKIES = ['github-user', 'jwt'];
 
 class APIClient {
 	constructor(token) {
@@ -23,7 +23,7 @@ class APIClient {
 }
 
 export function logout() {
-	cookies.forEach(cookie => Cookies.remove(cookie));
+	COOKIES.forEach(cookie => Cookies.remove(cookie));
 	Router.push('/auth/logout');
 }
 
