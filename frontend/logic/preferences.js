@@ -5,6 +5,23 @@ import { toast } from 'react-toastify';
 
 export const cookies = ['github-user', 'jwt'];
 
+class APIClient {
+	constructor(token) {
+		this.headers = {
+			authorization: JSON.stringify({ token }),
+			'content-type': 'application/json',
+		};
+	}
+
+	post(path, body) {
+		return fetch(path, {
+			method: 'POST',
+			headers: this.headers,
+			body: JSON.stringify(body),
+		});
+	}
+}
+
 export function logout() {
 	cookies.forEach(cookie => Cookies.remove(cookie));
 	Router.push('/auth/logout');
@@ -12,14 +29,8 @@ export function logout() {
 
 export async function updateRepos(token, repos) {
 	try {
-		const response = await fetch('/api/preferences/repos', {
-			method: 'POST',
-			headers: {
-				authorization: JSON.stringify({ token }),
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify({ repos }),
-		});
+		const client = new APIClient(token);
+		const response = await client.post('/api/preferences/repos', { repos });
 
 		if (response.ok) {
 			Router.push('/preferences');
@@ -32,14 +43,8 @@ export async function updateRepos(token, repos) {
 
 export async function updateMetricTypes(token, metricTypes) {
 	try {
-		const response = await fetch('/api/preferences/metric-types', {
-			method: 'POST',
-			headers: {
-				authorization: JSON.stringify({ token }),
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify({ metricTypes }),
-		});
+		const client = new APIClient(token);
+		const response = await client.post('/api/preferences/metric-types', { metricTypes });
 
 		if (response.ok) {
 			Router.push('/preferences');
