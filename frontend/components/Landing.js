@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Footer from './Footer';
 
 const Page = ({ children }) => (
-	<div className='slider-item relative slide'>
+	<div className='landing-item relative slide'>
 		{children}
 	</div>
 );
@@ -16,9 +16,9 @@ Page.propTypes = {
 	]).isRequired,
 };
 
-const Slider = () => (
+const Landing = () => (
 	<div>
-		<div className='slider-container'>
+		<div className='landing-container'>
 			<Page>
 				<div className='absolute w-100 vh-100'>
 					<article className='vh-100 dt w-100'>
@@ -56,4 +56,4 @@ const Slider = () => (
 	</div>
 );
 
-export default Slider;
+export default Landing;

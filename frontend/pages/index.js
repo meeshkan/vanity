@@ -1,11 +1,11 @@
 import React from 'react';
-import Slider from '../components/Slider';
+import Landing from '../components/Landing';
 import Layout from '../components/Layout';
 
 const Index = () => (
 	<Layout>
 		<section>
-			<Slider />
+			<Landing />
 		</section>
 	</Layout>
 );

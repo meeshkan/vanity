@@ -4,4 +4,4 @@ import 'nprogress/nprogress.css';
 import '../styles/app.css';
 import '../styles/layout.css';
 import '../styles/preferences.css';
-import '../styles/slider.css';
+import '../styles/landing.css';
