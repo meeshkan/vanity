@@ -27,7 +27,7 @@ const sendUserData = async (request, response) => {
 		response.status(OK).send(user);
 	} catch (error) {
 		logger.error(error);
-		response.status(UNAUTHORIZED).send(UnauthorizedError);
+		response.status(UNAUTHORIZED).json(UnauthorizedError);
 	}
 };
 
