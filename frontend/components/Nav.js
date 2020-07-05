@@ -49,15 +49,15 @@ const Nav = () => {
 			style={{ backgroundColor, transition: '1s ease' }}
 		>
 			<header>
-				<nav className='f6 fw6 ttu tracked dt-l w-100 mw8 center'>
-					<div className='w-100 w-10-l dtc-l tc tl-l v-mid'>
+				<nav className='f6 fw6 ttu tracked dt w-100 mw8 center lh-solid'>
+					<div className='w-40 dtc tl v-mid'>
 						<Link href='/'>
 							<a className={`link dim ${color} dib mr3`} title='Home'>
 								Vanity
 							</a>
 						</Link>
 					</div>
-					<div className='w-100 w-90-l dtc-l tc tr-l v-mid'>
+					<div className='w-60 dtc tr v-mid'>
 						<a
 							className={`link dim ${color} dib mr3 v-mid`}
 							href='https://github.com/meeshkan/vanity'
