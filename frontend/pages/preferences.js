@@ -36,7 +36,7 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 						<span className='avenir dib lh-copy'>
 							<span className='db'>If you&apos;d like to receive repo <em>views</em> and <em>clones</em>,</span>
 							{' '}
-							please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the VANITY GitHub App</a>.
+							please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the Vanity GitHub App</a>.
 						</span>
 					)}
 				</div>
