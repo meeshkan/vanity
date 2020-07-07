@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "backend/server.js", 
-      "use": "@vercel/node@1.6.1",
+      "use": "@vercel/node@canary",
       "config": {
         "bundle": false
       }
