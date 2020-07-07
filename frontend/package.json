@@ -41,6 +41,12 @@
         "rules": {
           "react/no-danger": "off"
         }
+      },
+      {
+        "files": "components/*",
+        "rules": {
+          "react/boolean-prop-naming": "off"
+        }
       }
     ],
     "rules": {
