@@ -5,27 +5,26 @@ import fetch from 'isomorphic-unfetch';
 import { toast } from 'react-toastify';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
+import Main from '../components/Main';
 import SuccessIcon from '../components/SuccessIcon';
 import UnsuccessIcon from '../components/UnsuccessIcon';
 import getHost from '../utils/get-host';
 
 export const Unsubscribe = ({ message, email }) => (
 	<Layout>
-		<main className='pa3 pa5-ns vh-100 w-100 white dt tc'>
-			<div className='f4 lh-copy measure dtc v-mid'>
-				{email ?
-					<>
-						<SuccessIcon />
-						<h3><span className='courier bg-white black pa1'>{email}</span> successfully unsubscribed</h3>
-						<p>You will no longer be receiving Vanity emails</p>
-					</> :
-					<>
-						<UnsuccessIcon />
-						<h3>unsubscription failed</h3>
-						<p>{message}</p>
-					</>}
-			</div>
-		</main>
+		<Main>
+			{email ?
+				<>
+					<SuccessIcon />
+					<h3><span className='courier bg-white black pa1'>{email}</span> successfully unsubscribed</h3>
+					<p>You will no longer be receiving Vanity emails</p>
+				</> :
+				<>
+					<UnsuccessIcon />
+					<h3>unsubscription failed</h3>
+					<p>{message}</p>
+				</>}
+		</Main>
 		<Footer />
 	</Layout>
 );
