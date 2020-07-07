@@ -32,8 +32,8 @@ const Landing = () => (
 								<h3>start receiving your metrics</h3>
 								<p>
 									<Link href='/auth/github'>
-										<a className='white dim no-underline db'>
-											<span className='v-mid db mb3'>Login with GitHub</span>
+										<a className='white dim no-underline dt center'>
+											<span className='v-mid dt mb3'>Login with GitHub</span>
 											<GitHubIcon />
 										</a>
 									</Link>

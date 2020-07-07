@@ -11,8 +11,8 @@ export const Login = () => (
 		<Main>
 			<h3>access your metrics preferences</h3>
 			<p>
-				<a href='/auth/github' className='white dim no-underline db'>
-					<span className='v-mid db mb3'>Login with GitHub</span>
+				<a href='/auth/github' className='white dim no-underline dt center'>
+					<span className='v-mid dt mb3'>Login with GitHub</span>
 					<GitHubIcon />
 				</a>
 			</p>
