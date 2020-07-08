@@ -6,7 +6,7 @@ export default { title: 'Preferences' };
 export const noRepos = () => (
 	<Preferences
 		isAppInstalled
-		username='John'
+		username='k4m4'
 		token='foo'
 		updateRepos={() => {}}
 		login={() => {}}
@@ -23,7 +23,7 @@ export const noRepos = () => (
 export const fewRepos = () => (
 	<Preferences
 		isAppInstalled
-		username='Patricia'
+		username='carolstran'
 		token='foo'
 		updateRepos={() => {}}
 		login={() => {}}
@@ -43,7 +43,7 @@ export const fewRepos = () => (
 
 export const manyRepos = () => (
 	<Preferences
-		username='Amy'
+		username='mikesol'
 		token='foo'
 		updateRepos={() => {}}
 		login={() => {}}
