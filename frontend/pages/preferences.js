@@ -33,7 +33,7 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 				<MetricTypes metricTypes={metricTypes} token={token} />
 				<div className='pv3'>
 					{isAppInstalled ? (null) : (
-						<span className='avenir dib lh-copy'>
+						<span className='avenir dib lh-copy f5 f4-ns'>
 							<span className='db'>If you&apos;d like to receive repo <em>views</em> and <em>clones</em>,</span>
 							{' '}
 							please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the Vanity GitHub App</a>.
@@ -46,10 +46,10 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 					<div className='pb4'>
 						<Repos repos={repos} token={token} />
 					</div> : (
-						<>
+						<div className='f5 f4-ns'>
 							<p>It seems like you don&apos;t have any repos.</p>
 							<p>Come back once you&apos;ve made some.</p>
-						</>
+						</div>
 					)}
 			</div>
 			<div className='pv4 bt bw1 w-100 w-80-ns center'>
