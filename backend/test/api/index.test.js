@@ -71,6 +71,19 @@ test.serial('GET /api/preferences returns upcoming email date - subscribed', asy
 	jobsToDelete.forEach(job => job.remove());
 });
 
+test.serial('GET /api/preferences returns undefined upcoming email date - unsubscribed', async t => {
+	const { id, username, avatar } = t.context.user;
+	const user = { id, username, avatar };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.get('/api/preferences')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.upcomingEmailDate, undefined);
+});
+
 test.serial('GET /api/preferences returns disabled views and clones - authenticated w/o app installation', async t => {
 	const { id, username, avatar } = t.context.user;
 	const user = { id, username, avatar };
