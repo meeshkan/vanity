@@ -14,6 +14,16 @@ const getUserFromRequest = request => {
 	return User.findByToken(token);
 };
 
+const getRepeatableJobsByID = async id => {
+	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+	return {
+		ingestMetrics: await ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+		sendEmail: await sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+	};
+};
+
 const preferences = async (request, response) => {
 	try {
 		const { id, username, repos, metricTypes, token } = await getUserFromRequest(request);
