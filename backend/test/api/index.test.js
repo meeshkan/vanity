@@ -305,3 +305,29 @@ test.serial('POST /api/resubscribe schedules repeatable jobs - with appropriate 
 	t.true(scheduleForUser.calledOnce);
 	scheduleForUser.restore();
 });
+
+test.serial('POST /api/resubscribe return error when already subscribed', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	await ingestMetricsJob({ ...user, username });
+	await sendEmailJob({ ...user, username });
+
+	const response = await request(app)
+		.post('/api/resubscribe')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'User is already subscribed');
+
+	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+	const jobsToDelete = [
+		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+	];
+
+	jobsToDelete.forEach(job => job.remove());
+});
