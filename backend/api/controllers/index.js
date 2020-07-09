@@ -104,13 +104,8 @@ const unsubscribe = async (request, response) => {
 			return response.status(UNAUTHORIZED).json(UnsubscriptionErrors.MISMATCH);
 		}
 
-		const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
-		const sendEmailJobs = await sendEmail.getJobs(['delayed']);
-
-		const jobsToDelete = [
-			ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-			sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id)
-		];
+		const jobs = await getRepeatableJobsByID(id);
+		const jobsToDelete = Object.keys(jobs).map(key => jobs[key]);
 
 		if (jobsToDelete.every(job => !job)) {
 			return response.status(UNAUTHORIZED).json(UnsubscriptionErrors.ALREADY_UNSUBSCRIBED);
