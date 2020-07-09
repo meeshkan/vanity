@@ -1,5 +1,6 @@
 const test = require('ava');
 const request = require('supertest');
+const moment = require('moment');
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const _ = require('lodash');
 const { REPOS, METRIC_TYPES } = require('../__fixtures__');
@@ -25,7 +26,7 @@ test('GET /api/preferences returns 401 - unaunthenticated', async t => {
 	t.is(response.status, UNAUTHORIZED);
 });
 
-test('GET /api/preferences returns user w/ repos and metric types - authenticated', async t => {
+test.serial('GET /api/preferences returns user w/ repos and metric types - authenticated', async t => {
 	const { id, username, avatar } = t.context.user;
 	const user = { id, username, avatar };
 	const token = generateToken(user);
@@ -41,6 +42,33 @@ test('GET /api/preferences returns user w/ repos and metric types - authenticate
 	response.body.repos.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
 	t.is(response.body.username, username);
 	t.deepEqual(response.body.metricTypes, METRIC_TYPES);
+});
+
+test.serial('GET /api/preferences returns upcoming email date - subscribed', async t => {
+	const { id, username, avatar } = t.context.user;
+	const user = { id, username, avatar };
+	const token = generateToken(user);
+
+	await ingestMetricsJob({ ...user, username });
+	await sendEmailJob({ ...user, username });
+
+	const response = await request(app)
+		.get('/api/preferences')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	const expectedUpcomingEmailDate = moment().startOf('day').day(8).toString();
+	t.is(response.body.upcomingEmailDate, expectedUpcomingEmailDate);
+
+	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+	const jobsToDelete = [
+		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+	];
+
+	jobsToDelete.forEach(job => job.remove());
 });
 
 test.serial('GET /api/preferences returns disabled views and clones - authenticated w/o app installation', async t => {
