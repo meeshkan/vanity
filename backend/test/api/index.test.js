@@ -278,3 +278,9 @@ test.serial('POST /api/unsubscribe returns error when email has already been uns
 
 	t.true(jobs.every(job => !job));
 });
+
+test('POST /api/resubscribe returns 401 - without token', async t => {
+	const response = await request(app).post('/api/resubscribe');
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'User token is invalid');
+});
