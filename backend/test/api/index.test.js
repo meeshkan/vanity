@@ -1,5 +1,6 @@
 const test = require('ava');
 const request = require('supertest');
+const sinon = require('sinon');
 const moment = require('moment');
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const _ = require('lodash');
@@ -8,6 +9,7 @@ const { createTestUser, destroyTestUser, setUserToken, getUserById } = require('
 const { GITHUB_USER_TOKEN, GITHUB_NO_INSTALLATION_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
+const { UserScheduler } = require('../../models/user-scheduler');
 const { ingestMetricsJob, sendEmailJob } = require('../../workers/jobs');
 const app = require('../../server');
 
@@ -283,4 +285,23 @@ test('POST /api/resubscribe returns 401 - without token', async t => {
 	const response = await request(app).post('/api/resubscribe');
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.errors.message, 'User token is invalid');
+});
+
+test.serial('POST /api/resubscribe schedules repeatable jobs - with appropriate token', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	const scheduleForUser = sinon.stub(UserScheduler.prototype, 'scheduleForUser');
+	scheduleForUser.returns();
+
+	const response = await request(app)
+		.post('/api/resubscribe')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.message, `Successfully re-subscribed user ${username}`);
+
+	t.true(scheduleForUser.calledOnce);
+	scheduleForUser.restore();
 });
