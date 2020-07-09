@@ -1,11 +1,16 @@
 const { OK, UNAUTHORIZED } = require('http-status');
-const { UnauthorizedError, UnsubscriptionError } = require('../../utils/errors');
 const moment = require('moment');
 const { verifyToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
+const { UserScheduler } = require('../../models/user-scheduler');
 const { User } = require('../../models');
 const { fetchUserInstallations } = require('../../utils/github');
 const logger = require('../../utils/logger');
+const {
+	UnauthorizedError,
+	UnsubscriptionError,
+	ResubscriptionError,
+} = require('../../utils/errors');
 
 const METRIC_TYPES_REQUIRING_INSTALLATION = new Set(['views', 'clones']);
 
@@ -120,9 +125,36 @@ const unsubscribe = async (request, response) => {
 	}
 };
 
+const ResubscriptionErrors = {
+	INVALID_TOKEN: UnsubscriptionError('User token is invalid'),
+	ALREADY_SUBSCRIBED: ResubscriptionError('User is already subscribed')
+};
+
+const resubscribe = async (request, response) => {
+	try {
+		const user = await getUserFromRequest(request);
+
+		const jobs = await getRepeatableJobsByID(user.id);
+		const jobsArray = Object.keys(jobs).map(key => jobs[key]);
+		if (jobsArray.every(job => job)) {
+			return response.status(UNAUTHORIZED).json(ResubscriptionErrors.ALREADY_SUBSCRIBED);
+		}
+
+		user.userScheduler = new UserScheduler();
+		user.userScheduler.scheduleForUser(user);
+		return response.status(OK).json({
+			message: `Successfully re-subscribed user ${user.username}`
+		});
+	} catch (error) {
+		logger.error(error);
+		response.status(UNAUTHORIZED).json(ResubscriptionErrors.INVALID_TOKEN);
+	}
+};
+
 module.exports = {
 	preferences,
 	updateRepos,
 	updateMetricTypes,
 	unsubscribe,
+	resubscribe,
 };
