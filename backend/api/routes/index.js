@@ -7,5 +7,6 @@ router.get('/preferences', api.preferences);
 router.post('/preferences/repos', api.updateRepos);
 router.post('/preferences/metric-types', api.updateMetricTypes);
 router.post('/unsubscribe', api.unsubscribe);
+router.post('/resubscribe', api.resubscribe);
 
 module.exports = router;

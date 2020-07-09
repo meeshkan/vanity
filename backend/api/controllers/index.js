@@ -1,10 +1,16 @@
 const { OK, UNAUTHORIZED } = require('http-status');
-const { UnauthorizedError, UnsubscriptionError } = require('../../utils/errors');
+const moment = require('moment');
 const { verifyToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
+const { UserScheduler } = require('../../models/user-scheduler');
 const { User } = require('../../models');
 const { fetchUserInstallations } = require('../../utils/github');
 const logger = require('../../utils/logger');
+const {
+	UnauthorizedError,
+	UnsubscriptionError,
+	ResubscriptionError,
+} = require('../../utils/errors');
 
 const METRIC_TYPES_REQUIRING_INSTALLATION = new Set(['views', 'clones']);
 
@@ -14,12 +20,27 @@ const getUserFromRequest = request => {
 	return User.findByToken(token);
 };
 
+const getRepeatableJobsByID = async id => {
+	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+	return {
+		ingestMetrics: await ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+		sendEmail: await sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+	};
+};
+
 const preferences = async (request, response) => {
 	try {
 		const { id, username, repos, metricTypes, token } = await getUserFromRequest(request);
 		const user = { id, username, repos };
 		const installations = await fetchUserInstallations(token);
 		user.isAppInstalled = installations.total_count > 0;
+		const jobs = await getRepeatableJobsByID(id);
+		if (Object.keys(jobs).map(key => jobs[key]).every(job => job)) {
+			user.upcomingEmailDate = moment(jobs.sendEmail.opts.prevMillis).toString();
+		}
+
 		user.metricTypes = metricTypes.map(metricType => {
 			if (METRIC_TYPES_REQUIRING_INSTALLATION.has(metricType.name)) {
 				if (user.isAppInstalled) {
@@ -88,13 +109,8 @@ const unsubscribe = async (request, response) => {
 			return response.status(UNAUTHORIZED).json(UnsubscriptionErrors.MISMATCH);
 		}
 
-		const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
-		const sendEmailJobs = await sendEmail.getJobs(['delayed']);
-
-		const jobsToDelete = [
-			ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-			sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id)
-		];
+		const jobs = await getRepeatableJobsByID(id);
+		const jobsToDelete = Object.keys(jobs).map(key => jobs[key]);
 
 		if (jobsToDelete.every(job => !job)) {
 			return response.status(UNAUTHORIZED).json(UnsubscriptionErrors.ALREADY_UNSUBSCRIBED);
@@ -109,9 +125,36 @@ const unsubscribe = async (request, response) => {
 	}
 };
 
+const ResubscriptionErrors = {
+	INVALID_TOKEN: UnsubscriptionError('User token is invalid'),
+	ALREADY_SUBSCRIBED: ResubscriptionError('User is already subscribed')
+};
+
+const resubscribe = async (request, response) => {
+	try {
+		const user = await getUserFromRequest(request);
+
+		const jobs = await getRepeatableJobsByID(user.id);
+		const jobsArray = Object.keys(jobs).map(key => jobs[key]);
+		if (jobsArray.every(job => job)) {
+			return response.status(UNAUTHORIZED).json(ResubscriptionErrors.ALREADY_SUBSCRIBED);
+		}
+
+		user.userScheduler = new UserScheduler();
+		user.userScheduler.scheduleForUser(user);
+		return response.status(OK).json({
+			message: `Successfully re-subscribed user ${user.username}`
+		});
+	} catch (error) {
+		logger.error(error);
+		response.status(UNAUTHORIZED).json(ResubscriptionErrors.INVALID_TOKEN);
+	}
+};
+
 module.exports = {
 	preferences,
 	updateRepos,
 	updateMetricTypes,
 	unsubscribe,
+	resubscribe,
 };

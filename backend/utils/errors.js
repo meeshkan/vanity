@@ -26,6 +26,10 @@ const UnsubscriptionError = message => new HTTPError(
 	UNAUTHORIZED,
 	message,
 );
+const ResubscriptionError = message => new HTTPError(
+	UNAUTHORIZED,
+	message,
+);
 
 module.exports = {
 	HTTPError,
@@ -33,4 +37,5 @@ module.exports = {
 	NotFoundError,
 	UnauthorizedError,
 	UnsubscriptionError,
+	ResubscriptionError,
 };

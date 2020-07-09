@@ -1,5 +1,7 @@
 const test = require('ava');
 const request = require('supertest');
+const sinon = require('sinon');
+const moment = require('moment');
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const _ = require('lodash');
 const { REPOS, METRIC_TYPES } = require('../__fixtures__');
@@ -7,6 +9,7 @@ const { createTestUser, destroyTestUser, setUserToken, getUserById } = require('
 const { GITHUB_USER_TOKEN, GITHUB_NO_INSTALLATION_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
+const { UserScheduler } = require('../../models/user-scheduler');
 const { ingestMetricsJob, sendEmailJob } = require('../../workers/jobs');
 const app = require('../../server');
 
@@ -25,7 +28,7 @@ test('GET /api/preferences returns 401 - unaunthenticated', async t => {
 	t.is(response.status, UNAUTHORIZED);
 });
 
-test('GET /api/preferences returns user w/ repos and metric types - authenticated', async t => {
+test.serial('GET /api/preferences returns user w/ repos and metric types - authenticated', async t => {
 	const { id, username, avatar } = t.context.user;
 	const user = { id, username, avatar };
 	const token = generateToken(user);
@@ -41,6 +44,46 @@ test('GET /api/preferences returns user w/ repos and metric types - authenticate
 	response.body.repos.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
 	t.is(response.body.username, username);
 	t.deepEqual(response.body.metricTypes, METRIC_TYPES);
+});
+
+test.serial('GET /api/preferences returns upcoming email date - subscribed', async t => {
+	const { id, username, avatar } = t.context.user;
+	const user = { id, username, avatar };
+	const token = generateToken(user);
+
+	await ingestMetricsJob({ ...user, username });
+	await sendEmailJob({ ...user, username });
+
+	const response = await request(app)
+		.get('/api/preferences')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	const expectedUpcomingEmailDate = moment().startOf('day').day(8).toString();
+	t.is(response.body.upcomingEmailDate, expectedUpcomingEmailDate);
+
+	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+	const jobsToDelete = [
+		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+	];
+
+	jobsToDelete.forEach(job => job.remove());
+});
+
+test.serial('GET /api/preferences returns undefined upcoming email date - unsubscribed', async t => {
+	const { id, username, avatar } = t.context.user;
+	const user = { id, username, avatar };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.get('/api/preferences')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.upcomingEmailDate, undefined);
 });
 
 test.serial('GET /api/preferences returns disabled views and clones - authenticated w/o app installation', async t => {
@@ -236,4 +279,55 @@ test.serial('POST /api/unsubscribe returns error when email has already been uns
 	];
 
 	t.true(jobs.every(job => !job));
+});
+
+test('POST /api/resubscribe returns 401 - without token', async t => {
+	const response = await request(app).post('/api/resubscribe');
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'User token is invalid');
+});
+
+test.serial('POST /api/resubscribe schedules repeatable jobs - with appropriate token', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	const scheduleForUser = sinon.stub(UserScheduler.prototype, 'scheduleForUser');
+	scheduleForUser.returns();
+
+	const response = await request(app)
+		.post('/api/resubscribe')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.message, `Successfully re-subscribed user ${username}`);
+
+	t.true(scheduleForUser.calledOnce);
+	scheduleForUser.restore();
+});
+
+test.serial('POST /api/resubscribe return error when already subscribed', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	await ingestMetricsJob({ ...user, username });
+	await sendEmailJob({ ...user, username });
+
+	const response = await request(app)
+		.post('/api/resubscribe')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'User is already subscribed');
+
+	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
+	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+
+	const jobsToDelete = [
+		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
+	];
+
+	jobsToDelete.forEach(job => job.remove());
 });
