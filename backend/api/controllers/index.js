@@ -1,5 +1,6 @@
 const { OK, UNAUTHORIZED } = require('http-status');
 const { UnauthorizedError, UnsubscriptionError } = require('../../utils/errors');
+const moment = require('moment');
 const { verifyToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
 const { User } = require('../../models');
@@ -30,6 +31,11 @@ const preferences = async (request, response) => {
 		const user = { id, username, repos };
 		const installations = await fetchUserInstallations(token);
 		user.isAppInstalled = installations.total_count > 0;
+		const jobs = await getRepeatableJobsByID(id);
+		if (Object.keys(jobs).map(key => jobs[key]).every(job => job)) {
+			user.upcomingEmailDate = moment(jobs.sendEmail.opts.prevMillis).toString();
+		}
+
 		user.metricTypes = metricTypes.map(metricType => {
 			if (METRIC_TYPES_REQUIRING_INSTALLATION.has(metricType.name)) {
 				if (user.isAppInstalled) {
