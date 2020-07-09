@@ -1,6 +1,7 @@
 import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'js-cookie';
+import NProgress from 'nprogress';
 import { toast } from 'react-toastify';
 
 export const COOKIES = ['github-user', 'jwt'];
@@ -48,6 +49,25 @@ export async function updateMetricTypes(token, metricTypes) {
 
 		if (response.ok) {
 			Router.push('/preferences');
+		}
+	} catch (error) {
+		console.error(error);
+		toast.error('Something went wrong. Please try again.');
+	}
+}
+
+export async function resubscribe(token) {
+	try {
+		const client = new APIClient(token);
+		const response = await client.post('/api/resubscribe');
+
+		if (response.ok) {
+			const { message } = await response.json();
+			Router.push('/preferences');
+			NProgress.done();
+			toast.success(message, {
+				className: 'avenir bg-green center pa3 lh-copy',
+			});
 		}
 	} catch (error) {
 		console.error(error);
