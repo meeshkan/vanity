@@ -18,7 +18,7 @@ describe('Home page', () => {
 
 	it('has content', () => {
 		cy.get('article').within(() => {
-			cy.contains('h2', 'V A N I T Y');
+			cy.contains('h2', 'Vanity');
 			cy.contains('p', 'weekly metrics for your GitHub repos');
 			cy.contains('h3', 'start receiving your metrics');
 			cy.contains('a', 'Login with GitHub').should('have.attr', 'href', '/auth/github');
