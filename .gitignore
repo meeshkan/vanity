@@ -6,4 +6,5 @@ node_modules
 *.log
 .nyc_output
 */cypress/videos
+*/cypress/screenshots
 .vercel
