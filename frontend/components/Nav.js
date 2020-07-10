@@ -45,7 +45,7 @@ const Nav = () => {
 
 	return (
 		<div
-			className='fixed w-100 ph3 pv3 pv3-ns ph3-m ph4-l fixed z-9999'
+			className='fixed w-100 ph3 pv3 pv3-ns ph3-m ph4-l z-9999'
 			style={{ backgroundColor, transition: '1s ease' }}
 		>
 			<header>
