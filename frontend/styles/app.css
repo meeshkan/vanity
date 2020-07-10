@@ -27,3 +27,7 @@ a {
 .material-icons.md-48 {
 	font-size: 48px;
 }
+
+*:focus {
+    outline: 0 !important;
+}
