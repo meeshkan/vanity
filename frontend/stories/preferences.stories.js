@@ -17,6 +17,7 @@ export const noRepos = () => (
 			{ name: 'clones', selected: true, disabled: false },
 		]}
 		repos={[]}
+		upcomingEmailDate='Mon Jan 01 2020 01:33:70 GMT+0000'
 	/>
 );
 
@@ -38,6 +39,7 @@ export const fewRepos = () => (
 			{ name: 'repo-two', fork: true, selected: false },
 			{ name: 'repo-three', fork: false, selected: true }
 		]}
+		upcomingEmailDate='Mon Jul 13 2020 00:00:00 GMT+0000'
 	/>
 );
 
@@ -83,5 +85,6 @@ export const manyRepos = () => (
 			{ name: 'one-more', fork: false, selected: true },
 			{ name: 'ugggghhhhhhhhhh', fork: true, selected: false },
 		]}
+		upcomingEmailDate={undefined}
 	/>
 );
