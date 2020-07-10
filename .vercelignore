@@ -2,6 +2,12 @@ node_modules
 .next
 .gitignore
 .env
+.env.example
 .DS_Store
 .nyc_output
 .circleci
+.storybook
+stories
+cypress
+cypress.json
+test
