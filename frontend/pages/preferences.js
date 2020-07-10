@@ -58,15 +58,16 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 					</div>
 				</div>
 				<div className='bt bw1 w-100 w-80-ns center'>
-					{(repos && repos.length > 0) ?
+					{(repos && repos.length > 0) ? (
 						<div className='pb4'>
 							<Repos repos={repos} token={token} />
-						</div> : (
-							<div className='f5 f4-ns'>
-								<p>It seems like you don&apos;t have any repos.</p>
-								<p>Come back once you&apos;ve made some.</p>
-							</div>
-						)}
+						</div>
+					) : (
+						<div className='f5 f4-ns'>
+							<p>It seems like you don&apos;t have any repos.</p>
+							<p>Come back once you&apos;ve made some.</p>
+						</div>
+					)}
 				</div>
 				<div className='pv4 bt bw1 w-100 w-80-ns center'>
 					<a

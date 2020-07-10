@@ -13,17 +13,19 @@ import getHost from '../utils/get-host';
 export const Unsubscribe = ({ message, email }) => (
 	<Layout>
 		<Main>
-			{email ?
+			{email ? (
 				<>
 					<SuccessIcon />
 					<h3><span className='courier bg-white black pa1'>{email}</span> successfully unsubscribed</h3>
 					<p>You will no longer be receiving Vanity emails</p>
-				</> :
+				</>
+			) : (
 				<>
 					<UnsuccessIcon />
 					<h3>unsubscription failed</h3>
 					<p>{message}</p>
-				</>}
+				</>
+			)}
 		</Main>
 		<Footer />
 	</Layout>
