@@ -65,7 +65,7 @@ export async function resubscribe(token) {
 			const { message } = await response.json();
 			await Router.push('/preferences');
 			toast.success(message, {
-				className: 'avenir bg-green center pa3 lh-copy',
+				className: 'avenir bg-blue center pa3 lh-copy',
 			});
 		}
 	} catch (error) {
