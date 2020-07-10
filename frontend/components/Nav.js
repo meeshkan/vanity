@@ -69,9 +69,9 @@ const Nav = () => {
 						</a>
 						{avatarURL ? (
 							<Link href='/preferences'>
-								<a className={`link dim ${color} dib`}>
+								<a className={`link grow-large ${color} dib`}>
 									<img
-										className='link dim dib v-mid'
+										className='link dib v-mid'
 										src={avatarURL}
 										style={{ height: '20px', borderRadius: 100 }}
 									/>
@@ -80,7 +80,7 @@ const Nav = () => {
 						) : (
 							<Link href='/login'>
 								<a
-									className={`link dim ${color} dib v-mid ${
+									className={`link grow-large ${color} dib v-mid ${
 										router === '/login' ? 'bb' : ''
 									}`}
 									title='Login'
