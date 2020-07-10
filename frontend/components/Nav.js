@@ -22,9 +22,10 @@ const Nav = () => {
 			setRouter(Router.router.pathname);
 		}
 
-		if (Cookies.get('github-user')) {
+		const githubUserCookie = Cookies.get('github-user');
+		if (githubUserCookie) {
 			const { avatar } = JSON.parse(
-				decodeURIComponent(Cookies.get('github-user'))
+				decodeURIComponent(githubUserCookie)
 			);
 			setAvatarURL(avatar);
 		}
