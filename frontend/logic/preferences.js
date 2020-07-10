@@ -63,8 +63,7 @@ export async function resubscribe(token) {
 
 		if (response.ok) {
 			const { message } = await response.json();
-			Router.push('/preferences');
-			NProgress.done();
+			await Router.push('/preferences');
 			toast.success(message, {
 				className: 'avenir bg-green center pa3 lh-copy',
 			});
