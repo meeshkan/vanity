@@ -36,7 +36,7 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 							<span className='avenir db i'>You have been unsubscribed.</span>
 							<span className='db'>
 								<a
-									className='link dim f5 ph3 pv2 ma2 dib white bg-blue'
+									className='link f5 ph3 pv2 ma2 dib white ba bw1 b--blue br2 bg-blue bg-animate hover-bg-transparent hover-blue'
 									onClick={handleResubscribe}
 								>
 									re-subscribe
@@ -70,7 +70,7 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 				</div>
 				<div className='pv4 bt bw1 w-100 w-80-ns center'>
 					<a
-						className='link dim f5 ph3 pv2 mb2 dib white bg-blue'
+						className='link f5 ph3 pv2 mb2 dib white ba bw1 b--blue br2 bg-blue bg-animate hover-bg-transparent hover-blue'
 						onClick={logout}
 					>
 						logout
