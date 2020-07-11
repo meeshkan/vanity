@@ -335,3 +335,9 @@ test.serial('POST /api/resubscribe return error when already subscribed', async 
 
 	jobsToDelete.forEach(job => job.remove());
 });
+
+test('POST /api/delete-account returns 401 - without token', async t => {
+	const response = await request(app).post('/api/delete-account');
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'User token is invalid');
+});
