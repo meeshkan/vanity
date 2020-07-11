@@ -1,7 +1,11 @@
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const moment = require('moment');
 const { verifyToken } = require('../../utils/token');
-const { ingestMetrics, sendEmail } = require('../../workers/queues');
+const {
+	ingestMetrics,
+	sendEmail,
+	deleteAccount,
+} = require('../../workers/queues');
 const { UserScheduler } = require('../../models/user-scheduler');
 const { User } = require('../../models');
 const { fetchUserInstallations } = require('../../utils/github');
@@ -154,7 +158,8 @@ const resubscribe = async (request, response) => {
 
 const DeletionErrors = {
 	INVALID_TOKEN: DeletionError('User token is invalid'),
-	NONEXISTENT_USER_TO_DELETE: DeletionError('The user that you are trying to delete does not exist')
+	NONEXISTENT_USER_TO_DELETE: DeletionError('The user that you are trying to delete does not exist'),
+	NONEXISTENT_USER_TO_RECOVER: DeletionError('The user that you are trying to recover does not exist')
 };
 
 const destroy = async (request, response) => {
@@ -175,6 +180,30 @@ const destroy = async (request, response) => {
 	}
 };
 
+const cancelDestruction = async (request, response) => {
+	try {
+		const user = await getUserFromRequest(request);
+		if (!user) {
+			return response.status(NOT_FOUND).json(DeletionErrors.NONEXISTENT_USER_TO_RECOVER);
+		}
+
+		const job = await deleteAccount.getJob(user.id);
+		if (!job) {
+			return response.status(OK).json({
+				message: 'The user that you are trying to recover has not been scheduled for deletion'
+			});
+		}
+
+		await job.remove();
+		return response.status(OK).json({
+			message: `Successfully recovered the account of user ${user.username}`
+		});
+	} catch (error) {
+		logger.error(error);
+		response.status(UNAUTHORIZED).json(DeletionErrors.INVALID_TOKEN);
+	}
+};
+
 module.exports = {
 	preferences,
 	updateRepos,
@@ -182,4 +211,5 @@ module.exports = {
 	unsubscribe,
 	resubscribe,
 	destroy,
+	cancelDestruction,
 };
