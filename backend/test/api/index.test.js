@@ -360,3 +360,15 @@ test.serial('POST /api/delete-account schedules user deletion job - with appropr
 	t.true(scheduleDeletionOfUser.calledOnce);
 	scheduleDeletionOfUser.restore();
 });
+
+test.serial('POST /api/delete-account returns error - when user does not exist', async t => {
+	const user = { id: 1337, email: 'foo@bar.com' };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.post('/api/delete-account')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, NOT_FOUND);
+	t.is(response.body.errors.message, 'The user that you are trying to delete does not exist');
+});
