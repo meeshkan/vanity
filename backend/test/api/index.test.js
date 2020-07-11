@@ -400,3 +400,15 @@ test.serial('POST /api/cancel-deletion removes deleteAccount job - with appropri
 	const job = await deleteAccount.getJob(user.id);
 	t.is(job, null);
 });
+
+test.serial('POST /api/cancel-deletion returns error - when user does not exist', async t => {
+	const user = { id: 1337, email: 'foo@bar.com' };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.post('/api/cancel-deletion')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, NOT_FOUND);
+	t.is(response.body.errors.message, 'The user that you are trying to recover does not exist');
+});
