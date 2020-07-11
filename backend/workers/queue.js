@@ -1,6 +1,9 @@
 const Queue = require('bull');
+const EventEmitter = require('events');
 const logger = require('../utils/logger');
 const { createRedis } = require('./redis');
+
+EventEmitter.defaultMaxListeners = 20;
 
 const client = createRedis();
 const subscriber = createRedis();
