@@ -1,11 +1,8 @@
 const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const moment = require('moment');
 const { verifyToken } = require('../../utils/token');
-const {
-	ingestMetrics,
-	sendEmail,
-	deleteAccount,
-} = require('../../workers/queues');
+const { deleteAccount } = require('../../workers/queues');
+const { getRepeatableJobsByID } = require('../../workers/helpers');
 const { UserScheduler } = require('../../models/user-scheduler');
 const { User } = require('../../models');
 const { fetchUserInstallations } = require('../../utils/github');
@@ -23,16 +20,6 @@ const getUserFromRequest = request => {
 	const auth = request.headers.authorization;
 	const { token } = JSON.parse(auth);
 	return User.findByToken(token);
-};
-
-const getRepeatableJobsByID = async id => {
-	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
-	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
-
-	return {
-		ingestMetrics: await ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-		sendEmail: await sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-	};
 };
 
 const preferences = async (request, response) => {
