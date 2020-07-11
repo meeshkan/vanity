@@ -8,9 +8,13 @@ const { REPOS, METRIC_TYPES } = require('../__fixtures__');
 const { createTestUser, destroyTestUser, setUserToken, getUserById } = require('../helpers');
 const { GITHUB_USER_TOKEN, GITHUB_NO_INSTALLATION_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
-const { ingestMetrics, sendEmail } = require('../../workers/queues');
+const { ingestMetrics, sendEmail, deleteAccount } = require('../../workers/queues');
 const { UserScheduler } = require('../../models/user-scheduler');
-const { ingestMetricsJob, sendEmailJob } = require('../../workers/jobs');
+const {
+	ingestMetricsJob,
+	sendEmailJob,
+	deleteAccountJob,
+} = require('../../workers/jobs');
 const app = require('../../server');
 
 const REPO_KEYS = ['name', 'fork', 'selected'];
@@ -377,4 +381,22 @@ test('POST /api/cancel-deletion returns 401 - without token', async t => {
 	const response = await request(app).post('/api/cancel-deletion');
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.errors.message, 'User token is invalid');
+});
+
+test.serial('POST /api/cancel-deletion removes deleteAccount job - with appropriate token', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	await deleteAccountJob(user);
+
+	const response = await request(app)
+		.post('/api/cancel-deletion')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.message, `Successfully recovered the account of user ${username}`);
+
+	const job = await deleteAccount.getJob(user.id);
+	t.is(job, null);
 });
