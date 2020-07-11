@@ -89,6 +89,12 @@ module.exports = (Sequelize, DataTypes) => {
 		return User.findByPk(id);
 	};
 
+	User.findByRequest = request => {
+		const auth = request.headers.authorization;
+		const { token } = JSON.parse(auth);
+		return User.findByToken(token);
+	};
+
 	User.prototype.updateFromGitHub = async function () {
 		const emails = await fetchUserEmails(this.username, this.token);
 		this.email = getPrimaryEmail(emails);
