@@ -1,11 +1,13 @@
 const {
 	ingestMetricsJob,
 	sendEmailJob,
-	sendSampleEmailJob
+	sendSampleEmailJob,
+	deleteAccountJob,
 } = require('../workers/jobs');
 
 class UserSchedulerBase {
 	scheduleForUser(user) {}
+	scheduleDeletionOfUser(user) {}
 }
 
 class UserScheduler extends UserSchedulerBase {
@@ -14,10 +16,15 @@ class UserScheduler extends UserSchedulerBase {
 		sendSampleEmailJob(user);
 		sendEmailJob(user);
 	}
+
+	scheduleDeletionOfUser(user) {
+		deleteAccountJob(user);
+	}
 }
 
 class DummyUserScheduler extends UserSchedulerBase {
 	scheduleForUser(user) {}
+	scheduleDeletionOfUser(user) {}
 }
 
 module.exports = {
