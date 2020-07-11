@@ -1,5 +1,10 @@
-const { QUEUE_CRON, QUEUE_ATTEMPTS } = require('../config');
-const { ingestMetrics, sendEmail, sendSampleEmail } = require('./queues');
+const { QUEUE_CRON, QUEUE_ATTEMPTS, QUEUE_DELAY } = require('../config');
+const {
+	ingestMetrics,
+	sendEmail,
+	sendSampleEmail,
+	deleteAccount,
+} = require('./queues');
 
 const ingestMetricsJob = user => {
 	return ingestMetrics.add(
@@ -56,8 +61,22 @@ const sendSampleEmailJob = user => {
 	);
 };
 
+const deleteAccountJob = user => {
+	return deleteAccount.add(
+		{
+			userID: user.id,
+		},
+		{
+			jobId: user.id,
+			delay: QUEUE_DELAY.DELETE_ACCOUNT,
+			attempts: QUEUE_ATTEMPTS.DELETE_ACCOUNT,
+		}
+	);
+};
+
 module.exports = {
 	ingestMetricsJob,
 	sendEmailJob,
 	sendSampleEmailJob,
+	deleteAccountJob,
 };
