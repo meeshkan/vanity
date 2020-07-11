@@ -35,6 +35,13 @@ const sendSampleEmailWorker = async job => {
 	});
 };
 
+const deleteAccountWorker = async job => {
+	const { User } = require('../models');
+	const { userID } = job.data;
+	const user = await User.findByPk(userID);
+	return user.destroy();
+};
+
 ingestMetrics.process(ingestMetricsWorker);
 sendEmail.process(sendEmailWorker);
 sendSampleEmail.process(sendSampleEmailWorker);
@@ -52,4 +59,5 @@ module.exports = {
 	ingestMetricsWorker,
 	sendEmailWorker,
 	sendSampleEmailWorker,
+	deleteAccountWorker,
 };
