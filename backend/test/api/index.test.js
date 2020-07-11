@@ -412,3 +412,16 @@ test.serial('POST /api/cancel-deletion returns error - when user does not exist'
 	t.is(response.status, NOT_FOUND);
 	t.is(response.body.errors.message, 'The user that you are trying to recover does not exist');
 });
+
+test.serial('POST /api/cancel-deletion returns success - when job does not exist', async t => {
+	const { id, email } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.post('/api/cancel-deletion')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.message, 'The user that you are trying to recover has not been scheduled for deletion');
+});
