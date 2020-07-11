@@ -372,3 +372,9 @@ test.serial('POST /api/delete-account returns error - when user does not exist',
 	t.is(response.status, NOT_FOUND);
 	t.is(response.body.errors.message, 'The user that you are trying to delete does not exist');
 });
+
+test('POST /api/cancel-deletion returns 401 - without token', async t => {
+	const response = await request(app).post('/api/cancel-deletion');
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'User token is invalid');
+});
