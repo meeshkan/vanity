@@ -1,4 +1,4 @@
-const { OK, UNAUTHORIZED } = require('http-status');
+const { OK, UNAUTHORIZED, NOT_FOUND } = require('http-status');
 const moment = require('moment');
 const { verifyToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail } = require('../../workers/queues');
@@ -10,6 +10,7 @@ const {
 	UnauthorizedError,
 	UnsubscriptionError,
 	ResubscriptionError,
+	DeletionError,
 } = require('../../utils/errors');
 
 const METRIC_TYPES_REQUIRING_INSTALLATION = new Set(['views', 'clones']);
@@ -151,10 +152,34 @@ const resubscribe = async (request, response) => {
 	}
 };
 
+const DeletionErrors = {
+	INVALID_TOKEN: DeletionError('User token is invalid'),
+	NONEXISTENT_USER_TO_DELETE: DeletionError('The user that you are trying to delete does not exist')
+};
+
+const destroy = async (request, response) => {
+	try {
+		const user = await getUserFromRequest(request);
+		if (user) {
+			user.userScheduler = new UserScheduler();
+			user.userScheduler.scheduleDeletionOfUser(user);
+			return response.status(OK).json({
+				message: `Successfully scheduled deletion of user ${user.username}`
+			});
+		}
+
+		return response.status(NOT_FOUND).json(DeletionErrors.NONEXISTENT_USER_TO_DELETE);
+	} catch (error) {
+		logger.error(error);
+		response.status(UNAUTHORIZED).json(DeletionErrors.INVALID_TOKEN);
+	}
+};
+
 module.exports = {
 	preferences,
 	updateRepos,
 	updateMetricTypes,
 	unsubscribe,
 	resubscribe,
+	destroy,
 };
