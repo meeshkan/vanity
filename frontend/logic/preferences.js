@@ -73,3 +73,19 @@ export async function resubscribe(token) {
 		toast.error('Something went wrong. Please try again.');
 	}
 }
+
+export async function deleteAccount(token) {
+	try {
+		const client = new APIClient(token);
+		const response = await client.post('/api/delete-account');
+
+		if (response.ok) {
+			return true;
+		}
+
+		return false;
+	} catch (error) {
+		console.error(error);
+		toast.error('Something went wrong. Please try again.');
+	}
+}
