@@ -341,3 +341,22 @@ test('POST /api/delete-account returns 401 - without token', async t => {
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.errors.message, 'User token is invalid');
 });
+
+test.serial('POST /api/delete-account schedules user deletion job - with appropriate token', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	const scheduleDeletionOfUser = sinon.stub(UserScheduler.prototype, 'scheduleDeletionOfUser');
+	scheduleDeletionOfUser.returns();
+
+	const response = await request(app)
+		.post('/api/delete-account')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.message, `Successfully scheduled deletion of user ${username}`);
+
+	t.true(scheduleDeletionOfUser.calledOnce);
+	scheduleDeletionOfUser.restore();
+});
