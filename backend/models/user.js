@@ -98,7 +98,7 @@ module.exports = (Sequelize, DataTypes) => {
 
 	User.afterDestroy(async (user, _) => {
 		const jobs = await getRepeatableJobsByID(user.id);
-		const jobsToDelete = Object.keys(jobs).map(key => jobs[key]);
+		const jobsToDelete = Object.values(jobs);
 		jobsToDelete.filter(job => job).forEach(job => job.remove());
 	});
 
