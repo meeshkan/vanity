@@ -93,7 +93,7 @@ export async function cancelAccountDeletion(token) {
 		if (response.ok) {
 			const { message } = await response.json();
 			await Router.push('/login');
-			toast.success(message, {
+			toast.success(message + ' - Please login again', {
 				className: 'avenir bg-blue center pa3 lh-copy',
 			});
 			return;
