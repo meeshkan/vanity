@@ -1,15 +1,17 @@
 const test = require('ava');
-const { QUEUE_CRON, QUEUE_ATTEMPTS } = require('../../config');
+const { QUEUE_CRON, QUEUE_ATTEMPTS, QUEUE_DELAY } = require('../../config');
 const { USER, REPOS } = require('../__fixtures__');
 const {
 	ingestMetrics,
 	sendEmail,
 	sendSampleEmail,
+	deleteAccount,
 } = require('../../workers/queues');
 const {
 	ingestMetricsJob,
 	sendEmailJob,
 	sendSampleEmailJob,
+	deleteAccountJob,
 } = require('../../workers/jobs');
 
 const user = {
@@ -75,5 +77,19 @@ test('sendSampleEmailJob creates job', async t => {
 	job.discard();
 
 	const [taskedJob] = await sendSampleEmail.getRepeatableJobs();
+	t.is(taskedJob, undefined);
+});
+
+test('deleteAccountJob creates job', async t => {
+	const job = await deleteAccountJob(user);
+	t.is(job.returnvalue, null);
+	t.is(job.name, '__default__');
+	t.is(job.opts.attempts, QUEUE_ATTEMPTS.DELETE_ACCOUNT);
+	t.deepEqual(job.data, { userID: user.id });
+	t.regex(job.id, /\d+/);
+	t.is(job.delay, QUEUE_DELAY.DELETE_ACCOUNT);
+	job.discard();
+
+	const [taskedJob] = await deleteAccount.getRepeatableJobs();
 	t.is(taskedJob, undefined);
 });

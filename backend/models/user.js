@@ -14,6 +14,7 @@ const DEFAULT_USER_METRIC_TYPES = [
 module.exports = (Sequelize, DataTypes) => {
 	const { UserScheduler } = require('./user-scheduler');
 	const { fetchUserRepos, fetchUserEmails } = require('../utils/github');
+	const { getRepeatableJobsByID } = require('../workers/helpers');
 	const User = Sequelize.define('User', {
 		username: {
 			type: DataTypes.STRING,
@@ -75,7 +76,7 @@ module.exports = (Sequelize, DataTypes) => {
 		user.userScheduler = new UserSchedulerClass();
 	});
 
-	User.afterCreate(async (user, _) => {
+	User.afterCreate(async user => {
 		user = await user.updateFromGitHub();
 		user.userScheduler.scheduleForUser(user);
 	});
@@ -88,6 +89,18 @@ module.exports = (Sequelize, DataTypes) => {
 		const { id } = await verifyToken(token);
 		return User.findByPk(id);
 	};
+
+	User.findByRequest = request => {
+		const auth = request.headers.authorization;
+		const { token } = JSON.parse(auth);
+		return User.findByToken(token);
+	};
+
+	User.afterDestroy(async user => {
+		const jobs = await getRepeatableJobsByID(user.id);
+		const jobsToDelete = Object.values(jobs);
+		_.compact(jobsToDelete).forEach(job => job.remove());
+	});
 
 	User.prototype.updateFromGitHub = async function () {
 		const emails = await fetchUserEmails(this.username, this.token);

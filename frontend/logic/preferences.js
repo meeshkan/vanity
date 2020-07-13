@@ -73,3 +73,38 @@ export async function resubscribe(token) {
 		toast.error('Something went wrong. Please try again.');
 	}
 }
+
+export async function deleteAccount(token) {
+	try {
+		const client = new APIClient(token);
+		const response = await client.post('/api/delete-account');
+		return response.ok;
+	} catch (error) {
+		console.error(error);
+		toast.error('Something went wrong. Please try again.');
+	}
+}
+
+export async function cancelAccountDeletion(token) {
+	try {
+		const client = new APIClient(token);
+		const response = await client.post('/api/cancel-deletion');
+
+		if (response.ok) {
+			const { message } = await response.json();
+			await Router.push('/login');
+			toast.success(message + ' - Please login again', {
+				className: 'avenir bg-blue center pa3 lh-copy',
+			});
+			return;
+		}
+
+		const { errors } = await response.json();
+		toast.error(errors.message, {
+			className: 'avenir bg-red center pa3 lh-copy',
+		});
+	} catch (error) {
+		console.error(error);
+		toast.error('Something went wrong. Please try again.');
+	}
+}

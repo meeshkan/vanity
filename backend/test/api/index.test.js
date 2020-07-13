@@ -8,9 +8,13 @@ const { REPOS, METRIC_TYPES } = require('../__fixtures__');
 const { createTestUser, destroyTestUser, setUserToken, getUserById } = require('../helpers');
 const { GITHUB_USER_TOKEN, GITHUB_NO_INSTALLATION_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
-const { ingestMetrics, sendEmail } = require('../../workers/queues');
+const { ingestMetrics, sendEmail, deleteAccount } = require('../../workers/queues');
 const { UserScheduler } = require('../../models/user-scheduler');
-const { ingestMetricsJob, sendEmailJob } = require('../../workers/jobs');
+const {
+	ingestMetricsJob,
+	sendEmailJob,
+	deleteAccountJob,
+} = require('../../workers/jobs');
 const app = require('../../server');
 
 const REPO_KEYS = ['name', 'fork', 'selected'];
@@ -334,4 +338,90 @@ test.serial('POST /api/resubscribe return error when already subscribed', async 
 	];
 
 	jobsToDelete.forEach(job => job.remove());
+});
+
+test('POST /api/delete-account returns 401 - without token', async t => {
+	const response = await request(app).post('/api/delete-account');
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'User token is invalid');
+});
+
+test.serial('POST /api/delete-account schedules user deletion job - with appropriate token', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	const scheduleDeletionOfUser = sinon.stub(UserScheduler.prototype, 'scheduleDeletionOfUser');
+	scheduleDeletionOfUser.returns();
+
+	const response = await request(app)
+		.post('/api/delete-account')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.message, `Successfully scheduled deletion of user ${username}`);
+
+	t.true(scheduleDeletionOfUser.calledOnce);
+	scheduleDeletionOfUser.restore();
+});
+
+test.serial('POST /api/delete-account returns error - when user does not exist', async t => {
+	const user = { id: 1337, email: 'foo@bar.com' };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.post('/api/delete-account')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, NOT_FOUND);
+	t.is(response.body.errors.message, 'The user that you are trying to delete does not exist');
+});
+
+test('POST /api/cancel-deletion returns 401 - without token', async t => {
+	const response = await request(app).post('/api/cancel-deletion');
+	t.is(response.status, UNAUTHORIZED);
+	t.is(response.body.errors.message, 'User token is invalid');
+});
+
+test.serial('POST /api/cancel-deletion removes deleteAccount job - with appropriate token', async t => {
+	const { id, email, username } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	await deleteAccountJob(user);
+
+	const response = await request(app)
+		.post('/api/cancel-deletion')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.message, `Successfully recovered the account of user ${username}`);
+
+	const job = await deleteAccount.getJob(user.id);
+	t.is(job, null);
+});
+
+test.serial('POST /api/cancel-deletion returns error - when user does not exist', async t => {
+	const user = { id: 1337, email: 'foo@bar.com' };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.post('/api/cancel-deletion')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, NOT_FOUND);
+	t.is(response.body.errors.message, 'The user that you are trying to recover does not exist');
+});
+
+test.serial('POST /api/cancel-deletion returns success - when job does not exist', async t => {
+	const { id, email } = t.context.user;
+	const user = { id, email };
+	const token = generateToken(user);
+
+	const response = await request(app)
+		.post('/api/cancel-deletion')
+		.set('authorization', JSON.stringify({ token }));
+
+	t.is(response.status, OK);
+	t.is(response.body.message, 'The user that you are trying to recover has not been scheduled for deletion');
 });

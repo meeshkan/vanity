@@ -1,6 +1,7 @@
 const test = require('ava');
 const sinon = require('sinon');
 const moment = require('moment');
+const { User } = require('../../models');
 const metrics = require('../../utils/metrics');
 const email = require('../../utils/email');
 const {
@@ -14,6 +15,7 @@ const {
 	ingestMetricsWorker,
 	sendEmailWorker,
 	sendSampleEmailWorker,
+	deleteAccountWorker,
 } = require('../../workers/queues');
 
 const user = {
@@ -85,4 +87,20 @@ test('sendSampleEmailWorker calls metrics.fetchCurrent() and email.sendSample()'
 
 	fetchCurrent.restore();
 	sendSample.restore();
+});
+
+test('deleteAccountWorker calls User.prototype.destroy()', async t => {
+	const findByPk = sinon.stub(User, 'findByPk');
+	findByPk.returns(Promise.resolve(new User()));
+
+	const destroy = sinon.stub(User.prototype, 'destroy');
+	destroy.returns(Promise.resolve(1337));
+
+	const jobResult = await deleteAccountWorker({ data: { userID: user.id } });
+
+	t.true(destroy.calledOnce);
+	t.is(jobResult, 1337);
+
+	findByPk.restore();
+	destroy.restore();
 });

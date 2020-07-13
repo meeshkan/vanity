@@ -1,20 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import nextCookie from 'next-cookies';
 import Cookies from 'js-cookie';
+import NProgress from 'nprogress';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import Main from '../components/Main';
 import Repos from '../components/Repos';
 import MetricTypes from '../components/MetricTypes';
+import AccountDeleted from '../components/AccountDeleted';
 import { withAuthSync } from '../utils/auth';
 import getHost from '../utils/get-host';
-import { COOKIES, logout, resubscribe } from '../logic/preferences';
+import {
+	COOKIES,
+	logout,
+	resubscribe,
+	deleteAccount,
+} from '../logic/preferences';
 
 export const Preferences = ({ username, repos, metricTypes, token, isAppInstalled, upcomingEmailDate }) => {
+	const [accountDeleted, setAccountDeleted] = useState(false);
+
 	const handleResubscribe = () => resubscribe(token);
+	const handleDeleteAccount = async () => {
+		NProgress.start();
+
+		const deleted = await deleteAccount(token);
+		if (deleted) {
+			setAccountDeleted(true);
+			COOKIES.forEach(cookie => Cookies.remove(cookie));
+		}
+
+		NProgress.done();
+	};
+
+	if (accountDeleted) {
+		return <AccountDeleted token={token} />;
+	}
 
 	return (
 		<Layout>
@@ -40,6 +64,12 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 									onClick={handleResubscribe}
 								>
 									re-subscribe
+								</a>
+								<a
+									className='link f5 ph3 pv2 ma2 dib white ba bw1 b--red br2 bg-red bg-animate hover-bg-transparent hover-red'
+									onClick={handleDeleteAccount}
+								>
+									delete account
 								</a>
 							</span>
 						</>

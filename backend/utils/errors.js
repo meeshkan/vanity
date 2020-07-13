@@ -30,6 +30,10 @@ const ResubscriptionError = message => new HTTPError(
 	UNAUTHORIZED,
 	message,
 );
+const DeletionError = message => new HTTPError(
+	UNAUTHORIZED,
+	message,
+);
 
 module.exports = {
 	HTTPError,
@@ -38,4 +42,5 @@ module.exports = {
 	UnauthorizedError,
 	UnsubscriptionError,
 	ResubscriptionError,
+	DeletionError,
 };

@@ -8,6 +8,7 @@ const { createQueue } = require('./queue');
 const ingestMetrics = createQueue('ingestMetrics');
 const sendEmail = createQueue('sendEmail');
 const sendSampleEmail = createQueue('sendSampleEmail');
+const deleteAccount = createQueue('deleteAccount');
 
 const ingestMetricsWorker = job => {
 	const { userID } = job.data;
@@ -35,21 +36,32 @@ const sendSampleEmailWorker = async job => {
 	});
 };
 
+const deleteAccountWorker = async job => {
+	const { User } = require('../models');
+	const { userID } = job.data;
+	const user = await User.findByPk(userID);
+	return user.destroy();
+};
+
 ingestMetrics.process(ingestMetricsWorker);
 sendEmail.process(sendEmailWorker);
 sendSampleEmail.process(sendSampleEmailWorker);
+deleteAccount.process(deleteAccountWorker);
 
 setQueues([
 	ingestMetrics,
 	sendEmail,
 	sendSampleEmail,
+	deleteAccount,
 ]);
 
 module.exports = {
 	ingestMetrics,
 	sendEmail,
 	sendSampleEmail,
+	deleteAccount,
 	ingestMetricsWorker,
 	sendEmailWorker,
 	sendSampleEmailWorker,
+	deleteAccountWorker,
 };
