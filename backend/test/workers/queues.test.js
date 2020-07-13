@@ -89,7 +89,7 @@ test('sendSampleEmailWorker calls metrics.fetchCurrent() and email.sendSample()'
 	sendSample.restore();
 });
 
-test('deleteAccountWorker calls User.findByPk() and User.prototype.destroy()', async t => {
+test('deleteAccountWorker calls User.prototype.destroy()', async t => {
 	const findByPk = sinon.stub(User, 'findByPk');
 	findByPk.returns(Promise.resolve(new User()));
 
@@ -98,11 +98,7 @@ test('deleteAccountWorker calls User.findByPk() and User.prototype.destroy()', a
 
 	const jobResult = await deleteAccountWorker({ data: { userID: user.id } });
 
-	t.true(findByPk.calledOnce);
 	t.true(destroy.calledOnce);
-
-	sinon.assert.calledWith(findByPk, user.id);
-
 	t.is(jobResult, 1337);
 
 	findByPk.restore();
