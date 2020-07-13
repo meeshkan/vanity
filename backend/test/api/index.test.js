@@ -59,7 +59,11 @@ test.serial('GET /api/preferences returns upcoming email date - subscribed', asy
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, OK);
-	const expectedUpcomingEmailDate = moment().startOf('day').day(8).toString();
+
+	const thisMondayAtMidnight = moment().day(1).startOf('day');
+	const upcomingMondayAtMidnight = thisMondayAtMidnight < moment() ? moment().day(8).startOf('day') : thisMondayAtMidnight;
+	const expectedUpcomingEmailDate = upcomingMondayAtMidnight.toString();
+
 	t.is(response.body.upcomingEmailDate, expectedUpcomingEmailDate);
 
 	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
