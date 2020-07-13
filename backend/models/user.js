@@ -99,7 +99,7 @@ module.exports = (Sequelize, DataTypes) => {
 	User.afterDestroy(async user => {
 		const jobs = await getRepeatableJobsByID(user.id);
 		const jobsToDelete = Object.values(jobs);
-		jobsToDelete.filter(job => job).forEach(job => job.remove());
+		_.compact(jobsToDelete).forEach(job => job.remove());
 	});
 
 	User.prototype.updateFromGitHub = async function () {
