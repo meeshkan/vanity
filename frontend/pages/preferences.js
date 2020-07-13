@@ -43,7 +43,7 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 	return (
 		<Layout>
 			<Main>
-				<h2>preferences</h2>
+				<h2 className='pt5 pt3-ns'>preferences</h2>
 				<p className='pb4'>
 					welcome, {username}
 				</p>
