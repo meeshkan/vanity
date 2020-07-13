@@ -18,18 +18,6 @@ const AccountDeleted = ({ token }) => {
 		NProgress.done();
 	};
 
-	if (!canRecover) {
-		return (
-			<Layout>
-				<Main>
-					<h3>your account has been deleted</h3>
-					<p>We are sorry to see you go!</p>
-				</Main>
-				<Footer />
-			</Layout>
-		);
-	}
-
 	setTimeout(() => {
 		setCanRecover(false);
 	}, TIME_LEFT_TO_RECOVER);
@@ -37,14 +25,23 @@ const AccountDeleted = ({ token }) => {
 	return (
 		<Layout>
 			<Main>
-				<h3>your account has been scheduled for deletion</h3>
-				<p>We are sorry to see you go!</p>
-				<a
-					className='link f5 ph3 pv2 dt center black ba bw1 b--white br2 bg-white bg-animate hover-bg-transparent hover-white ttu'
-					onClick={handleCancellation}
-				>
-					undo
-				</a>
+				{canRecover ? (
+					<>
+						<h3>your account has been scheduled for deletion</h3>
+						<p>We are sorry to see you go!</p>
+						<a
+							className='link f5 ph3 pv2 dt center black ba bw1 b--white br2 bg-white bg-animate hover-bg-transparent hover-white ttu'
+							onClick={handleCancellation}
+						>
+							undo
+						</a>
+					</>
+				) : (
+					<>
+						<h3>your account has been deleted</h3>
+						<p>We are sorry to see you go!</p>
+					</>
+				)}
 			</Main>
 			<Footer />
 		</Layout>
