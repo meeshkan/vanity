@@ -51,7 +51,7 @@ const Landing = () => {
 											<h3>hey, {username}</h3>
 											<p>
 												<Link href='/preferences'>
-													<a className='link f5 ph3 pv2 dib black ba bw1 b--white br2 bg-white bg-animate hover-bg-transparent hover-white'>
+													<a className='link f6 f5-l ph3 pv2 dib black ba bw1 b--white br2 bg-white bg-animate hover-bg-transparent hover-white'>
 														edit your preferences
 													</a>
 												</Link>
