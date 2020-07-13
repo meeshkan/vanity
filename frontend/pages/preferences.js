@@ -30,13 +30,13 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 		const deleted = await deleteAccount(token);
 		if (deleted) {
 			setAccountDeleted(true);
+			COOKIES.forEach(cookie => Cookies.remove(cookie));
 		}
 
 		NProgress.done();
 	};
 
 	if (accountDeleted) {
-		COOKIES.forEach(cookie => Cookies.remove(cookie));
 		return <AccountDeleted token={token} />;
 	}
 
