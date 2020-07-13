@@ -76,7 +76,7 @@ module.exports = (Sequelize, DataTypes) => {
 		user.userScheduler = new UserSchedulerClass();
 	});
 
-	User.afterCreate(async (user, _) => {
+	User.afterCreate(async user => {
 		user = await user.updateFromGitHub();
 		user.userScheduler.scheduleForUser(user);
 	});
@@ -96,7 +96,7 @@ module.exports = (Sequelize, DataTypes) => {
 		return User.findByToken(token);
 	};
 
-	User.afterDestroy(async (user, _) => {
+	User.afterDestroy(async user => {
 		const jobs = await getRepeatableJobsByID(user.id);
 		const jobsToDelete = Object.values(jobs);
 		jobsToDelete.filter(job => job).forEach(job => job.remove());
