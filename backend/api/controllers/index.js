@@ -146,15 +146,15 @@ const DeletionErrors = {
 const destroy = async (request, response) => {
 	try {
 		const user = await User.findByRequest(request);
-		if (user) {
-			user.userScheduler = new UserScheduler();
-			user.userScheduler.scheduleDeletionOfUser(user);
-			return response.status(OK).json({
-				message: `Successfully scheduled deletion of user ${user.username}`
-			});
+		if (!user) {
+			return response.status(NOT_FOUND).json(DeletionErrors.NONEXISTENT_USER_TO_DELETE);
 		}
 
-		return response.status(NOT_FOUND).json(DeletionErrors.NONEXISTENT_USER_TO_DELETE);
+		user.userScheduler = new UserScheduler();
+		user.userScheduler.scheduleDeletionOfUser(user);
+		return response.status(OK).json({
+			message: `Successfully scheduled deletion of user ${user.username}`
+		});
 	} catch (error) {
 		logger.error(error);
 		response.status(UNAUTHORIZED).json(DeletionErrors.INVALID_TOKEN);
