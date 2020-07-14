@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import NProgress from 'nprogress';
 import { toast } from 'react-toastify';
 
-export const COOKIES = ['github-user', 'jwt'];
+const COOKIES = ['github-user', 'jwt'];
 
 class APIClient {
 	constructor(token) {
@@ -23,8 +23,12 @@ class APIClient {
 	}
 }
 
-export function logout() {
+export function clearCookies() {
 	COOKIES.forEach(cookie => Cookies.remove(cookie));
+}
+
+export function logout() {
+	clearCookies();
 	Router.push('/auth/logout');
 }
 

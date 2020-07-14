@@ -3,7 +3,6 @@ import Router from 'next/router';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import nextCookie from 'next-cookies';
-import Cookies from 'js-cookie';
 import NProgress from 'nprogress';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
@@ -14,7 +13,7 @@ import AccountDeleted from '../components/AccountDeleted';
 import { withAuthSync } from '../utils/auth';
 import getHost from '../utils/get-host';
 import {
-	COOKIES,
+	clearCookies,
 	logout,
 	resubscribe,
 	deleteAccount,
@@ -30,7 +29,7 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 		const deleted = await deleteAccount(token);
 		if (deleted) {
 			setAccountDeleted(true);
-			COOKIES.forEach(cookie => Cookies.remove(cookie));
+			clearCookies();
 		}
 
 		NProgress.done();
@@ -131,7 +130,7 @@ Preferences.getInitialProps = async ctx => {
 	const url = `${getHost(ctx.req) || ''}/api/preferences`;
 
 	const redirectOnError = () => {
-		COOKIES.forEach(cookie => Cookies.remove(cookie));
+		clearCookies();
 		if (typeof window === 'undefined') {
 			return ctx.res.writeHead(302, { Location: '/login' }).end();
 		}
