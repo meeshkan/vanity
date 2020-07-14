@@ -103,8 +103,8 @@ export async function cancelAccountDeletion(token) {
 			return;
 		}
 
-		const { errors } = await response.json();
-		toast.error(errors.message, {
+		const { error } = await response.json();
+		toast.error(error.message, {
 			className: 'avenir bg-red center pa3 lh-copy',
 		});
 	} catch (error) {

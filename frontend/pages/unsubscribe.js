@@ -63,14 +63,14 @@ Unsubscribe.getInitialProps = async ({ req, res, query }) => {
 			body: JSON.stringify({ token, email }),
 		});
 
-		const { errors, user } = await response.json();
+		const { error, user } = await response.json();
 
 		if (response.ok) {
 			return user;
 		}
 
-		if (errors) {
-			const { message } = errors;
+		if (error) {
+			const { message } = error;
 			return { message };
 		}
 	} catch (error) {

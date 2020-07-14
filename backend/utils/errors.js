@@ -9,7 +9,7 @@ class HTTPError extends Error {
 	toJSON() {
 		return {
 			status: this.status,
-			errors: {
+			error: {
 				message: this.message,
 			},
 		};

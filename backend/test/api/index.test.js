@@ -198,7 +198,7 @@ test('POST /api/preferences/metric-types returns 401 - invalid token', async t =
 test('POST /api/unsubscribe returns 401 - without body', async t => {
 	const response = await request(app).post('/api/unsubscribe');
 	t.is(response.status, UNAUTHORIZED);
-	t.is(response.body.errors.message, 'Unsubscription token is invalid');
+	t.is(response.body.error.message, 'Unsubscription token is invalid');
 });
 
 test('POST /api/unsubscribe removes repeatable jobs - with appropriate body', async t => {
@@ -241,7 +241,7 @@ test.serial('POST /api/unsubscribe rejects tampered email', async t => {
 		.send({ token, email: 'foo@bar.com' });
 
 	t.is(response.status, UNAUTHORIZED);
-	t.is(response.body.errors.message, 'Email did not match token');
+	t.is(response.body.error.message, 'Email did not match token');
 
 	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
 	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
@@ -271,7 +271,7 @@ test.serial('POST /api/unsubscribe returns error when email has already been uns
 		.send({ token, email });
 
 	t.is(response.status, UNAUTHORIZED);
-	t.is(response.body.errors.message, 'Email has already been unsubscribed');
+	t.is(response.body.error.message, 'Email has already been unsubscribed');
 
 	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
 	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
@@ -287,7 +287,7 @@ test.serial('POST /api/unsubscribe returns error when email has already been uns
 test('POST /api/resubscribe returns 401 - without token', async t => {
 	const response = await request(app).post('/api/resubscribe');
 	t.is(response.status, UNAUTHORIZED);
-	t.is(response.body.errors.message, 'User token is invalid');
+	t.is(response.body.error.message, 'User token is invalid');
 });
 
 test.serial('POST /api/resubscribe schedules repeatable jobs - with appropriate token', async t => {
@@ -322,7 +322,7 @@ test.serial('POST /api/resubscribe return error when already subscribed', async 
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, UNAUTHORIZED);
-	t.is(response.body.errors.message, 'User is already subscribed');
+	t.is(response.body.error.message, 'User is already subscribed');
 
 	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
 	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
@@ -338,7 +338,7 @@ test.serial('POST /api/resubscribe return error when already subscribed', async 
 test('POST /api/delete-account returns 401 - without token', async t => {
 	const response = await request(app).post('/api/delete-account');
 	t.is(response.status, UNAUTHORIZED);
-	t.is(response.body.errors.message, 'User token is invalid');
+	t.is(response.body.error.message, 'User token is invalid');
 });
 
 test.serial('POST /api/delete-account schedules user deletion job - with appropriate token', async t => {
@@ -369,13 +369,13 @@ test.serial('POST /api/delete-account returns error - when user does not exist',
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, NOT_FOUND);
-	t.is(response.body.errors.message, 'The user that you are trying to delete does not exist');
+	t.is(response.body.error.message, 'The user that you are trying to delete does not exist');
 });
 
 test('POST /api/cancel-deletion returns 401 - without token', async t => {
 	const response = await request(app).post('/api/cancel-deletion');
 	t.is(response.status, UNAUTHORIZED);
-	t.is(response.body.errors.message, 'User token is invalid');
+	t.is(response.body.error.message, 'User token is invalid');
 });
 
 test.serial('POST /api/cancel-deletion removes deleteAccount job - with appropriate token', async t => {
@@ -405,7 +405,7 @@ test.serial('POST /api/cancel-deletion returns error - when user does not exist'
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, NOT_FOUND);
-	t.is(response.body.errors.message, 'The user that you are trying to recover does not exist');
+	t.is(response.body.error.message, 'The user that you are trying to recover does not exist');
 });
 
 test.serial('POST /api/cancel-deletion returns success - when job does not exist', async t => {
