@@ -9,6 +9,7 @@ const { createTestUser, destroyTestUser, setUserToken, getUserById } = require('
 const { GITHUB_USER_TOKEN, GITHUB_NO_INSTALLATION_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
 const { ingestMetrics, sendEmail, deleteAccount } = require('../../workers/queues');
+const { getRepeatableJobsByID } = require('../../workers/helpers');
 const { UserScheduler } = require('../../models/user-scheduler');
 const {
 	ingestMetricsJob,
@@ -70,15 +71,9 @@ test.serial('GET /api/preferences returns upcoming email date - subscribed', asy
 
 	t.is(response.body.upcomingEmailDate, expectedUpcomingEmailDate);
 
-	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
-	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+	const jobs = await getRepeatableJobsByID(id);
 
-	const jobsToDelete = [
-		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-	];
-
-	jobsToDelete.forEach(job => job.remove());
+	Object.values(jobs).forEach(job => job.remove());
 });
 
 test.serial('GET /api/preferences returns undefined upcoming email date - unsubscribed', async t => {
