@@ -72,7 +72,7 @@ test('sendSampleEmailJob creates job', async t => {
 	t.is(job.opts.attempts, QUEUE_ATTEMPTS.METRICS);
 	const selectedRepos = { selectedRepos: USER.selectedRepos };
 	t.deepEqual(job.data.user, { ...user, ...selectedRepos });
-	t.regex(job.id, /\d+/);
+	t.is(job.id, String(user.id));
 	t.is(job.delay, 0);
 	job.discard();
 
@@ -86,7 +86,7 @@ test('deleteAccountJob creates job', async t => {
 	t.is(job.name, '__default__');
 	t.is(job.opts.attempts, QUEUE_ATTEMPTS.DELETE_ACCOUNT);
 	t.deepEqual(job.data, { userID: user.id });
-	t.regex(job.id, /\d+/);
+	t.is(job.id, String(user.id));
 	t.is(job.delay, QUEUE_DELAY.DELETE_ACCOUNT);
 	job.discard();
 
