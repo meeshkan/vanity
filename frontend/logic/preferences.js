@@ -1,7 +1,6 @@
 import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'js-cookie';
-import NProgress from 'nprogress';
 import { toast } from 'react-toastify';
 
 const COOKIES = ['github-user', 'jwt'];
