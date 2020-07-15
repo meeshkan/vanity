@@ -195,13 +195,13 @@ test('POST /api/preferences/metric-types returns 401 - invalid token', async t =
 	t.is(response.body.name, 'SequelizeDatabaseError');
 });
 
-test('POST /api/unsubscribe returns 401 - without body', async t => {
-	const response = await request(app).post('/api/unsubscribe');
+test('DELETE /api/subscription returns 401 - without body', async t => {
+	const response = await request(app).delete('/api/subscription');
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.error.message, 'Unsubscription token is invalid');
 });
 
-test('POST /api/unsubscribe removes repeatable jobs - with appropriate body', async t => {
+test('DELETE /api/subscription removes repeatable jobs - with appropriate body', async t => {
 	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
@@ -210,7 +210,7 @@ test('POST /api/unsubscribe removes repeatable jobs - with appropriate body', as
 	await sendEmailJob({ ...user, username });
 
 	const response = await request(app)
-		.post('/api/unsubscribe')
+		.delete('/api/subscription')
 		.send({ token, email });
 
 	t.is(response.status, OK);
@@ -222,7 +222,7 @@ test('POST /api/unsubscribe removes repeatable jobs - with appropriate body', as
 	t.true(Object.values(jobs).every(job => !job));
 });
 
-test.serial('POST /api/unsubscribe rejects tampered email', async t => {
+test.serial('DELETE /api/subscription rejects tampered email', async t => {
 	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
@@ -231,7 +231,7 @@ test.serial('POST /api/unsubscribe rejects tampered email', async t => {
 	await sendEmailJob({ ...user, username });
 
 	const response = await request(app)
-		.post('/api/unsubscribe')
+		.delete('/api/subscription')
 		.send({ token, email: 'foo@bar.com' });
 
 	t.is(response.status, UNAUTHORIZED);
@@ -242,7 +242,7 @@ test.serial('POST /api/unsubscribe rejects tampered email', async t => {
 	t.false(Object.values(jobs).every(job => !job));
 });
 
-test.serial('POST /api/unsubscribe returns error when email has already been unsubscribed', async t => {
+test.serial('DELETE /api/subscription returns error when email has already been unsubscribed', async t => {
 	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
@@ -251,11 +251,11 @@ test.serial('POST /api/unsubscribe returns error when email has already been uns
 	await sendEmailJob({ ...user, username });
 
 	await request(app)
-		.post('/api/unsubscribe')
+		.delete('/api/subscription')
 		.send({ token, email });
 
 	const response = await request(app)
-		.post('/api/unsubscribe')
+		.delete('/api/subscription')
 		.send({ token, email });
 
 	t.is(response.status, UNAUTHORIZED);
@@ -266,13 +266,13 @@ test.serial('POST /api/unsubscribe returns error when email has already been uns
 	t.true(Object.values(jobs).every(job => !job));
 });
 
-test('POST /api/resubscribe returns 401 - without token', async t => {
-	const response = await request(app).post('/api/resubscribe');
+test('POST /api/subscription returns 401 - without token', async t => {
+	const response = await request(app).post('/api/subscription');
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.error.message, 'User token is invalid');
 });
 
-test.serial('POST /api/resubscribe schedules repeatable jobs - with appropriate token', async t => {
+test.serial('POST /api/subscription schedules repeatable jobs - with appropriate token', async t => {
 	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
@@ -281,7 +281,7 @@ test.serial('POST /api/resubscribe schedules repeatable jobs - with appropriate 
 	scheduleForUser.returns();
 
 	const response = await request(app)
-		.post('/api/resubscribe')
+		.post('/api/subscription')
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, OK);
@@ -291,7 +291,7 @@ test.serial('POST /api/resubscribe schedules repeatable jobs - with appropriate 
 	scheduleForUser.restore();
 });
 
-test.serial('POST /api/resubscribe return error when already subscribed', async t => {
+test.serial('POST /api/subscription return error when already subscribed', async t => {
 	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
@@ -300,7 +300,7 @@ test.serial('POST /api/resubscribe return error when already subscribed', async 
 	await sendEmailJob({ ...user, username });
 
 	const response = await request(app)
-		.post('/api/resubscribe')
+		.post('/api/subscription')
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, UNAUTHORIZED);
@@ -311,13 +311,13 @@ test.serial('POST /api/resubscribe return error when already subscribed', async 
 	Object.values(jobs).forEach(job => job.remove());
 });
 
-test('POST /api/delete-account returns 401 - without token', async t => {
-	const response = await request(app).post('/api/delete-account');
+test('DELETE /api/user returns 401 - without token', async t => {
+	const response = await request(app).delete('/api/user');
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.error.message, 'User token is invalid');
 });
 
-test.serial('POST /api/delete-account schedules user deletion job - with appropriate token', async t => {
+test.serial('DELETE /api/user schedules user deletion job - with appropriate token', async t => {
 	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
@@ -326,7 +326,7 @@ test.serial('POST /api/delete-account schedules user deletion job - with appropr
 	scheduleDeletionOfUser.returns();
 
 	const response = await request(app)
-		.post('/api/delete-account')
+		.delete('/api/user')
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, OK);
@@ -336,25 +336,25 @@ test.serial('POST /api/delete-account schedules user deletion job - with appropr
 	scheduleDeletionOfUser.restore();
 });
 
-test.serial('POST /api/delete-account returns error - when user does not exist', async t => {
+test.serial('DELETE /api/user returns error - when user does not exist', async t => {
 	const user = { id: 1337, email: 'foo@bar.com' };
 	const token = generateToken(user);
 
 	const response = await request(app)
-		.post('/api/delete-account')
+		.delete('/api/user')
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, NOT_FOUND);
 	t.is(response.body.error.message, 'The user that you are trying to delete does not exist');
 });
 
-test('POST /api/cancel-deletion returns 401 - without token', async t => {
-	const response = await request(app).post('/api/cancel-deletion');
+test('POST /api/user/recovery returns 401 - without token', async t => {
+	const response = await request(app).post('/api/user/recovery');
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.error.message, 'User token is invalid');
 });
 
-test.serial('POST /api/cancel-deletion removes deleteAccount job - with appropriate token', async t => {
+test.serial('POST /api/user/recovery removes deleteAccount job - with appropriate token', async t => {
 	const { id, email, username } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
@@ -362,7 +362,7 @@ test.serial('POST /api/cancel-deletion removes deleteAccount job - with appropri
 	await deleteAccountJob(user);
 
 	const response = await request(app)
-		.post('/api/cancel-deletion')
+		.post('/api/user/recovery')
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, OK);
@@ -372,25 +372,25 @@ test.serial('POST /api/cancel-deletion removes deleteAccount job - with appropri
 	t.is(job, null);
 });
 
-test.serial('POST /api/cancel-deletion returns error - when user does not exist', async t => {
+test.serial('POST /api/user/recovery returns error - when user does not exist', async t => {
 	const user = { id: 1337, email: 'foo@bar.com' };
 	const token = generateToken(user);
 
 	const response = await request(app)
-		.post('/api/cancel-deletion')
+		.post('/api/user/recovery')
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, NOT_FOUND);
 	t.is(response.body.error.message, 'The user that you are trying to recover does not exist');
 });
 
-test.serial('POST /api/cancel-deletion returns success - when job does not exist', async t => {
+test.serial('POST /api/user/recovery returns success - when job does not exist', async t => {
 	const { id, email } = t.context.user;
 	const user = { id, email };
 	const token = generateToken(user);
 
 	const response = await request(app)
-		.post('/api/cancel-deletion')
+		.post('/api/user/recovery')
 		.set('authorization', JSON.stringify({ token }));
 
 	t.is(response.status, OK);

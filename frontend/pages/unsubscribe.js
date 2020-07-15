@@ -43,7 +43,7 @@ Unsubscribe.defaultProps = {
 };
 
 Unsubscribe.getInitialProps = async ({ req, res, query }) => {
-	const url = `${getHost(req) || ''}/api/unsubscribe`;
+	const url = `${getHost(req) || ''}/api/subscription`;
 	const { token, email } = query;
 
 	if (!token && !email) {
@@ -56,7 +56,7 @@ Unsubscribe.getInitialProps = async ({ req, res, query }) => {
 
 	try {
 		const response = await fetch(url, {
-			method: 'POST',
+			method: 'DELETE',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'

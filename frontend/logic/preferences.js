@@ -21,6 +21,14 @@ class APIClient {
 			body: JSON.stringify(body),
 		});
 	}
+
+	delete(path, body) {
+		return fetch(path, {
+			method: 'DELETE',
+			headers: this.headers,
+			body: JSON.stringify(body),
+		});
+	}
 }
 
 export function clearCookies() {
@@ -63,7 +71,7 @@ export async function updateMetricTypes(token, metricTypes) {
 export async function resubscribe(token) {
 	try {
 		const client = new APIClient(token);
-		const response = await client.post('/api/resubscribe');
+		const response = await client.post('/api/subscription');
 
 		if (response.ok) {
 			const { message } = await response.json();
@@ -79,7 +87,7 @@ export async function resubscribe(token) {
 export async function deleteAccount(token) {
 	try {
 		const client = new APIClient(token);
-		const response = await client.post('/api/delete-account');
+		const response = await client.delete('/api/user');
 		return response.ok;
 	} catch (error) {
 		console.error(error);
@@ -90,7 +98,7 @@ export async function deleteAccount(token) {
 export async function cancelAccountDeletion(token) {
 	try {
 		const client = new APIClient(token);
-		const response = await client.post('/api/cancel-deletion');
+		const response = await client.post('/api/user/recovery');
 
 		if (response.ok) {
 			const { message } = await response.json();
