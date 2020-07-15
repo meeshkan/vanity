@@ -2,6 +2,7 @@ import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import toastOptions from '../utils/toast';
 
 const COOKIES = ['github-user', 'jwt'];
 
@@ -41,7 +42,7 @@ export async function updateRepos(token, repos) {
 		}
 	} catch (error) {
 		console.error(error);
-		toast.error('Something went wrong. Please try again.');
+		toast.error('Something went wrong. Please try again.', toastOptions.error);
 	}
 }
 
@@ -55,7 +56,7 @@ export async function updateMetricTypes(token, metricTypes) {
 		}
 	} catch (error) {
 		console.error(error);
-		toast.error('Something went wrong. Please try again.');
+		toast.error('Something went wrong. Please try again.', toastOptions.error);
 	}
 }
 
@@ -67,13 +68,11 @@ export async function resubscribe(token) {
 		if (response.ok) {
 			const { message } = await response.json();
 			await Router.push('/preferences');
-			toast.success(message, {
-				className: 'avenir bg-blue center pa3 lh-copy',
-			});
+			toast.success(message, toastOptions.success);
 		}
 	} catch (error) {
 		console.error(error);
-		toast.error('Something went wrong. Please try again.');
+		toast.error('Something went wrong. Please try again.', toastOptions.error);
 	}
 }
 
@@ -84,7 +83,7 @@ export async function deleteAccount(token) {
 		return response.ok;
 	} catch (error) {
 		console.error(error);
-		toast.error('Something went wrong. Please try again.');
+		toast.error('Something went wrong. Please try again.', toastOptions.error);
 	}
 }
 
@@ -96,18 +95,14 @@ export async function cancelAccountDeletion(token) {
 		if (response.ok) {
 			const { message } = await response.json();
 			await Router.push('/login');
-			toast.success(message + ' - Please login again', {
-				className: 'avenir bg-blue center pa3 lh-copy',
-			});
+			toast.success(message + ' - Please login again', toastOptions.success);
 			return;
 		}
 
 		const { error } = await response.json();
-		toast.error(error.message, {
-			className: 'avenir bg-red center pa3 lh-copy',
-		});
+		toast.error(error.message, toastOptions.error);
 	} catch (error) {
 		console.error(error);
-		toast.error('Something went wrong. Please try again.');
+		toast.error('Something went wrong. Please try again.', toastOptions.error);
 	}
 }

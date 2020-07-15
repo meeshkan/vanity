@@ -9,6 +9,7 @@ import Main from '../components/Main';
 import SuccessIcon from '../components/SuccessIcon';
 import UnsuccessIcon from '../components/UnsuccessIcon';
 import getHost from '../utils/get-host';
+import toastOptions from '../utils/toast';
 
 export const Unsubscribe = ({ message, email }) => (
 	<Layout>
@@ -75,7 +76,7 @@ Unsubscribe.getInitialProps = async ({ req, res, query }) => {
 		}
 	} catch (error) {
 		console.error(error);
-		toast.error('Something went wrong. Please try refreshing the page.');
+		toast.error('Something went wrong. Please try refreshing the page.', toastOptions.error);
 	}
 };
 
