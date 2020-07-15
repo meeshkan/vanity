@@ -8,7 +8,7 @@ const { REPOS, METRIC_TYPES } = require('../__fixtures__');
 const { createTestUser, destroyTestUser, setUserToken, getUserById } = require('../helpers');
 const { GITHUB_USER_TOKEN, GITHUB_NO_INSTALLATION_USER_TOKEN } = require('../../config');
 const { generateToken } = require('../../utils/token');
-const { ingestMetrics, sendEmail, deleteAccount } = require('../../workers/queues');
+const { deleteAccount } = require('../../workers/queues');
 const { getRepeatableJobsByID } = require('../../workers/helpers');
 const { UserScheduler } = require('../../models/user-scheduler');
 const {
@@ -217,15 +217,9 @@ test('POST /api/unsubscribe removes repeatable jobs - with appropriate body', as
 	t.is(response.body.user.email, email);
 	t.is(response.body.user.id, id);
 
-	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
-	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+	const jobs = await getRepeatableJobsByID(id);
 
-	const jobs = [
-		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id)
-	];
-
-	t.true(jobs.every(job => !job));
+	t.true(Object.values(jobs).every(job => !job));
 });
 
 test.serial('POST /api/unsubscribe rejects tampered email', async t => {
@@ -243,15 +237,9 @@ test.serial('POST /api/unsubscribe rejects tampered email', async t => {
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.error.message, 'Email did not match token');
 
-	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
-	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+	const jobs = await getRepeatableJobsByID(id);
 
-	const jobs = [
-		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id)
-	];
-
-	t.false(jobs.every(job => !job));
+	t.false(Object.values(jobs).every(job => !job));
 });
 
 test.serial('POST /api/unsubscribe returns error when email has already been unsubscribed', async t => {
@@ -273,15 +261,9 @@ test.serial('POST /api/unsubscribe returns error when email has already been uns
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.error.message, 'Email has already been unsubscribed');
 
-	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
-	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+	const jobs = await getRepeatableJobsByID(id);
 
-	const jobs = [
-		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id)
-	];
-
-	t.true(jobs.every(job => !job));
+	t.true(Object.values(jobs).every(job => !job));
 });
 
 test('POST /api/resubscribe returns 401 - without token', async t => {
@@ -324,15 +306,9 @@ test.serial('POST /api/resubscribe return error when already subscribed', async 
 	t.is(response.status, UNAUTHORIZED);
 	t.is(response.body.error.message, 'User is already subscribed');
 
-	const ingestMetricsJobs = await ingestMetrics.getJobs(['delayed']);
-	const sendEmailJobs = await sendEmail.getJobs(['delayed']);
+	const jobs = await getRepeatableJobsByID(id);
 
-	const jobsToDelete = [
-		ingestMetricsJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-		sendEmailJobs.find(delayedJob => delayedJob.opts.repeat.jobId === id),
-	];
-
-	jobsToDelete.forEach(job => job.remove());
+	Object.values(jobs).forEach(job => job.remove());
 });
 
 test('POST /api/delete-account returns 401 - without token', async t => {
