@@ -77,7 +77,11 @@ export async function resubscribe(token) {
 			const { message } = await response.json();
 			await Router.push('/preferences');
 			toast.success(message, toastOptions.success);
+			return;
 		}
+
+		const { error } = await response.json();
+		toast.error(error.message, toastOptions.error);
 	} catch (error) {
 		console.error(error);
 		toast.error('Something went wrong. Please try again.', toastOptions.error);
