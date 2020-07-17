@@ -16,5 +16,10 @@ export default {
 			},
 		],
 		description: 'Weekly metrics for your GitHub repos.',
-	}
+	},
+	twitter: {
+		handle: '@meeshkan',
+		site: '@meeshkan',
+		cardType: 'summary_large_image',
+	},
 };
