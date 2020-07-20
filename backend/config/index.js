@@ -70,7 +70,7 @@ const QUEUE_DELAY = {
 
 const EMAIL_CONFIG = {
 	vanityAddress: 'vanity@meeshkan.com',
-	subject: '📈Your Vanity metrics',
+	subject: '📈 Your Vanity metrics',
 	sampleSubject: 'Welcome to Vanity',
 };
 
