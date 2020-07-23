@@ -72,6 +72,7 @@ const Nav = () => {
 							<Link href='/preferences'>
 								<a className={`link grow-large ${color} dib`}>
 									<img
+										alt=''
 										className='link dib v-mid'
 										src={avatarURL}
 										style={{ height: '20px', borderRadius: 100 }}
