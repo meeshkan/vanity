@@ -7,7 +7,7 @@ export default {
 		locale: 'en_IE',
 		url: 'https://vanity.dev',
 		site_name: 'Vanity',
-        images: [
+		images: [
 			{
 				url: 'https://nikolaskama.me/content/images/2020/04/vanity_logo.png',
 				width: 1188,
