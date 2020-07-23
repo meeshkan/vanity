@@ -70,7 +70,10 @@ const Nav = () => {
 						</a>
 						{avatarURL ? (
 							<Link href='/preferences'>
-								<a className={`link grow-large ${color} dib`}>
+								<a
+									className={`link grow-large ${color} dib`}
+									aria-label='preferences'
+								>
 									<img
 										alt=''
 										className='link dib v-mid'
@@ -86,6 +89,7 @@ const Nav = () => {
 										router === '/login' ? 'bb' : ''
 									}`}
 									title='Login'
+									aria-label='login'
 								>
 									<i className='material-icons md-18'>person</i>
 								</a>
