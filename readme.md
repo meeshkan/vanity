@@ -81,8 +81,6 @@ Finally, execute:
 ~/vanity ❯❯❯ vercel dev
 ```
 
-## Credits
-
 ## License
 
 MIT © [Meeshkan](http://meeshkan.com/)
