@@ -16,7 +16,7 @@ class VanityDoc extends Document {
 					<meta name='format-detection' content='telephone=no' />
 					<meta
 						name='viewport'
-						content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+						content='width=device-width, initial-scale=1.0'
 					/>
 					<link
 						href='https://fonts.googleapis.com/css?family=Space+Mono'
