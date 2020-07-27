@@ -55,6 +55,7 @@ const sendSampleEmailJob = user => {
 			},
 		},
 		{
+			removeOnComplete: true,
 			jobId: user.id,
 			attempts: QUEUE_ATTEMPTS.SAMPLE,
 		},

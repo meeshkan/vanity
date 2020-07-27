@@ -70,6 +70,7 @@ test('sendSampleEmailJob creates job', async t => {
 	t.is(job.returnvalue, null);
 	t.is(job.name, '__default__');
 	t.is(job.opts.attempts, QUEUE_ATTEMPTS.METRICS);
+	t.true(job.opts.removeOnComplete);
 	const selectedRepos = { selectedRepos: USER.selectedRepos };
 	t.deepEqual(job.data.user, { ...user, ...selectedRepos });
 	t.is(job.id, String(user.id));
