@@ -56,6 +56,13 @@ test('ingest() ingests metrics', async t => {
 });
 
 test('fetchCurrent() fetches current metrics', async t => {
+	const metrics = await fetchCurrent(t.context.user.id);
+	t.true(Array.isArray(metrics));
+	t.true(metrics.length === USER.selectedRepos.length);
+	metrics.forEach(repo => t.deepEqual(Object.keys(repo), REPO_KEYS));
+});
+
+test('fetchCurrent() fetches current metrics of given repos', async t => {
 	const metrics = await fetchCurrent(t.context.user.id, USER.selectedRepos);
 	t.true(Array.isArray(metrics));
 	t.true(metrics.length === USER.selectedRepos.length);
