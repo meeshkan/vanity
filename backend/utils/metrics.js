@@ -85,6 +85,10 @@ const fetchComparison = async id => {
 		.map(metricType => metricType.name));
 
 	const snapshots = await userSnapshots(id);
+	if (snapshots.length < 2) {
+		return null;
+	}
+
 	const { latest, previous } = subjectedSnapshot(snapshots);
 	return compareSnapshots({ latest, previous })
 		.filter(repo => selectedRepos.has(repo.name))
