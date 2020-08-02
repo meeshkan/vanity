@@ -19,6 +19,14 @@ const sendEmailWorker = async job => {
 	const { user } = job.data;
 	user.unsubscriptionToken = await generateToken({ email: user.email, id: user.id });
 	const weekMetrics = await metrics.fetchComparison(user.id);
+	if (!weekMetrics) {
+		const currentMetrics = await metrics.fetchCurrent(user.id);
+		return email.sendSample({
+			user,
+			metrics: currentMetrics
+		});
+	}
+
 	return email.send({
 		user,
 		metrics: weekMetrics,

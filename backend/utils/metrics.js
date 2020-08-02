@@ -68,6 +68,14 @@ const ingest = async id => {
 
 const fetchCurrent = async (id, selectedRepos) => {
 	const metrics = await fetchUserRepoStats(id);
+	if (!selectedRepos) {
+		const { User } = require('../models');
+		const { repos } = await User.findByPk(id);
+		selectedRepos = repos
+			.filter(repo => repo.selected)
+			.map(repo => repo.name);
+	}
+
 	return metrics
 		.filter(repo => selectedRepos.includes(repo.name));
 };
@@ -85,6 +93,10 @@ const fetchComparison = async id => {
 		.map(metricType => metricType.name));
 
 	const snapshots = await userSnapshots(id);
+	if (snapshots.length < 2) {
+		return null;
+	}
+
 	const { latest, previous } = subjectedSnapshot(snapshots);
 	return compareSnapshots({ latest, previous })
 		.filter(repo => selectedRepos.has(repo.name))

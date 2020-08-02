@@ -42,7 +42,7 @@ test('ingestMetricsWorker calls metrics.ingest()', async t => {
 	ingest.restore();
 });
 
-test('sendEmailWorker calls metrics.fetchComparison() and email.send()', async t => {
+test.serial('sendEmailWorker calls metrics.fetchComparison() and email.send()', async t => {
 	const fetchComparison = sinon.stub(metrics, 'fetchComparison');
 	fetchComparison.returns(Promise.resolve(WEEKLY_METRICS));
 	const send = sinon.stub(email, 'send');
@@ -66,7 +66,35 @@ test('sendEmailWorker calls metrics.fetchComparison() and email.send()', async t
 	send.restore();
 });
 
-test('sendSampleEmailWorker calls metrics.fetchCurrent() and email.sendSample()', async t => {
+test.serial('sendEmailWorker calls metrics.fetchCurrent() and email.sendSample() when fetchComparison returns null', async t => {
+	const fetchComparison = sinon.stub(metrics, 'fetchComparison');
+	fetchComparison.returns(null);
+	const fetchCurrent = sinon.stub(metrics, 'fetchCurrent');
+	fetchCurrent.returns(Promise.resolve(SAMPLE_METRICS));
+	const sendSample = sinon.stub(email, 'sendSample');
+	sendSample.returns(Promise.resolve(SENDGRID_SUCCESS));
+
+	const jobResult = await sendEmailWorker(job);
+
+	t.true(fetchComparison.calledOnce);
+	t.true(fetchCurrent.calledOnce);
+	t.true(sendSample.calledOnce);
+
+	sinon.assert.calledWith(fetchComparison, user.id);
+	sinon.assert.calledWith(fetchCurrent, user.id);
+	sinon.assert.calledWith(sendSample, {
+		user,
+		metrics: SAMPLE_METRICS
+	});
+
+	t.deepEqual(jobResult, SENDGRID_SUCCESS);
+
+	fetchComparison.restore();
+	fetchCurrent.restore();
+	sendSample.restore();
+});
+
+test.serial('sendSampleEmailWorker calls metrics.fetchCurrent() and email.sendSample()', async t => {
 	const fetchCurrent = sinon.stub(metrics, 'fetchCurrent');
 	fetchCurrent.returns(Promise.resolve(SAMPLE_METRICS));
 	const sendSample = sinon.stub(email, 'sendSample');
