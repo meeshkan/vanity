@@ -301,3 +301,8 @@ test.serial('fetchComparison() returns comparison based on selected metric types
 
 	await previousSnapshot.destroy();
 });
+
+test.serial('fetchComparison() returns null without sufficient snapshots', async t => {
+	const comparison = await fetchComparison(t.context.user.id);
+	t.is(comparison, null);
+});
