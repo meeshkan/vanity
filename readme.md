@@ -14,7 +14,7 @@
 
 ## Deployment
 
-[![Deploy to Vercel](https://deploy.now.sh/static/button.svg)](https://deploy.now.sh/?repo=https://github.com/Meeshkan/vanity)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/git?s=https://github.com/meeshkan/vanity)
 
 Alternatively, to deploy `vanity` manually:
 
