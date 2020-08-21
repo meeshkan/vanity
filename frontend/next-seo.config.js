@@ -9,9 +9,9 @@ export default {
 		site_name: 'Vanity',
 		images: [
 			{
-				url: 'https://nikolaskama.me/content/images/2020/04/vanity_logo.png',
-				width: 1188,
-				height: 336,
+				url: 'https://nikolaskama.me/content/images/2020/08/vanity.png',
+				width: 1200,
+				height: 1200,
 				alt: 'Vanity - Weekly GitHub metrics',
 			},
 		],
