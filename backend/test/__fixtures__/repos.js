@@ -293,5 +293,10 @@ module.exports = [
 		name: 'url-cli',
 		fork: false,
 		selected: true
+	},
+	{
+		name: 'verifythesource.org',
+		fork: false,
+		selected: false
 	}
 ];
