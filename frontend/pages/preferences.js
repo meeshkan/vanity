@@ -40,7 +40,7 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 	}
 
 	return (
-		<Layout>
+		<Layout title='Preferences | Vanity'>
 			<Main>
 				<h2 className='pt5 pt3-ns'>preferences</h2>
 				<p className='pb4'>

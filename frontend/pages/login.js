@@ -7,7 +7,7 @@ import Main from '../components/Main';
 import GitHubIcon from '../components/GitHubIcon';
 
 export const Login = () => (
-	<Layout>
+	<Layout title='Login | Vanity'>
 		<Main>
 			<h3>access your metrics preferences</h3>
 			<p>

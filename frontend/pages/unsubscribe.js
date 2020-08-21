@@ -39,7 +39,7 @@ export const Unsubscribe = ({ message, email, token }) => {
 	}
 
 	return (
-		<Layout>
+		<Layout title='Unsubscribe | Vanity'>
 			<Main>
 				{email ? (
 					<>
