@@ -49,14 +49,14 @@ export const Unsubscribe = ({ message, email, token }) => {
 						<p>You will no longer be receiving Vanity emails</p>
 						<span className='db'>
 							<Button
-								onClick={handleResubscribe}
 								color='blue'
+								onClick={handleResubscribe}
 							>
 								re-subscribe
 							</Button>
 							<Button
-								onClick={handleDeleteAccount}
 								color='red'
+								onClick={handleDeleteAccount}
 							>
 								delete account
 							</Button>

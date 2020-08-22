@@ -60,14 +60,14 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 							<span className='avenir db i'>You have been unsubscribed.</span>
 							<span className='db ma2'>
 								<Button
-									onClick={handleResubscribe}
 									color='blue'
+									onClick={handleResubscribe}
 								>
 									re-subscribe
 								</Button>
 								<Button
-									onClick={handleDeleteAccount}
 									color='red'
+									onClick={handleDeleteAccount}
 								>
 									delete account
 								</Button>
@@ -101,8 +101,8 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 				</div>
 				<div className='pv4 bt bw1 w-100 w-80-ns center'>
 					<Button
-						onClick={logout}
 						color='blue'
+						onClick={logout}
 					>
 						logout
 					</Button>

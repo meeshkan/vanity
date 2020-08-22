@@ -11,12 +11,12 @@ const Button = ({ children, color, ...props }) => (
 );
 
 Button.defaultProps = {
-    color: 'white',
+	color: 'white',
 };
 
 Button.propTypes = {
 	children: PropTypes.node.isRequired,
-    color: PropTypes.string,
+	color: PropTypes.string,
 };
 
 export default Button;
