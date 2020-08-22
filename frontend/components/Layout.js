@@ -4,16 +4,16 @@ import PropTypes from 'prop-types';
 import Nav from './Nav';
 
 const Layout = ({ children, title }) => (
-	<div>
+	<>
 		<NextSeo
 			title={title}
 			openGraph={{ title }}
 		/>
-		<Nav/>
+		<Nav />
 		<div key='container' data-scrollbar className='container'>
 			{children}
 		</div>
-	</div>
+	</>
 );
 
 Layout.defaultProps = {
