@@ -52,9 +52,9 @@ const Nav = () => {
 		>
 			<header>
 				<nav className='f6 fw6 ttu tracked dt w-100 mw8 center lh-solid'>
-					<div className='w-40 dtc tl v-mid'>
+					<div className='w-50 dtc tl v-mid'>
 						<Link href='/'>
-							<a className={`link dim ${color} dib mr3`} title='Home'>
+							<a className={`link dim ${color} dib mr2 mr3-l`} title='Home'>
 								Vanity
 							</a>
 						</Link>
@@ -65,9 +65,9 @@ const Nav = () => {
 							v{version}
 						</a>
 					</div>
-					<div className='w-60 dtc tr v-mid'>
+					<div className='w-50 dtc tr v-mid'>
 						<a
-							className={`link dim ${color} dib mr3 v-mid`}
+							className={`link dim ${color} dib mr2 mr3-l v-mid`}
 							href='https://github.com/meeshkan/vanity'
 							target='_blank'
 							rel='noopener noreferrer'
