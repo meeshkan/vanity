@@ -11,6 +11,7 @@ describe('Home page', () => {
 	it('has header navbar', () => {
 		cy.get('nav').within(() => {
 			cy.contains('a', 'Vanity').should('have.attr', 'href', '/');
+			cy.get('a').contains(/^v\d+(?:\.\d+)+/).should('have.attr', 'href', 'https://github.com/meeshkan/vanity/releases');
 			cy.contains('a', 'Source').should('have.attr', 'href', 'https://github.com/meeshkan/vanity');
 			cy.get('i').contains('person').parent().should('have.attr', 'href', '/login');
 		});
@@ -47,6 +48,7 @@ describe('Login page', () => {
 	it('has header navbar', () => {
 		cy.get('nav').within(() => {
 			cy.contains('a', 'Vanity').should('have.attr', 'href', '/');
+			cy.get('a').contains(/^v\d+(?:\.\d+)+/).should('have.attr', 'href', 'https://github.com/meeshkan/vanity/releases');
 			cy.contains('a', 'Source').should('have.attr', 'href', 'https://github.com/meeshkan/vanity');
 			cy.get('i').contains('person').parent().should('have.attr', 'href', '/login');
 		});

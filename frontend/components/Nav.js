@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import Cookies from 'js-cookie';
 import NProgress from 'nprogress';
+import { version } from '../../package.json';
 
 NProgress.configure({ showSpinner: false });
 Router.onRouteChangeStart = () => NProgress.start();
@@ -57,6 +58,12 @@ const Nav = () => {
 								Vanity
 							</a>
 						</Link>
+						<a
+							href='https://github.com/meeshkan/vanity/releases'
+							className={`f7 link ph2 pv2 dib ba ${color} b--${color}-40 br2 bg-animate bg-transparent hover-bg-${color}-10 ttl`}
+						>
+							v{version}
+						</a>
 					</div>
 					<div className='w-60 dtc tr v-mid'>
 						<a
