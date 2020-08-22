@@ -12,7 +12,7 @@ export const Login = () => (
 		<Main>
 			<h3>access your metrics preferences</h3>
 			<Button href='/auth/github'>
-				<div className='f7 f6-l inline-flex items-center v-mid'>
+				<div className='f7 inline-flex items-center v-mid'>
 					<GitHubIcon />
 					<div className='f6 f5-l pl2'>login with GitHub</div>
 				</div>
