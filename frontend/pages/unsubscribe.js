@@ -7,6 +7,7 @@ import NProgress from 'nprogress';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import Main from '../components/Main';
+import Button from '../components/Button';
 import SuccessIcon from '../components/SuccessIcon';
 import UnsuccessIcon from '../components/UnsuccessIcon';
 import AccountDeleted from '../components/AccountDeleted';
@@ -47,18 +48,18 @@ export const Unsubscribe = ({ message, email, token }) => {
 						<h3><span className='courier bg-white black pa1'>{email}</span> successfully unsubscribed</h3>
 						<p>You will no longer be receiving Vanity emails</p>
 						<span className='db'>
-							<a
-								className='link f5 ph3 pv2 ma2 dib white ba bw1 b--blue br2 bg-blue bg-animate hover-bg-transparent hover-blue'
+							<Button
 								onClick={handleResubscribe}
+								color='blue'
 							>
 								re-subscribe
-							</a>
-							<a
-								className='link f5 ph3 pv2 ma2 dib white ba bw1 b--red br2 bg-red bg-animate hover-bg-transparent hover-red'
+							</Button>
+							<Button
 								onClick={handleDeleteAccount}
+								color='red'
 							>
 								delete account
-							</a>
+							</Button>
 						</span>
 					</>
 				) : (

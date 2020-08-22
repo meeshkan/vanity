@@ -4,6 +4,7 @@ import NProgress from 'nprogress';
 import Layout from './Layout';
 import Main from './Main';
 import Footer from './Footer';
+import Button from './Button';
 import { cancelAccountDeletion } from '../logic/preferences';
 
 const TEN_MINUTES_IN_MILLISECONDS = 10 * 60 * 1000;
@@ -29,12 +30,11 @@ const AccountDeleted = ({ token }) => {
 					<>
 						<h3>your account has been scheduled for deletion</h3>
 						<p>We are sorry to see you go!</p>
-						<a
-							className='link f5 ph3 pv2 dt center black ba bw1 b--white br2 bg-white bg-animate hover-bg-transparent hover-white ttu'
+						<Button
 							onClick={handleCancellation}
 						>
 							undo
-						</a>
+						</Button>
 					</>
 				) : (
 					<>

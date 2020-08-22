@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
+import Button from './Button';
 import Footer from './Footer';
 import GitHubIcon from './GitHubIcon';
 
@@ -51,23 +52,19 @@ const Landing = () => {
 											<h3>hey, {username}</h3>
 											<p>
 												<Link href='/preferences'>
-													<a className='link f6 f5-l ph3 pv2 dib black ba bw1 b--white br2 bg-white bg-animate hover-bg-transparent hover-white'>
-														edit your preferences
-													</a>
+													<Button>edit your preferences</Button>
 												</Link>
 											</p>
 										</>
 									) : (
 										<>
 											<h3>start receiving your metrics</h3>
-											<p>
-												<Link href='/auth/github'>
-													<a className='white dim no-underline dt center'>
-														<span className='v-mid dt mb3'>Login with GitHub</span>
-														<GitHubIcon />
-													</a>
-												</Link>
-											</p>
+											<Button href='/auth/github'>
+												<div className='f7 f6-l inline-flex items-center v-mid'>
+													<GitHubIcon />
+													<div className='f6 f5-l pl2'>login with GitHub</div>
+												</div>
+											</Button>
 										</>
 									)}
 								</div>
