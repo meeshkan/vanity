@@ -1,13 +1,14 @@
 import React from 'react';
-import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 import PropTypes from 'prop-types';
 import Nav from './Nav';
 
 const Layout = ({ children, title }) => (
 	<div>
-		<Head>
-			<title>{title}</title>
-		</Head>
+		<NextSeo
+			title={title}
+			openGraph={{ title }}
+		/>
 		<Nav/>
 		<div key='container' data-scrollbar className='container'>
 			{children}

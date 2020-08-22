@@ -41,7 +41,7 @@ describe('Login page', () => {
 	});
 
 	it('has head metadata', () => {
-		cy.get('head title').contains('Vanity');
+		cy.get('head title').contains('Login | Vanity');
 		cy.get('head meta[name="description"]').should('have.attr', 'content', 'Weekly metrics for your GitHub repos.');
 	});
 
