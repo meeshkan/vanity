@@ -60,7 +60,7 @@ const Nav = () => {
 						</Link>
 						<a
 							href='https://github.com/meeshkan/vanity/releases'
-							className={`f7 link ph2 pv2 dib ba ${color} b--${color}-40 br2 bg-animate bg-transparent hover-bg-${color}-10 ttl`}
+							className={`f7 fw5 code link ph2 pv2 dib ba ${color} b--${color}-40 br2 bg-animate bg-transparent hover-bg-${color}-10 ttl tracked-tight tracked-ns`}
 						>
 							v{version}
 						</a>
