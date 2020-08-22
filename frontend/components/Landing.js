@@ -13,10 +13,7 @@ const Page = ({ children }) => (
 );
 
 Page.propTypes = {
-	children: PropTypes.oneOfType([
-		PropTypes.object,
-		PropTypes.array,
-	]).isRequired,
+	children: PropTypes.node.isRequired,
 };
 
 const Landing = () => {

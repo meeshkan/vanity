@@ -15,10 +15,7 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-	children: PropTypes.oneOfType([
-		PropTypes.object,
-		PropTypes.array,
-	]).isRequired,
+	children: PropTypes.node.isRequired,
     color: PropTypes.string,
 };
 
