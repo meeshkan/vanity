@@ -19,18 +19,8 @@
       "dest": "backend/server.js"
     },
     {
-      "src": "/_next/static/(?:[^/]+/pages|chunks|runtime)/.+",
-      "continue": true,
-      "headers": {
-        "cache-control": "immutable, max-age=31536000"
-      }
-    },
-    {
       "src": "/(.*)",
-      "dest": "frontend/$1",
-      "headers": {
-        "cache-control": "s-maxage=0, maxage=0, stale-while-revalidate"
-      }
+      "dest": "frontend/$1"
     }
   ],
   "env": {
