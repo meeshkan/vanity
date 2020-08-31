@@ -4,19 +4,13 @@ import nextCookie from 'next-cookies';
 import Layout from '../components/Layout';
 import Footer from '../components/Footer';
 import Main from '../components/Main';
-import Button from '../components/Button';
-import GitHubIcon from '../components/GitHubIcon';
+import LoginButton from '../components/LoginButton';
 
 export const Login = () => (
 	<Layout title='Login | Vanity'>
 		<Main>
 			<h3>access your metrics preferences</h3>
-			<Button href='/auth/github'>
-				<div className='f7 inline-flex items-center v-mid'>
-					<GitHubIcon />
-					<div className='f6 f5-l pl2'>login with GitHub</div>
-				</div>
-			</Button>
+			<LoginButton />
 		</Main>
 		<Footer />
 	</Layout>

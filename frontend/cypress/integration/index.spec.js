@@ -22,7 +22,7 @@ describe('Home page', () => {
 			cy.contains('h2', 'Vanity');
 			cy.contains('p', 'weekly metrics for your GitHub repos');
 			cy.contains('h3', 'start receiving your metrics');
-			cy.contains('a', 'login with GitHub').should('have.attr', 'href', '/auth/github');
+			cy.contains('button', 'login with GitHub');
 		});
 	});
 
@@ -57,7 +57,7 @@ describe('Login page', () => {
 	it('has content', () => {
 		cy.get('main').within(() => {
 			cy.contains('h3', 'access your metrics preferences');
-			cy.contains('a', 'login with GitHub').should('have.attr', 'href', '/auth/github');
+			cy.contains('button', 'login with GitHub');
 		});
 	});
 

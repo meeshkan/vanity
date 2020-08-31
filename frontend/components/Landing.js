@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import Router from 'next/router';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import Button from './Button';
+import LoginButton from './LoginButton';
 import Footer from './Footer';
-import GitHubIcon from './GitHubIcon';
 
 const Page = ({ children }) => (
 	<div className='landing-item relative slide'>
@@ -47,20 +47,15 @@ const Landing = () => {
 									<>
 										<h3>hey, {username}</h3>
 										<p>
-											<Link href='/preferences'>
-												<Button>edit your preferences</Button>
-											</Link>
+											<Button onClick={() => Router.push('/preferences')}>
+												edit your preferences
+											</Button>
 										</p>
 									</>
 								) : (
 									<>
 										<h3>start receiving your metrics</h3>
-										<Button href='/auth/github'>
-											<div className='f7 inline-flex items-center v-mid'>
-												<GitHubIcon />
-												<div className='f6 f5-l pl2'>login with GitHub</div>
-											</div>
-										</Button>
+										<LoginButton />
 									</>
 								)}
 							</div>
