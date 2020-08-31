@@ -12,10 +12,10 @@ const metricTypeTimePeriod = {
 
 const MetricType = ({ metric, index, handleToggle }) => (
 	<tr key={metric.name}>
-		<th className='fw3 bb b--white-20 tl pb3 pr6 pv3'>
+		<th className="fw3 bb b--white-20 tl pb3 pr6 pv3">
 			{metric.name} ({metricTypeTimePeriod[metric.name]})
 		</th>
-		<th className='bb b--white-20 tr pb3 pv3'>
+		<th className="bb b--white-20 tr pb3 pv3">
 			<Toggle
 				defaultChecked={metric.selected}
 				disabled={metric.disabled}
@@ -40,10 +40,10 @@ const MetricTypes = ({ metricTypes, token }) => {
 
 	return (
 		<>
-			<p className='f5 f4-ns lh-copy'>choose the types of metrics you want to receive for each repo:</p>
-			<div className='overflow-auto'>
-				<table className='f5 center' cellSpacing='0'>
-					<tbody className='lh-copy'>
+			<p className="f5 f4-ns lh-copy">choose the types of metrics you want to receive for each repo:</p>
+			<div className="overflow-auto">
+				<table className="f5 center" cellSpacing="0">
+					<tbody className="lh-copy">
 						{metricTypes.map((metric, index) => (
 							<MetricType
 								key={metric.name}

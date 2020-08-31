@@ -6,25 +6,25 @@ import { updateRepos } from '../logic/preferences';
 
 const Repo = ({ repo, index, handleToggle }) => (
 	<tr key={repo.name}>
-		<th className='fw3 bb b--white-20 tl pb3 pr5 pv3'>
+		<th className="fw3 bb b--white-20 tl pb3 pr5 pv3">
 			{repo.name}
 			{repo.fork && (
 				<>
 					<i
-						className='material-icons md-18 light-blue'
-						data-tip='repo is a fork'
+						className="material-icons md-18 light-blue"
+						data-tip="repo is a fork"
 					>
 						call_split
 					</i>
 					<ReactTooltip
-						effect='solid'
-						place='right'
-						type='light'
+						effect="solid"
+						place="right"
+						type="light"
 					/>
 				</>
 			)}
 		</th>
-		<th className='bb b--white-20 tr pb3 pv3'>
+		<th className="bb b--white-20 tr pb3 pv3">
 			<Toggle
 				defaultChecked={repo.selected}
 				icons={false}
@@ -48,10 +48,10 @@ const Repos = ({ repos, token }) => {
 
 	return (
 		<>
-			<p className='f5 f4-ns lh-copy'>choose the repos you want to receive metrics for:</p>
-			<div className='overflow-auto'>
-				<table className='f5 center' cellSpacing='0'>
-					<tbody className='lh-copy'>
+			<p className="f5 f4-ns lh-copy">choose the repos you want to receive metrics for:</p>
+			<div className="overflow-auto">
+				<table className="f5 center" cellSpacing="0">
+					<tbody className="lh-copy">
 						{repos.map((repo, index) => (
 							<Repo
 								key={repo.name}

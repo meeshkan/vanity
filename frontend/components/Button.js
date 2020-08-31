@@ -7,7 +7,7 @@ const Button = ({ children, color, onClick, ...props }) => {
 	return (
 		<button
 			className={`link f6 f5-l ph3 pv2 ma2 dib black ba bw1 b--${color} br2 bg-${color} ${!loading && `bg-animate hover-bg-transparent hover-${color} fill-white-hover pointer`} fill-black ${loading && 'o-50'}`}
-			type='button'
+			type="button"
 			disabled={loading}
 			onClick={() => {
 				setLoading(true);

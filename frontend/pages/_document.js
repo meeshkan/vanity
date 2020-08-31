@@ -10,40 +10,40 @@ class VanityDoc extends Document {
 
 	render() {
 		return (
-			<Html lang='en'>
+			<Html lang="en">
 				<Head>
-					<meta charSet='utf-8' />
-					<meta name='format-detection' content='telephone=no' />
+					<meta charSet="utf-8" />
+					<meta name="format-detection" content="telephone=no" />
 					<meta
-						name='viewport'
-						content='width=device-width, initial-scale=1.0'
+						name="viewport"
+						content="width=device-width, initial-scale=1.0"
 					/>
 					<link
-						href='https://fonts.googleapis.com/css?family=Space+Mono'
-						rel='stylesheet'
+						href="https://fonts.googleapis.com/css?family=Space+Mono"
+						rel="stylesheet"
 					/>
 					<link
-						href='https://fonts.googleapis.com/icon?family=Material+Icons'
-						rel='stylesheet'
+						href="https://fonts.googleapis.com/icon?family=Material+Icons"
+						rel="stylesheet"
 					/>
 					<link
-						rel='icon'
-						type='image/png'
-						sizes='16x16'
-						href='/static/images/favicon/favicon-16x16.png'
+						rel="icon"
+						type="image/png"
+						sizes="16x16"
+						href="/static/images/favicon/favicon-16x16.png"
 					/>
 					<link
-						rel='icon'
-						type='image/png'
-						sizes='32x32'
-						href='/static/images/favicon/favicon-32x32.png'
+						rel="icon"
+						type="image/png"
+						sizes="32x32"
+						href="/static/images/favicon/favicon-32x32.png"
 					/>
-					<meta name='msapplication-TileColor' content='#ffffff' />
+					<meta name="msapplication-TileColor" content="#ffffff" />
 					<meta
-						name='msapplication-TileImage'
-						content='/static/images/favicon/ms-icon-144x144.png'
+						name="msapplication-TileImage"
+						content="/static/images/favicon/ms-icon-144x144.png"
 					/>
-					<meta name='theme-color' content='#ffffff' />
+					<meta name="theme-color" content="#ffffff" />
 					<script
 						async
 						src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}

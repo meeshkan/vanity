@@ -41,32 +41,32 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 	}
 
 	return (
-		<Layout title='Preferences | Vanity'>
+		<Layout title="Preferences | Vanity">
 			<Main>
-				<h2 className='pt5 pt3-ns'>preferences</h2>
-				<p className='pb4'>
+				<h2 className="pt5 pt3-ns">preferences</h2>
+				<p className="pb4">
 					welcome, {username}
 				</p>
-				<p className='f5 f4-ns lh-copy'>
+				<p className="f5 f4-ns lh-copy">
 					{upcomingEmailDate ? (
 						<>
-							<span className='db'>
+							<span className="db">
 								upcoming metrics email:
 							</span>
-							<span className='avenir pv3 dib i'>{upcomingEmailDate}</span>
+							<span className="avenir pv3 dib i">{upcomingEmailDate}</span>
 						</>
 					) : (
 						<>
-							<span className='avenir db i'>You have been unsubscribed.</span>
-							<span className='db ma2'>
+							<span className="avenir db i">You have been unsubscribed.</span>
+							<span className="db ma2">
 								<Button
-									color='blue'
+									color="blue"
 									onClick={handleResubscribe}
 								>
 									re-subscribe
 								</Button>
 								<Button
-									color='red'
+									color="red"
 									onClick={handleDeleteAccount}
 								>
 									delete account
@@ -75,33 +75,33 @@ export const Preferences = ({ username, repos, metricTypes, token, isAppInstalle
 						</>
 					)}
 				</p>
-				<div className='bt bw1 w-100 w-80-ns center'>
+				<div className="bt bw1 w-100 w-80-ns center">
 					<MetricTypes metricTypes={metricTypes} token={token} />
-					<div className='pv3'>
+					<div className="pv3">
 						{isAppInstalled ? (null) : (
-							<span className='avenir dib lh-copy f5 f4-ns'>
-								<span className='db'>If you&apos;d like to receive repo <em>views</em> and <em>clones</em>,</span>
+							<span className="avenir dib lh-copy f5 f4-ns">
+								<span className="db">If you&apos;d like to receive repo <em>views</em> and <em>clones</em>,</span>
 								{' '}
-								please <a href='https://github.com/apps/vanity-dev/installations/new' className='no-underline blue dim'>install the Vanity GitHub App</a>.
+								please <a href="https://github.com/apps/vanity-dev/installations/new" className="no-underline blue dim">install the Vanity GitHub App</a>.
 							</span>
 						)}
 					</div>
 				</div>
-				<div className='bt bw1 w-100 w-80-ns center'>
+				<div className="bt bw1 w-100 w-80-ns center">
 					{(repos && repos.length > 0) ? (
-						<div className='pb4'>
+						<div className="pb4">
 							<Repos repos={repos} token={token} />
 						</div>
 					) : (
-						<div className='f5 f4-ns'>
+						<div className="f5 f4-ns">
 							<p>It seems like you don&apos;t have any repos.</p>
 							<p>Come back once you&apos;ve made some.</p>
 						</div>
 					)}
 				</div>
-				<div className='pv4 bt bw1 w-100 w-80-ns center'>
+				<div className="pv4 bt bw1 w-100 w-80-ns center">
 					<Button
-						color='blue'
+						color="blue"
 						onClick={logout}
 					>
 						logout

@@ -7,7 +7,7 @@ import Main from '../components/Main';
 import LoginButton from '../components/LoginButton';
 
 export const Login = () => (
-	<Layout title='Login | Vanity'>
+	<Layout title="Login | Vanity">
 		<Main>
 			<h3>access your metrics preferences</h3>
 			<LoginButton />

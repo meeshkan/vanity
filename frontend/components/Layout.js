@@ -10,7 +10,7 @@ const Layout = ({ children, title }) => (
 			openGraph={{ title }}
 		/>
 		<Nav />
-		<div key='container' data-scrollbar className='container'>
+		<div key="container" data-scrollbar className="container">
 			{children}
 		</div>
 	</>

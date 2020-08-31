@@ -33,7 +33,7 @@ const Vanity = ({ Component, pageProps, err }) => {
 				draggable
 				pauseOnHover
 				closeOnClick
-				position='bottom-right'
+				position="bottom-right"
 				autoClose={4000}
 				hideProgressBar={false}
 				newestOnTop={false}

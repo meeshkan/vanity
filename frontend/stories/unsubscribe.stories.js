@@ -5,7 +5,7 @@ export default { title: 'Unsubscribe' };
 
 export const successfulUnsubscription = () => (
 	<Unsubscribe
-		email='foo@bar.com'
+		email="foo@bar.com"
 		message={undefined}
 	/>
 );
@@ -13,6 +13,6 @@ export const successfulUnsubscription = () => (
 export const unsuccessfulUnsubscription = () => (
 	<Unsubscribe
 		email={undefined}
-		message='Unsubscription token is invalid'
+		message="Unsubscription token is invalid"
 	/>
 );

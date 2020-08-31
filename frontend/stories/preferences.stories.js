@@ -6,8 +6,8 @@ export default { title: 'Preferences' };
 export const noRepos = () => (
 	<Preferences
 		isAppInstalled
-		username='k4m4'
-		token='foo'
+		username="k4m4"
+		token="foo"
 		updateRepos={() => {}}
 		login={() => {}}
 		metricTypes={[
@@ -17,15 +17,15 @@ export const noRepos = () => (
 			{ name: 'clones', selected: true, disabled: false },
 		]}
 		repos={[]}
-		upcomingEmailDate='Mon Jan 01 2020 01:33:70 GMT+0000'
+		upcomingEmailDate="Mon Jan 01 2020 01:33:70 GMT+0000"
 	/>
 );
 
 export const fewRepos = () => (
 	<Preferences
 		isAppInstalled
-		username='carolstran'
-		token='foo'
+		username="carolstran"
+		token="foo"
 		updateRepos={() => {}}
 		login={() => {}}
 		metricTypes={[
@@ -39,14 +39,14 @@ export const fewRepos = () => (
 			{ name: 'repo-two', fork: true, selected: false },
 			{ name: 'repo-three', fork: false, selected: true }
 		]}
-		upcomingEmailDate='Mon Jul 13 2020 00:00:00 GMT+0000'
+		upcomingEmailDate="Mon Jul 13 2020 00:00:00 GMT+0000"
 	/>
 );
 
 export const manyRepos = () => (
 	<Preferences
-		username='mikesol'
-		token='foo'
+		username="mikesol"
+		token="foo"
 		updateRepos={() => {}}
 		login={() => {}}
 		isAppInstalled={false}

@@ -40,22 +40,22 @@ export const Unsubscribe = ({ message, email, token }) => {
 	}
 
 	return (
-		<Layout title='Unsubscribe | Vanity'>
+		<Layout title="Unsubscribe | Vanity">
 			<Main>
 				{email ? (
 					<>
 						<SuccessIcon />
-						<h3><span className='courier bg-white black pa1'>{email}</span> successfully unsubscribed</h3>
+						<h3><span className="courier bg-white black pa1">{email}</span> successfully unsubscribed</h3>
 						<p>You will no longer be receiving Vanity emails</p>
-						<span className='db'>
+						<span className="db">
 							<Button
-								color='blue'
+								color="blue"
 								onClick={handleResubscribe}
 							>
 								re-subscribe
 							</Button>
 							<Button
-								color='red'
+								color="red"
 								onClick={handleDeleteAccount}
 							>
 								delete account
