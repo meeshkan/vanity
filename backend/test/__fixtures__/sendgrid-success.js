@@ -13,7 +13,7 @@ module.exports = [
 			'access-control-allow-methods': 'POST',
 			'access-control-allow-headers': 'Authorization, Content-Type, On-behalf-of, x-sg-elas-acl',
 			'access-control-max-age': '600',
-			'x-no-cors-reason': 'https://sendgrid.com/docs/Classroom/Basics/API/cors.html'
+			'x-no-cors-reason': 'https://sendgrid.com/docs/Classroom/Basics/API/cors.html',
 		},
 		request: {
 			uri: {
@@ -28,7 +28,7 @@ module.exports = [
 				query: null,
 				pathname: '/v3/mail/send',
 				path: '/v3/mail/send',
-				href: 'https://api.sendgrid.com/v3/mail/send'
+				href: 'https://api.sendgrid.com/v3/mail/send',
 			},
 			method: 'POST',
 			headers: {
@@ -36,9 +36,9 @@ module.exports = [
 				'User-agent': 'sendgrid/6.5.2;nodejs',
 				Authorization: `Bearer ${SENDGRID_API_KEY}`,
 				'content-type': 'application/json',
-				'content-length': 70185
-			}
-		}
+				'content-length': 70185,
+			},
+		},
 	},
-	null
+	null,
 ];

@@ -16,7 +16,7 @@ const DEV_DB = {
 	database: 'sampledb',
 	host: '127.0.0.1',
 	port: 5432,
-	dialect: 'postgres'
+	dialect: 'postgres',
 };
 
 const TEST_DB = Object.assign(DEV_DB, {

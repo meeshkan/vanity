@@ -11,16 +11,16 @@ const logger = createLogger({
 			sentry: {
 				dsn: SENTRY_DSN,
 			},
-			level: 'info'
+			level: 'info',
 		}),
 		new transports.Console({
 			format: combine(
 				timestamp({
-					format: 'YYYY-MM-DD HH:mm:ss'
+					format: 'YYYY-MM-DD HH:mm:ss',
 				}),
-				simple()
+				simple(),
 			),
-		})
+		}),
 	],
 	exitOnError: false,
 });

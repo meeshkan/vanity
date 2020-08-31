@@ -50,6 +50,6 @@ module.exports = {
 		'terminals-are-sexy',
 		'tor-detect',
 		'tor-detect.now',
-		'url-cli'
-	]
+		'url-cli',
+	],
 };

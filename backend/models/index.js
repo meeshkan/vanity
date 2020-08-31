@@ -10,7 +10,7 @@ const ORM = new Sequelize(
 	config.database,
 	config.username,
 	config.password,
-	config
+	config,
 );
 
 if (NODE_ENV !== 'test') {

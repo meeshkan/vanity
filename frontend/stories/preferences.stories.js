@@ -37,7 +37,7 @@ export const fewRepos = () => (
 		repos={[
 			{ name: 'repo-one', fork: false, selected: false },
 			{ name: 'repo-two', fork: true, selected: false },
-			{ name: 'repo-three', fork: false, selected: true }
+			{ name: 'repo-three', fork: false, selected: true },
 		]}
 		upcomingEmailDate="Mon Jul 13 2020 00:00:00 GMT+0000"
 	/>

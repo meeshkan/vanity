@@ -24,7 +24,7 @@ const createStrategyCallback = UserSchedulerClass => {
 				user = await User.create({
 					username,
 					avatar: photos[0].value,
-					token: accessToken
+					token: accessToken,
 				}, { userSchedulerClass: UserSchedulerClass });
 			}
 		} catch (error) {
@@ -40,7 +40,7 @@ const createStrategyCallback = UserSchedulerClass => {
 passport.use(
 	new GithubStrategy(
 		PASSPORT_OPTIONS[NODE_ENV],
-		createStrategyCallback(UserScheduler)
+		createStrategyCallback(UserScheduler),
 	),
 );
 

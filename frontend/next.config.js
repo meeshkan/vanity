@@ -10,7 +10,7 @@ module.exports = withSourceMaps({
 	target: 'serverless',
 	webpack: (config, options) => {
 		config.node = {
-			fs: 'empty'
+			fs: 'empty',
 		};
 
 		if (!options.isServer) {
@@ -18,5 +18,5 @@ module.exports = withSourceMaps({
 		}
 
 		return config;
-	}
+	},
 });

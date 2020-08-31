@@ -139,8 +139,7 @@ const fetchUserRepoStats = async id => {
 			} catch {}
 
 			return repo;
-		})
-	);
+		}));
 
 	return repos;
 };

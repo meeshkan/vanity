@@ -25,7 +25,7 @@ const createQueue = name => {
 			lockDuration: 90000,
 			stalledInterval: 75000,
 			maxStalledCount: 2,
-		}
+		},
 	})
 		.on('error', error => {
 			log.error({ message: `Queue ${name} error`, error: error.message, stack: error.message });

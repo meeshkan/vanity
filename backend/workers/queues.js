@@ -23,14 +23,14 @@ const sendEmailWorker = async job => {
 		const currentMetrics = await metrics.fetchCurrent(user.id);
 		return email.sendSample({
 			user,
-			metrics: currentMetrics
+			metrics: currentMetrics,
 		});
 	}
 
 	return email.send({
 		user,
 		metrics: weekMetrics,
-		date: moment().format('LL')
+		date: moment().format('LL'),
 	});
 };
 
@@ -40,7 +40,7 @@ const sendSampleEmailWorker = async job => {
 	const currentMetrics = await metrics.fetchCurrent(user.id, user.selectedRepos);
 	return email.sendSample({
 		user,
-		metrics: currentMetrics
+		metrics: currentMetrics,
 	});
 };
 

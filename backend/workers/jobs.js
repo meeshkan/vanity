@@ -71,7 +71,7 @@ const deleteAccountJob = user => {
 			jobId: user.id,
 			delay: QUEUE_DELAY.DELETE_ACCOUNT,
 			attempts: QUEUE_ATTEMPTS.DELETE_ACCOUNT,
-		}
+		},
 	);
 };
 

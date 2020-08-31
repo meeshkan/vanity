@@ -26,7 +26,7 @@ const Nav = () => {
 		const githubUserCookie = Cookies.get('github-user');
 		if (githubUserCookie) {
 			const { avatar } = JSON.parse(
-				decodeURIComponent(githubUserCookie)
+				decodeURIComponent(githubUserCookie),
 			);
 			setAvatarURL(avatar);
 		}

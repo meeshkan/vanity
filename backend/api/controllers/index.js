@@ -57,7 +57,7 @@ const updateRepos = async (request, response) => {
 		user.repos = repos;
 		await user.save({ fileds: ['repos'] });
 		return response.status(OK).json({
-			message: `Successfully updated repos for ${user.username}`
+			message: `Successfully updated repos for ${user.username}`,
 		});
 	} catch (error) {
 		logger.error(error);
@@ -72,7 +72,7 @@ const updateMetricTypes = async (request, response) => {
 		user.metricTypes = metricTypes;
 		await user.save({ fields: ['metricTypes'] });
 		return response.status(OK).json({
-			message: `Successfully updated metric types for ${user.username}`
+			message: `Successfully updated metric types for ${user.username}`,
 		});
 	} catch (error) {
 		logger.error(error);
@@ -83,7 +83,7 @@ const updateMetricTypes = async (request, response) => {
 const UnsubscriptionErrors = {
 	MISMATCH: UnsubscriptionError('Email did not match token'),
 	INVALID_TOKEN: UnsubscriptionError('Unsubscription token is invalid'),
-	ALREADY_UNSUBSCRIBED: UnsubscriptionError('Email has already been unsubscribed')
+	ALREADY_UNSUBSCRIBED: UnsubscriptionError('Email has already been unsubscribed'),
 };
 
 const unsubscribe = async (request, response) => {
@@ -113,7 +113,7 @@ const unsubscribe = async (request, response) => {
 
 const ResubscriptionErrors = {
 	INVALID_TOKEN: UnsubscriptionError('User token is invalid'),
-	ALREADY_SUBSCRIBED: ResubscriptionError('User is already subscribed')
+	ALREADY_SUBSCRIBED: ResubscriptionError('User is already subscribed'),
 };
 
 const resubscribe = async (request, response) => {
@@ -129,7 +129,7 @@ const resubscribe = async (request, response) => {
 		user.userScheduler = new UserScheduler();
 		user.userScheduler.scheduleForUser(user);
 		return response.status(OK).json({
-			message: `Successfully re-subscribed user ${user.username}`
+			message: `Successfully re-subscribed user ${user.username}`,
 		});
 	} catch (error) {
 		logger.error(error);
@@ -140,7 +140,7 @@ const resubscribe = async (request, response) => {
 const DeletionErrors = {
 	INVALID_TOKEN: DeletionError('User token is invalid'),
 	NONEXISTENT_USER_TO_DELETE: DeletionError('The user that you are trying to delete does not exist'),
-	NONEXISTENT_USER_TO_RECOVER: DeletionError('The user that you are trying to recover does not exist')
+	NONEXISTENT_USER_TO_RECOVER: DeletionError('The user that you are trying to recover does not exist'),
 };
 
 const destroy = async (request, response) => {
@@ -153,7 +153,7 @@ const destroy = async (request, response) => {
 		user.userScheduler = new UserScheduler();
 		user.userScheduler.scheduleDeletionOfUser(user);
 		return response.status(OK).json({
-			message: `Successfully scheduled deletion of user ${user.username}`
+			message: `Successfully scheduled deletion of user ${user.username}`,
 		});
 	} catch (error) {
 		logger.error(error);
@@ -171,13 +171,13 @@ const cancelDestruction = async (request, response) => {
 		const job = await deleteAccount.getJob(user.id);
 		if (!job) {
 			return response.status(OK).json({
-				message: 'The user that you are trying to recover has not been scheduled for deletion'
+				message: 'The user that you are trying to recover has not been scheduled for deletion',
 			});
 		}
 
 		await job.remove();
 		return response.status(OK).json({
-			message: `Successfully recovered the account of user ${user.username}`
+			message: `Successfully recovered the account of user ${user.username}`,
 		});
 	} catch (error) {
 		logger.error(error);

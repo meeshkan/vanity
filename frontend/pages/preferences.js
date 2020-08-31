@@ -123,7 +123,7 @@ Preferences.propTypes = {
 	metricTypes: PropTypes.array.isRequired,
 	isAppInstalled: PropTypes.bool.isRequired,
 	token: PropTypes.string.isRequired,
-	upcomingEmailDate: PropTypes.string
+	upcomingEmailDate: PropTypes.string,
 };
 
 Preferences.getInitialProps = async ctx => {

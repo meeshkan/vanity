@@ -30,7 +30,7 @@ const createTestSnapshot = async t => {
 		},
 		{
 			returning: true,
-		}
+		},
 	);
 	t.context.snapshot = snapshot;
 };

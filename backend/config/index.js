@@ -5,7 +5,7 @@ dotenv.config({ path: join(__dirname, '../../.env') });
 const {
 	test: TEST_DB,
 	development: DEV_DB,
-	production: PROD_DB
+	production: PROD_DB,
 } = require('./sequelize');
 
 const {

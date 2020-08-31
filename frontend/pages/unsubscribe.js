@@ -103,7 +103,7 @@ Unsubscribe.getInitialProps = async ({ req, res, query }) => {
 			method: 'DELETE',
 			headers: {
 				Accept: 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ token, email }),
 		});

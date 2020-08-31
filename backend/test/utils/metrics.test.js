@@ -30,7 +30,7 @@ const NEW_REPO_METRICS = {
 	stars: 4,
 	forks: 1,
 	views: 12,
-	clones: 0
+	clones: 0,
 };
 
 const dateIsNDaysAgo = (date, days) => moment(date).add(days, 'days').isSame(moment(), 'day');
@@ -88,7 +88,7 @@ test('compareSnapshots() compares snapshots', async t => {
 
 	const comparison = await compareSnapshots({
 		latest: _.cloneDeep(snapshot),
-		previous: snapshot
+		previous: snapshot,
 	});
 
 	t.true(comparison.length > 0);
@@ -102,7 +102,7 @@ test('compareSnapshots() compares snapshots', async t => {
 
 	const alteredComparison = await compareSnapshots({
 		latest: alteredSnapshot,
-		previous: snapshot
+		previous: snapshot,
 	});
 
 	t.true(alteredComparison.length > 0);
@@ -128,7 +128,7 @@ test('compareSnapshots() ignores deleted repos', async t => {
 
 	const alteredComparison = await compareSnapshots({
 		latest: alteredSnapshot,
-		previous: snapshot
+		previous: snapshot,
 	});
 
 	t.is(alteredComparison.length, snapshot.metrics.length - 2);
@@ -150,7 +150,7 @@ test('compareSnapshots() ignores new repos without prior metrics', async t => {
 
 	const alteredComparison = await compareSnapshots({
 		latest: alteredSnapshot,
-		previous: snapshot
+		previous: snapshot,
 	});
 
 	t.is(alteredComparison.length, snapshot.metrics.length);
@@ -174,7 +174,7 @@ test('daysSinceSnapshot() fetches snapshots N days apart', async t => {
 		},
 		{
 			returning: true,
-		}
+		},
 	);
 
 	const snapshots = await userSnapshots(t.context.user.id);
@@ -198,7 +198,7 @@ test.serial('subjectedSnapshot() fetches week apart snapshots', async t => {
 		},
 		{
 			returning: true,
-		}
+		},
 	);
 	const snapshots = await userSnapshots(t.context.user.id);
 	const { latest, previous } = await subjectedSnapshot(snapshots);
@@ -237,7 +237,7 @@ test.serial('fetchComparison() returns comparison of week apart snapshots', asyn
 		},
 		{
 			returning: true,
-		}
+		},
 	);
 
 	const comparison = await fetchComparison(t.context.user.id);
@@ -273,7 +273,7 @@ test.serial('fetchComparison() returns comparison based on selected metric types
 		},
 		{
 			returning: true,
-		}
+		},
 	);
 
 	const UNSELECTED_METRIC_TYPES = new Set(['views', 'forks']);

@@ -23,7 +23,7 @@ const Landing = () => {
 		const githubUserCookie = Cookies.get('github-user');
 		if (githubUserCookie) {
 			const { username } = JSON.parse(
-				decodeURIComponent(githubUserCookie)
+				decodeURIComponent(githubUserCookie),
 			);
 			setUsername(username);
 		}

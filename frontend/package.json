@@ -51,7 +51,10 @@
     ],
     "rules": {
       "object-curly-spacing": 0,
-      "comma-dangle": 0,
+      "comma-dangle": [
+        "error",
+        "always-multiline"
+      ],
       "react/jsx-tag-spacing": 0,
       "import/no-unassigned-import": [
         "error",

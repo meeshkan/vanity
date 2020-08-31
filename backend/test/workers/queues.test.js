@@ -26,7 +26,7 @@ const user = {
 };
 
 const job = {
-	data: { user }
+	data: { user },
 };
 
 test('ingestMetricsWorker calls metrics.ingest()', async t => {
@@ -57,7 +57,7 @@ test.serial('sendEmailWorker calls metrics.fetchComparison() and email.send()', 
 	sinon.assert.calledWith(send, {
 		user,
 		metrics: WEEKLY_METRICS,
-		date: moment().format('LL')
+		date: moment().format('LL'),
 	});
 
 	t.deepEqual(jobResult, SENDGRID_SUCCESS);
@@ -84,7 +84,7 @@ test.serial('sendEmailWorker calls metrics.fetchCurrent() and email.sendSample()
 	sinon.assert.calledWith(fetchCurrent, user.id);
 	sinon.assert.calledWith(sendSample, {
 		user,
-		metrics: SAMPLE_METRICS
+		metrics: SAMPLE_METRICS,
 	});
 
 	t.deepEqual(jobResult, SENDGRID_SUCCESS);
@@ -108,7 +108,7 @@ test.serial('sendSampleEmailWorker calls metrics.fetchCurrent() and email.sendSa
 	sinon.assert.calledWith(fetchCurrent, user.id, user.selectedRepos);
 	sinon.assert.calledWith(sendSample, {
 		user,
-		metrics: SAMPLE_METRICS
+		metrics: SAMPLE_METRICS,
 	});
 
 	t.deepEqual(jobResult, SENDGRID_SUCCESS);
