@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
-import Button from './Button';
-import LoginButton from './LoginButton';
-import Footer from './Footer';
+import Button from './button';
+import LoginButton from './login-button';
+import Footer from './footer';
 
 const Page = ({ children }) => (
 	<div className="landing-item relative slide">

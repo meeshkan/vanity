@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'next/router';
-import Button from './Button';
-import GitHubIcon from './GitHubIcon';
+import Button from './button';
+import GitHubIcon from './github-icon';
 
 const LoginButton = props => (
 	<Button

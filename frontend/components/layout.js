@@ -1,7 +1,7 @@
 import React from 'react';
 import { NextSeo } from 'next-seo';
 import PropTypes from 'prop-types';
-import Nav from './Nav';
+import Nav from './nav';
 
 const Layout = ({ children, title }) => (
 	<>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import NProgress from 'nprogress';
-import Layout from './Layout';
-import Main from './Main';
-import Footer from './Footer';
-import Button from './Button';
+import Layout from './layout';
+import Main from './main';
+import Footer from './footer';
+import Button from './button';
 import { cancelAccountDeletion } from '../logic/preferences';
 
 const TEN_MINUTES_IN_MILLISECONDS = 10 * 60 * 1000;

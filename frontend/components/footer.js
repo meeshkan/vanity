@@ -1,7 +1,7 @@
 import React from 'react';
-import TwitterIcon from './TwitterIcon';
-import GitHubIcon from './GitHubIcon';
-import MeeshkanIcon from './MeeshkanIcon';
+import TwitterIcon from './twitter-icon';
+import GitHubIcon from './github-icon';
+import MeeshkanIcon from './meeshkan-icon';
 
 const Footer = () => (
 	<footer className="tc bg-center pb2 w-100 relative bg-white">

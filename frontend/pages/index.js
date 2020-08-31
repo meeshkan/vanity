@@ -1,6 +1,6 @@
 import React from 'react';
-import Landing from '../components/Landing';
-import Layout from '../components/Layout';
+import Landing from '../components/landing';
+import Layout from '../components/layout';
 
 const Index = () => (
 	<Layout>

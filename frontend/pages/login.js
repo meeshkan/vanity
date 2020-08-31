@@ -1,10 +1,10 @@
 import React from 'react';
 import Router from 'next/router';
 import nextCookie from 'next-cookies';
-import Layout from '../components/Layout';
-import Footer from '../components/Footer';
-import Main from '../components/Main';
-import LoginButton from '../components/LoginButton';
+import Layout from '../components/layout';
+import Footer from '../components/footer';
+import Main from '../components/main';
+import LoginButton from '../components/login-button';
 
 export const Login = () => (
 	<Layout title="Login | Vanity">

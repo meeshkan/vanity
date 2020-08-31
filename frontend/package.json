@@ -53,7 +53,6 @@
       "object-curly-spacing": 0,
       "comma-dangle": 0,
       "react/jsx-tag-spacing": 0,
-      "unicorn/filename-case": 0,
       "import/no-unassigned-import": [
         "error",
         {
