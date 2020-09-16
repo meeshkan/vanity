@@ -299,4 +299,14 @@ module.exports = [
 		fork: false,
 		selected: false,
 	},
+	{
+		name: 'bank',
+		fork: true,
+		selected: false,
+	},
+	{
+		name: 'swagger-ui',
+		fork: true,
+		selected: false,
+	},
 ];
